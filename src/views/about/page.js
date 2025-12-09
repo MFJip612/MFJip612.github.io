@@ -1,4 +1,4 @@
 export default {
     title: '关于',
-    menuOrder: 2,
+    menuOrder: 3,
 }
