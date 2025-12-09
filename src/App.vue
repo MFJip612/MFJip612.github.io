@@ -16,8 +16,7 @@
     </header>
     <router-view />
     <footer class="footer">
-        <span><span class="material-symbols-outlined"> location_on </span>
-        广州</span>|<span>© 2025 MFJip612</span>
+        <span class="material-symbols-outlined"> location_on </span><span> 广州 </span> | <span> © 2025 MFJip612 </span>
     </footer>
 </template>
 
@@ -82,7 +81,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-	gap: 0.5rem;
+    gap: 0.5rem;
     box-shadow: 0 -2px 8px var(--color-shadow);
     z-index: 999;
 }
