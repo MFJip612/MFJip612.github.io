@@ -29,6 +29,5 @@ function onSelect(post) {
     margin-bottom: var(--footer-height);
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
 }
 </style>

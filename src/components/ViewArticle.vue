@@ -1,7 +1,8 @@
 <template>
     <section v-if="post">
         <h2>{{ post.meta.title }}</h2>
-        <p style="color: #888">{{ post.meta.date }}</p>
+        <p>{{ post.meta.date }}</p>
+        <hr>
         <div v-if="content" v-html="content" class="markdown-body"></div>
         <div v-else>暂无内容</div>
     </section>
@@ -11,21 +12,22 @@ import { ref, watch, onMounted } from "vue";
 let themeLink;
 function setHighlightTheme(mode) {
     if (themeLink) document.head.removeChild(themeLink);
-    themeLink = document.createElement('link');
-    themeLink.rel = 'stylesheet';
-    themeLink.type = 'text/css';
-    themeLink.id = 'hljs-theme';
-    themeLink.href = mode === 'dark'
-        ? 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.css'
-        : 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css';
+    themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.type = "text/css";
+    themeLink.id = "hljs-theme";
+    themeLink.href =
+        mode === "dark"
+            ? "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.css"
+            : "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css";
     document.head.appendChild(themeLink);
 }
 
 onMounted(() => {
-    const matchDark = window.matchMedia('(prefers-color-scheme: dark)');
-    setHighlightTheme(matchDark.matches ? 'dark' : 'light');
-    matchDark.addEventListener('change', e => {
-        setHighlightTheme(e.matches ? 'dark' : 'light');
+    const matchDark = window.matchMedia("(prefers-color-scheme: dark)");
+    setHighlightTheme(matchDark.matches ? "dark" : "light");
+    matchDark.addEventListener("change", (e) => {
+        setHighlightTheme(e.matches ? "dark" : "light");
     });
 });
 import MarkdownIt from "markdown-it";
