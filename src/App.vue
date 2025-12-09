@@ -15,6 +15,9 @@
         </nav>
     </header>
     <router-view />
+    <footer class="footer">
+        <span>© 2025 MFJip612</span>
+    </footer>
 </template>
 
 <script setup>
@@ -34,6 +37,9 @@ header {
     top: 0;
     left: 0;
     width: 100%;
+    box-shadow: 0 2px 8px var(--color-shadow);
+    padding: 0;
+    z-index: 1000;
 }
 nav {
     position: relative;
@@ -41,10 +47,6 @@ nav {
     height: 64px;
     display: flex;
     align-items: center;
-    background: #cba;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    padding: 0;
-    z-index: 1000;
 }
 .avatar {
     position: absolute;
@@ -67,6 +69,19 @@ nav {
     gap: 1rem;
 }
 .content {
-    margin-top: 64px;
+    margin-top: var(--header-height);
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 -2px 8px var(--color-shadow);
+    z-index: 999;
 }
 </style>

@@ -1,9 +1,17 @@
 <template>
-    <h1>Index Page</h1>
+    <Spotlight />
+    <div class="personal-information">
+        <span class="material-symbols-outlined"> location_on </span>
+        Guangzhou, China
+    </div>
 </template>
 <style scoped>
-* {
-    text-align: center;
+.personal-information {
+    position: fixed;
+    justify-content: center;
+    align-items: center;
 }
 </style>
-<script></script>
+<script setup>
+import Spotlight from "@/components/spotlight.vue";
+</script>

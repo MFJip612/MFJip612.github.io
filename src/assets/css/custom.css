@@ -1,5 +1,29 @@
 @import './main.css';
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=location_on");
+/* Google Material Symbols */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* Google Fonts */
+
+
+@media(prefers-color-scheme: light) {
+    :root {
+        --color-shadow:rgba(0, 0, 0, 0.05);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-shadow: rgba(255, 255, 255, 0.2);
+    }
+
+}
+
+:root {
+    --header-height: 64px;
+}
 
 #app {
+    width: 100% !important;
     display: block !important;
 }
