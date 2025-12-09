@@ -28,6 +28,6 @@ function onSelect(post) {
     margin-top: var(--header-height);
     margin-bottom: var(--footer-height);
     display: flex;
-    justify-content: space-between;
+    gap: 1rem;
 }
 </style>
