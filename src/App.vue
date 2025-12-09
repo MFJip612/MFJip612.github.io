@@ -1,107 +1,72 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import { ref } from 'vue'
-
-const name = ref('Unknown')
-
-const getName = async () => {
-  const res = await fetch('/api/')
-  const data = await res.json()
-  name.value = data.name
-}
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <button class="green" @click="getName" aria-label="get name">
-        Name from API is: {{ name }}
-      </button>
-      <p>Edit <code>server/index.js</code> to change what the API gets</p>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <header>
+        <nav>
+            <div class="avatar">
+                <img :src="Logo" alt="Avatar" />
+            </div>
+            <div class="nav-links">
+                <RouterLink
+                    v-for="route in routes"
+                    :key="route.path"
+                    :to="route.path">
+                    {{ route.meta.title }}
+                </RouterLink>
+            </div>
+        </nav>
+    </header>
+    <router-view />
 </template>
+
+<script setup>
+import { RouterLink, RouterView, useRouter } from "vue-router";
+import Logo from "@/assets/logo.svg";
+const router = useRouter();
+const routes = [...router.options.routes].sort((a, b) => {
+    const orderA = a.meta?.menuOrder ?? 9999;
+    const orderB = b.meta?.menuOrder ?? 9999;
+    return orderA - orderB;
+});
+</script>
 
 <style scoped>
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
 nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-button {
-  background-color: hsla(160, 100%, 37%, 1);
-  color: var(--color-background);
-  border: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  margin: 1rem 0 0.5rem 0;
-}
-
-@media (min-width: 1024px) {
-  header {
+    position: relative;
+    width: 100%;
+    height: 64px;
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
+    align-items: center;
+    background: #cba;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 0;
+    z-index: 1000;
+}
+.avatar {
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.nav-links {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+    gap: 1rem;
+}
+.content {
+    margin-top: 64px;
 }
 </style>
