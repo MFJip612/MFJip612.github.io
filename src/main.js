@@ -1,3 +1,4 @@
+import 'animate.css'
 import './assets/css/custom.css'
 
 import { createApp } from 'vue'
