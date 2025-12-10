@@ -16,7 +16,7 @@ const text = "Hello, World!";
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    min-height: var(--container-height);
 }
 h1[data-only] {
     font-weight: bold;

@@ -26,10 +26,11 @@ function onSelect(post) {
 }
 .doc-layout {
     width: 100%;
-    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    min-height: var(--container-height);
     margin-top: var(--header-height);
-    margin-bottom: var(--footer-height);
+    margin-bottom: 0;
     display: flex;
+    justify-content: center;
     gap: 1rem;
 }
 .select-article {
@@ -37,7 +38,6 @@ function onSelect(post) {
     max-width: 20rem;
     padding: 1rem;
     border-right: 0.1rem solid var(--color-border);
-
     box-sizing: border-box;
 }
 </style>

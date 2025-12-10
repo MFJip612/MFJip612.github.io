@@ -14,7 +14,7 @@
             </div>
         </nav>
     </header>
-    <router-view />
+    <router-view class="container" />
     <footer class="footer">
         <span class="material-symbols-outlined"> location_on </span
         ><span> 广州 </span> | <span> © 2025 MFJip612 </span>
@@ -73,17 +73,19 @@ nav {
 .content {
     margin-top: var(--header-height);
 }
-
+.container {
+    margin-top: var(--header-height);
+    min-height: var(--container-height);
+    box-sizing: border-box;
+    padding: 1rem;
+}
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
     width: 100%;
     height: var(--footer-height);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1rem;
     box-shadow: 0 -2px 8px var(--color-shadow);
     background-color: var(--color-background);
     z-index: 999;

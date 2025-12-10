@@ -31,6 +31,14 @@
 
 > 注意：未来浏览器可能会调整这一默认机制，详见 [Chromium 进程模型与站点隔离说明](https://chromium.googlesource.com/chromium/src/+/main/docs/process_model_and_site_isolation.md#Modes-and-Availability)。
 
+> Chromium assigns a ProcessLock to some or all RenderProcessHosts, to restrict which sites are allowed to load in the process and which data the process has access to. A RenderProcessHost is an object in the browser process that represents a given renderer process, though it can be reused if that renderer process crashes and is restarted. Some ProcessLock cases are used on all platforms (e.g., chrome:// URLs are never allowed to share a process with other sites), while other cases may depend on the mode (e.g., Full Site Isolation requires all processes to be locked, once content has been loaded in the process).
+
+> ProcessLocks may have varying granularity, such as a single site (e.g., https://example.com), a single origin (e.g., https://accounts.example.com), an entire scheme (e.g., file://), or a special “allow-any-site” value for processes allowed to host multiple sites (which may have other restrictions, such as whether they are crossOriginIsolated). RenderProcessHosts begin with an “invalid” or unlocked ProcessLock before one is assigned.
+
+> ProcessLocks are always assigned before any content is loaded in a renderer process, either at the start of a navigation or at OnResponseStarted time, just before a navigation commits. Note that a process may initially receive an “allow-any-site” lock for some empty document schemes (e.g., about:blank), which may later be refined to a site-specific lock when the first actual content commits. Once a site-specific lock is assigned, it remains constant for the lifetime of the RenderProcessHost, even if the renderer process itself exits and is recreated.
+
+> Note that content may be allowed in a locked process based on its origin (e.g., an about:blank page with an inherited https://example.com origin is allowed in a process locked to https://example.com). Also, some opaque origin cases are allowed into a locked process as well, such as data: URLs created within that process.
+
 ## 渲染主线程是如何工作的？
 
 渲染主线程是浏览器中最核心、最繁忙的线程，其工作包括但不限于：
