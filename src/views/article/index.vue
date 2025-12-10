@@ -1,6 +1,8 @@
 <template>
     <div class="doc-layout">
-        <BrowseArticle :selected="selected" @select="onSelect" />
+        <aside class="select-article">
+            <BrowseArticle :selected="selected" @select="onSelect" />
+        </aside>
         <ViewArticle :post="selected" />
     </div>
 </template>
@@ -29,5 +31,13 @@ function onSelect(post) {
     margin-bottom: var(--footer-height);
     display: flex;
     gap: 1rem;
+}
+.select-article {
+    min-width: 20rem;
+    max-width: 20rem;
+    padding: 1rem;
+    border-right: 0.1rem solid var(--color-border);
+
+    box-sizing: border-box;
 }
 </style>

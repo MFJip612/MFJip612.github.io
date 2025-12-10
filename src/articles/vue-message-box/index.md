@@ -1,42 +1,44 @@
-弹窗属于通用型的功能，在各个场景中都可能用到。开发仅需要一次，使用却需要很多次，因此着重考虑使用时的成本。
+# 实现通用弹窗功能：从组件到函数式调用
 
-组件式
+弹窗作为一种通用型UI组件，在各类应用场景中频繁出现。由于其“一次开发，多次使用”的特点，我们应重点优化它的使用体验，降低调用成本。
+
+## 组件式实现：开发简单但使用繁琐
+
+首先，我们创建一个基础的弹窗组件 `MessageBox.vue`：
 
 ```vue
 <template>
-    <div id="modal">
-        <div id="box">
-            <div id="text">{{ msg }}</div>
+    <div class="modal">
+        <div class="box">
+            <div class="text">{{ msg }}</div>
             <Button @click="emit('click')"></Button>
         </div>
     </div>
 </template>
+
 <script setup>
 import Button from "~/components/Button.vue";
+
 const emit = defineEmits(['click']);
+
 defineProps({
-    msg:{
-        type:String,
-        required:true
+    msg: {
+        type: String,
+        required: true
     }
-})
+});
 </script>
+
 <style scoped>
-.modal{
-    ...
-}
-.box{
-    ...
-}
-.text{
-    ...
-}
+.modal { /* 样式代码 */ }
+.box { /* 样式代码 */ }
+.text { /* 样式代码 */ }
 </style>
 ```
 
-开发十分简单，但是使用呢？
+组件开发相对简单，但在使用时却比较繁琐：
 
-```vue 
+```vue
 <!-- App.vue -->
 <template>
     <div>
@@ -44,298 +46,105 @@ defineProps({
         <MessageBox v-if="showMsg" :msg="msg" @click="clickHandler"></MessageBox>
     </div>
 </template>
+
 <script setup>
 import { ref } from 'vue';
 import Button from "~/components/Button.vue";
 import MessageBox from "~/components/MessageBox.vue";
-const showMsg=ref(false);
-const msg=ref('提示消息');
+
+const showMsg = ref(false);
+const msg = ref('提示消息');
+
 const clickHandler = () => {
-    showMsg.value=!showMsg.value
+    showMsg.value = !showMsg.value;
 };
 </script>
 ```
 
-是否十分甚至九分麻烦？
+每次使用都需要导入组件、维护状态变量，确实不够便捷。
 
-那么能否不导入任何组件使用呢？
+## 函数式调用：优化使用体验
 
-能。
+能否实现无需导入组件，直接通过函数调用的方式使用弹窗呢？答案是肯定的。
 
-```diff
-<!-- App.vue -->
-<script setup>
-- import { ref } from 'vue';
-import Button from "~/components/Button.vue";
-+ import showMsg from "~/commons/showMsg"
-- import MessageBox from "~/components/MessageBox.vue";
-- const showMsg=ref(false);
-- const msg=ref('提示消息');
-const clickHandler = () => {
--    showMsg.value=!showMsg.value;
-+    showMsg('欲显示的消息',(close)=>{
-+    console.log('点击了确定按钮');
-+    close();
-+ })
-};
-</script>
-```
-
-稍作修改
-
-这样过后 开发就不会那么容易了。
-
-但是，这是**通用型的功能**，因此不用太多地考虑开发成本。
-
-所以在js文件里定义一个函数
-
-```javascript
-// ~/commons/showMsg.js
-function showMsg() {
-
-}
-export default showMsg;
-```
-
-在函数里接受两个参数，一个是消息内容，另一个是事件.
-
-```diff
-// ~/commons/showMsg.js
-- function showMsg() {
-+ function showMsg(msg,clickHandler) {
-  
-}
-
-export default showMsg;
-```
-
-这个方法是为了渲染MessageBox。
-
-导入刚才的MessageBox.vue
-
-```diff
-// ~/commons/showMsg.js
-+ import Message from "~/components/MessageBox.vue"
-function showMsg(msg,clickHandler) {
- 
-}
-export default showMsg;
-```
-
-怎么渲染呢？
-
-我们看看Vue怎么渲染的
-
-```javascript
-// main.js
-import { createApp } from 'vue'
-import App from './App.vue'
-
-const app = createApp(App)
-
-app.mount('#app')
-```
-
-创建一个Vue的实例，把组件传进去，再挂载到页面上的某个区域。
-
-所以我们把这个事情也做一遍。
-
-```diff
-// ~/commons/showMsg.js
-+ import { createApp } from 'vue'
-import Message from "~/components/MessageBox.vue"
-function showMsg(msg,clickHandler) {
-+    // 渲染MessageBox组件
-+    const app =createApp(MessageBox);
-}
-export default showMsg;
-```
-
-但是app已经被主页面挂载了，所以我们要换一个。
-
-```diff
-// ~/commons/showMsg.js
-import { createApp } from 'vue'
-import Message from "~/components/MessageBox.vue"
-function showMsg(msg,clickHandler) {
-+    const div =document.createElement('div');
-   // 渲染MessageBox组件
-+    document.body.appendChild(div);
-   const app =createApp(MessageBox);
-+    app.mount(div);
-}
-export default showMsg;
-```
-
-刷新页面，发现弹窗已经出来了，但是没有内容。
-
-所以现在我们要接受两个属性
-
-```diff
-// ~/commons/showMsg.js
-import { createApp } from 'vue'
-import Message from "~/components/MessageBox.vue"
-function showMsg(msg,clickHandler) {
-    const div =document.createElement('div');
-    // 渲染MessageBox组件
-    document.body.appendChild(div);
--    const app =createApp(MessageBox);
-+    const app =createApp(MessageBox,{
-+        msg,
-+        onClick(){
-+            clickHandler & clickHandler(()=>{
-+                app.unmount();
-+                div.remove();
-+            });
-+        }
-+    });
-    app.mount(div);
-}
-export default showMsg;
-```
-
-完事
-
-现在我们使用方法就可以调用了
+理想中的使用方式如下：
 
 ```vue
 <!-- App.vue -->
 <script setup>
 import Button from "~/components/Button.vue";
-import showMsg from "~/commons/showMsg"
+import showMsg from "~/commons/showMsg";
+
 const clickHandler = () => {
-   showMsg.value=!showMsg.value;
-   showMsg('欲显示的消息',(close)=>{
-   console.log('点击了确定按钮');
-   close();
-})
+    showMsg('欲显示的消息', (close) => {
+        console.log('点击了确定按钮');
+        close(); // 关闭弹窗
+    });
 };
 </script>
 ```
 
-目前这种写法并不是很好，因为他拆开成了几个文件`showMsg.js`和`MessageBox.js`。
+这种方式明显更加简洁。接下来我们实现这个 `showMsg` 函数。
 
-所以我们要合并成一个文件。
+## 实现函数式弹窗
 
-```diff
+### 1. 创建基础函数框架
+
+首先创建 `showMsg.js` 文件：
+
+```javascript
 // ~/commons/showMsg.js
-import { createApp } from 'vue'
-+ import Button from "~/components/Button.vue";
-- import Message from "~/components/MessageBox.vue"
-+
-+ const MessageBox = {
-+     props: {
-+         msg: {
-+             type: String,
-+             required: true,
-+         },
-+     },
-+     render(ctx) {
-+         const { $props, $emit } = ctx;
-+         return (
-+             <div class="modal">
-+                 <div class="box">
-+                     <div class="text">{$props.msg}</div>
-+                     <Button click={$emit('onClick')}></Button>
-+                 </div>
-+             </div>);
-+     }
-+ }
-+
-function showMsg(msg,clickHandler) {
-    const div =document.createElement('div');
-    // 渲染MessageBox组件
-    document.body.appendChild(div);
-    const app =createApp(MessageBox);
-    const app =createApp(MessageBox,{
-        msg,
-        onClick(){
-            clickHandler & clickHandler(()=>{
-                app.unmount();
-                div.remove();
-            });
-        }
-    });
-    app.mount(div);
+function showMsg(msg, clickHandler) {
+    // 实现弹窗逻辑
 }
+
 export default showMsg;
 ```
 
-接下来就是添加样式。
+### 2. 动态渲染组件
 
-这里使用`@styils/vue`
-
-```bash
-$ npm instll @styils/vue
-```
-
-导入`@styils/vue`
+我们需要在函数中动态创建并渲染弹窗组件：
 
 ```javascript
-// showMsg.js
-import { styled } from "@styils/vue";
+// ~/commons/showMsg.js
+import { createApp } from 'vue';
+import MessageBox from "~/components/MessageBox.vue";
+
+function showMsg(msg, clickHandler) {
+    // 创建容器元素
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    
+    // 创建Vue应用实例并挂载
+    const app = createApp(MessageBox, {
+        msg,
+        onClick() {
+            if (clickHandler) {
+                // 执行回调并传递关闭函数
+                clickHandler(() => {
+                    app.unmount();   // 卸载应用
+                    container.remove(); // 移除DOM元素
+                });
+            }
+        }
+    });
+    
+    app.mount(container);
+}
+
+export default showMsg;
 ```
 
-写样式
+### 3. 整合组件定义
+
+为了减少文件依赖，我们可以将组件定义整合到同一个文件中：
 
 ```javascript
-// showMsg.js
-const DivModal = styled('div', {
-    ...
-});
-const DivBox = styled('div', {
-    ...
-});
-const DivText = styled('div', {
-    ...
-});
-```
-
-注意带横线的样式转换为驼峰写法。
-
-修改显示
-
-```diff
-// showMsg.js
-...
-- return (
--     <div class="modal">
--         <div class="box">
--             <div class="text">{$props.msg}</div>
--             <Button click={$emit('onClick')}></Button>
--         </div>
--     </div>
-- );
-+ render(ctx) {
-+     const { $props, $emit } = ctx;
-+     return (
-+         <DivModal>
-+             <DivBox>
-+                 <DivText>{$props.msg}</DivText>
-+                 <Button click={$emit('onClick')}></Button>
-+             </DivBox>
-+         </DivModal>);
-+ }
-...
-```
-
-最终文件
-
-```javascript
-// showMsg.js
-import { createApp } from 'vue'
+// ~/commons/showMsg.js
+import { createApp } from 'vue';
 import Button from "~/components/Button.vue";
-import { styled } from "@styils/vue";
-const DivModal = styled('div', {
-    ...
-});
-const DivBox = styled('div', {
-    ...
-});
-const DivText = styled('div', {
-    ...
-});
 
+// 定义MessageBox组件
 const MessageBox = {
     props: {
         msg: {
@@ -346,28 +155,122 @@ const MessageBox = {
     render(ctx) {
         const { $props, $emit } = ctx;
         return (
-            <DivModal>
-                <DivBox>
-                    <DivText>{$props.msg}</DivText>
+            <div class="modal">
+                <div class="box">
+                    <div class="text">{$props.msg}</div>
                     <Button click={$emit('onClick')}></Button>
-                </DivBox>
-            </DivModal>);
+                </div>
+            </div>
+        );
     }
-}
+};
 
 function showMsg(msg, clickHandler) {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    
     const app = createApp(MessageBox, {
         msg,
         onClick() {
-            clickHandler & clickHandler(() => {
-                app.unmount(div);
-                div.remove();
-            });
+            if (clickHandler) {
+                clickHandler(() => {
+                    app.unmount();
+                    container.remove();
+                });
+            }
         }
     });
-    app.mount(div);
+    
+    app.mount(container);
 }
+
+export default showMsg;
+```
+
+### 4. 添加样式支持
+
+使用 `@styils/vue` 库来管理样式：
+
+```bash
+# 安装依赖
+npm install @styils/vue
+```
+
+整合样式到组件中：
+
+```javascript
+// ~/commons/showMsg.js
+import { createApp } from 'vue';
+import { styled } from "@styils/vue";
+import Button from "~/components/Button.vue";
+
+// 使用styled组件定义样式
+const Modal = styled('div', {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+});
+
+const Box = styled('div', {
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '8px',
+    minWidth: '300px',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+});
+
+const Text = styled('div', {
+    marginBottom: '15px',
+    fontSize: '16px',
+    color: '#333'
+});
+
+// 定义MessageBox组件
+const MessageBox = {
+    props: {
+        msg: {
+            type: String,
+            required: true,
+        },
+    },
+    render(ctx) {
+        const { $props, $emit } = ctx;
+        return (
+            <Modal>
+                <Box>
+                    <Text>{$props.msg}</Text>
+                    <Button onClick={$emit('onClick')}>确定</Button>
+                </Box>
+            </Modal>
+        );
+    }
+};
+
+// 导出showMsg函数
+function showMsg(msg, clickHandler) {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    
+    const app = createApp(MessageBox, {
+        msg,
+        onClick() {
+            if (clickHandler) {
+                clickHandler(() => {
+                    app.unmount();
+                    container.remove();
+                });
+            }
+        }
+    });
+    
+    app.mount(container);
+}
+
 export default showMsg;
 ```

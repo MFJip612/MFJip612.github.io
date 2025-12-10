@@ -23,7 +23,7 @@
 
 <script setup>
 import { RouterLink, RouterView, useRouter } from "vue-router";
-import Logo from "@/assets/logo.svg";
+import Logo from "@/assets/images/logo.jpg";
 const router = useRouter();
 const routes = [...router.options.routes].sort((a, b) => {
     const orderA = a.meta?.menuOrder ?? 9999;

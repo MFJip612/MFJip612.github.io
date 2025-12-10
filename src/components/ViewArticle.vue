@@ -74,8 +74,9 @@ watch(
 </script>
 <style scoped>
 section {
-    margin-left: 5px;
+    margin-left: .5rem;
     padding: 1rem;
     height: 100%;
+    font-family: 'Helvetica', 'Open Sans', sans-serif;
 }
 </style>
