@@ -100,4 +100,8 @@ section {
 .markdown-body code {
     font-family: Consolas, sans-serif;
 }
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+}
 </style>
