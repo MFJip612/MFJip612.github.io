@@ -38,7 +38,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    box-shadow: 0 2px 8px var(--color-shadow);
+    box-shadow: 0 0.125rem 0.5rem var(--color-shadow);
     padding: 0;
     background-color: var(--color-background);
     z-index: 1000;
@@ -57,8 +57,8 @@ nav {
     transform: translateY(-50%);
 }
 .avatar img {
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -86,7 +86,7 @@ nav {
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    box-shadow: 0 -2px 8px var(--color-shadow);
+    box-shadow: 0 -0.125rem 0.5rem var(--color-shadow);
     background-color: var(--color-background);
     z-index: 999;
 }

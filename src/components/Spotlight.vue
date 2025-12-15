@@ -35,8 +35,8 @@ h1[data-only]::after {
     position: absolute;
     top: 0;
     left: 0;
-    -webkit-clip-path: ellipse(100px 100px at 0% 50%);
-    clip-path: ellipse(100px 100px at 0% 50%);
+    -webkit-clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
+    clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
     animation: spotlight 5s infinite;
     background-image: linear-gradient(
         69.7deg,
@@ -52,18 +52,18 @@ h1[data-only]::after {
 
 @keyframes spotlight {
     0% {
-        -webkit-clip-path: ellipse(100px 100px at 0% 50%);
-        clip-path: ellipse(100px 100px at 0% 50%);
+        -webkit-clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
+        clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
     }
 
     50% {
-        -webkit-clip-path: ellipse(100px 100px at 100% 50%);
-        clip-path: ellipse(100px 100px at 100% 50%);
+        -webkit-clip-path: ellipse(6.25rem 6.25rem at 100% 50%);
+        clip-path: ellipse(6.25rem 6.25rem at 100% 50%);
     }
 
     100% {
-        -webkit-clip-path: ellipse(100px 100px at 0% 50%);
-        clip-path: ellipse(100px 100px at 0% 50%);
+        -webkit-clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
+        clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
     }
 }
 </style>

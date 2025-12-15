@@ -79,10 +79,10 @@ section {
     min-height: 100%;
     padding: 2rem;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 62.5rem;
     background-color: var(--color-background);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px var(--color-shadow);
+    border-radius: 0.75rem;
+    box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
 }
 
 /* 标题样式 */
@@ -102,13 +102,13 @@ p:nth-of-type(1) {
     font-size: 1rem;
     margin: 0 0 2rem 0;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 0.0625rem solid var(--color-border);
 }
 
 /* 水平分隔线样式 */
 hr {
     border: none;
-    height: 1px;
+    height: 0.0625rem;
     background-color: var(--color-border);
     margin: 2rem 0;
 }
@@ -146,7 +146,7 @@ hr {
 .markdown-body h2 {
     font-size: 1.75rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 0.0625rem solid var(--color-border);
 }
 
 .markdown-body h3 {
@@ -180,23 +180,23 @@ hr {
 }
 
 .markdown-body li:hover {
-    transform: translateX(4px);
+    transform: translateX(0.25rem);
 }
 
 /* 链接样式 */
 .markdown-body a {
     color: hsla(160, 100%, 37%, 1);
     text-decoration: none;
-    padding: 2px 4px;
-    border-radius: 4px;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
     transition: all 0.3s ease;
-    border-bottom: 1px solid transparent;
+    border-bottom: 0.0625rem solid transparent;
 }
 
 .markdown-body a:hover {
     background-color: hsla(160, 100%, 37%, 0.1);
     border-bottom-color: hsla(160, 100%, 37%, 0.5);
-    transform: translateY(-1px);
+    transform: translateY(-0.0625rem);
 }
 
 /* 引用样式 */
@@ -206,7 +206,7 @@ hr {
     margin: 2rem 0;
     padding: 1.5rem 2rem;
     color: var(--color-text);
-    box-shadow: 0 4px 12px var(--color-shadow);
+    box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
     border-radius: 0.75rem;
     font-style: italic;
     position: relative;
@@ -215,8 +215,8 @@ hr {
 .markdown-body blockquote::before {
     content: "\201C";
     position: absolute;
-    top: -10px;
-    left: 10px;
+    top: -0.625rem;
+    left: 0.625rem;
     font-size: 4rem;
     color: hsla(160, 100%, 37%, 0.3);
     font-family: serif;
@@ -225,20 +225,20 @@ hr {
 
 /* 代码块样式 */
 .markdown-body pre {
-    box-shadow: 0 6px 16px var(--color-shadow);
+    box-shadow: 0 0.375rem 1rem var(--color-shadow);
     border-radius: 0.75rem;
     margin: 2rem 0;
     padding: 1.5rem;
     overflow: auto;
     background: var(--color-background-mute) !important;
-    border: 1px solid var(--color-border);
+    border: 0.0625rem solid var(--color-border);
 }
 
 .markdown-body code {
     font-family: 'Fira Code', Consolas, monospace;
     font-size: 0.95rem;
-    border-radius: 4px;
-    padding: 2px 6px;
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.375rem;
     background-color: var(--color-background-soft);
 }
 
@@ -254,15 +254,15 @@ hr {
     max-width: 100%;
     height: auto;
     border-radius: 0.75rem;
-    box-shadow: 0 6px 16px var(--color-shadow);
+    box-shadow: 0 0.375rem 1rem var(--color-shadow);
     margin: 2rem 0;
-    border: 3px solid var(--color-background-soft);
+    border: 0.1875rem solid var(--color-background-soft);
     transition: all 0.3s ease;
 }
 
 .markdown-body img:hover {
     transform: scale(1.02);
-    box-shadow: 0 8px 20px var(--color-shadow);
+    box-shadow: 0 0.5rem 1.25rem var(--color-shadow);
 }
 
 /* 表格样式 */
@@ -270,7 +270,7 @@ hr {
     width: 100%;
     border-collapse: collapse;
     margin: 2rem 0;
-    box-shadow: 0 4px 12px var(--color-shadow);
+    box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
     border-radius: 0.75rem;
     overflow: hidden;
 }
@@ -279,7 +279,7 @@ hr {
 .markdown-body td {
     padding: 1rem 1.5rem;
     text-align: left;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 0.0625rem solid var(--color-border);
 }
 
 .markdown-body th {
@@ -323,7 +323,7 @@ hr {
     section {
         padding: 1.5rem;
         margin: 0 1rem;
-        border-radius: 8px;
+        border-radius: 0.5rem;
     }
     
     h2 {
@@ -347,7 +347,7 @@ hr {
     
     .markdown-body th,
     .markdown-body td {
-        padding: 0.8rem 1rem;
+        padding: 0.5rem 0.625rem;
     }
 }
 </style>

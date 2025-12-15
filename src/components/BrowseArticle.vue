@@ -27,14 +27,14 @@ ul {
 
 li {
     transition: all 0.3s ease;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     overflow: hidden;
-    box-shadow: 0 2px 4px var(--color-shadow);
+    box-shadow: 0 0.125rem 0.25rem var(--color-shadow);
 }
 
 li:hover {
-    transform: translateX(8px);
-    box-shadow: 0 4px 8px var(--color-shadow);
+    transform: translateX(0.5rem);
+    box-shadow: 0 0.25rem 0.5rem var(--color-shadow);
 }
 
 li a {
@@ -53,7 +53,7 @@ li a:hover {
 .active {
     background: linear-gradient(135deg, hsla(160, 100%, 37%, 0.1) 0%, hsla(160, 100%, 37%, 0.05) 100%);
     font-weight: 600;
-    border-left: 4px solid hsla(160, 100%, 37%, 1);
+    border-left: 0.25rem solid hsla(160, 100%, 37%, 1);
 }
 
 .active a {
@@ -77,7 +77,7 @@ li a::before {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 4px;
+    width: 0.25rem;
     background-color: transparent;
     transition: all 0.3s ease;
 }
