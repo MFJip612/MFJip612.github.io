@@ -14,8 +14,12 @@
 	},
 	"dependencies": {
 		"animate.css": "^4.1.1",
-		"highlight.js": "^11.11.1",
-		"markdown-it": "^14.1.0",
+		"katex": "^0.16.27",
+		"markstream-vue": "^0.0.3-beta.5",
+		"mermaid": "^11.12.2",
+		"shiki": "^3.20.0",
+		"stream-markdown": "^0.0.11",
+		"stream-monaco": "^0.0.8",
 		"vue": "^3.5.25",
 		"vue-router": "^4.6.3"
 	},

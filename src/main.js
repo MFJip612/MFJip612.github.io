@@ -1,5 +1,6 @@
 import 'animate.css'
 import './assets/css/custom.css'
+import 'katex/dist/katex.min.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
