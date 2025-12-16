@@ -1,7 +1,7 @@
 <template>
     <ul>
         <li
-            v-for="post in router"
+            v-for="post in sortedArticles"
             :key="post.path"
             :class="{ active: post === selected }"
             @click="$emit('select', post)">
@@ -12,8 +12,18 @@
     </ul>
 </template>
 <script setup>
-import router from "@/router/articles";
-defineProps({ selected: Object });
+import articles from "@/router/articles";
+import { computed } from "vue";
+
+const props = defineProps({ selected: Object });
+
+// 按照日期从新到旧排序文章
+const sortedArticles = computed(() => {
+    return [...articles].sort((a, b) => {
+        // 比较日期字符串，ISO格式的日期可以直接比较
+        return new Date(b.meta.date) - new Date(a.meta.date);
+    });
+});
 </script>
 <style scoped>
 ul {

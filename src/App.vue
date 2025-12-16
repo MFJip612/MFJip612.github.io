@@ -17,7 +17,7 @@
     <router-view class="container" />
     <footer class="footer">
         <span class="material-symbols-outlined"> location_on </span
-        ><span> 广州 </span> | <span> © 2025 MFJip612 </span>
+        ><span> 广州 </span> | <span> © 2025 MFJip612 </span> | <a href="http://icp.gov.moe/?keyword=20229994">萌ICP备20229994号</a>
     </footer>
 </template>
 
@@ -25,7 +25,9 @@
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import Logo from "@/assets/images/logo.jpg";
 const router = useRouter();
-const routes = [...router.options.routes].sort((a, b) => {
+const routes = [...router.options.routes]
+    .filter(route => !route.meta?.hidden) // 过滤掉hidden为true的路由
+    .sort((a, b) => {
     const orderA = a.meta?.menuOrder ?? 9999;
     const orderB = b.meta?.menuOrder ?? 9999;
     return orderA - orderB;

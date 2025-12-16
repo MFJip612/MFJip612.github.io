@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import articleRoutes from './articles'
 
 // const router = createRouter({
 //   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,22 @@ const routes = Object.entries(pages).map(([path, meta]) => {
 		meta,
 	};
 });
+
+// 添加文章动态路由
+const articleComponent = componentsMap['/article'];
+if (articleComponent) {
+	routes.push({
+		path: '/article/:id',
+		name: 'article-detail',
+		component: articleComponent,
+		meta: {
+			title: '文章详情',
+			menuOrder: 9999,
+			hidden: true // 不在导航栏中显示
+		}
+	});
+}
+
 const router = createRouter({
 	history: createWebHistory(),
 	routes,

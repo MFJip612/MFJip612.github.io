@@ -8,15 +8,40 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import BrowseArticle from "@/components/BrowseArticle.vue";
 import ViewArticle from "@/components/ViewArticle.vue";
-import router from "@/router/articles";
+import articles from "@/router/articles";
 
-const selected = ref(router[0]); // 默认选中第一篇文章
+const route = useRoute();
+const router = useRouter();
+
+// 从路由参数获取当前文章ID
+const getCurrentArticle = () => {
+    const id = route.params.id;
+    if (id) {
+        // 根据path或name查找文章
+        return articles.find(article => article.path === `/${id}` || article.name === id) || articles[0];
+    }
+    return articles[0];
+};
+
+const selected = ref(getCurrentArticle()); // 默认选中第一篇文章或根据路由参数选择
+
+// 当路由参数变化时，更新选中的文章
+watch(
+    () => route.params.id,
+    () => {
+        selected.value = getCurrentArticle();
+    },
+    { immediate: true }
+);
 
 function onSelect(post) {
     selected.value = post;
+    // 更新URL，使用文章的name作为路由参数
+    router.push(`/article/${post.name}`);
 }
 </script>
 

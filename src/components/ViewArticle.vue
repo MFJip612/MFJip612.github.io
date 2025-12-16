@@ -9,31 +9,8 @@
 </template>
 <script setup>
 import { ref, watch, onMounted } from "vue";
-// let themeLink;
-// function setHighlightTheme(mode) {
-//     if (themeLink) document.head.removeChild(themeLink);
-//     themeLink = document.createElement("link");
-//     themeLink.rel = "stylesheet";
-//     themeLink.type = "text/css";
-//     themeLink.id = "hljs-theme";
-//     themeLink.href =
-//         mode === "dark"
-//             ? "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css"
-//             : "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css";
-//     document.head.appendChild(themeLink);
-// }
-
-onMounted(() => {
-    // const matchDark = window.matchMedia("(prefers-color-scheme: dark)");
-    // setHighlightTheme(matchDark.matches ? "dark" : "light");
-    // matchDark.addEventListener("change", (e) => {
-    //     setHighlightTheme(e.matches ? "dark" : "light");
-    // });
-});
-
 import MarkdownRender from 'markstream-vue'
 import 'markstream-vue/index.css'
-
 const props = defineProps({ post: Object });
 const content = ref("");
 const mdModules = import.meta.glob("../articles/**/index.md", { as: "raw" });
@@ -45,7 +22,6 @@ async function loadMarkdown(path) {
         content.value = "";
     }
 }
-
 watch(
     () => props.post?.path,
     (newPath) => {
@@ -55,7 +31,7 @@ watch(
     { immediate: true }
 );
 </script>
-<style>
+<style scoped>
 section {
     box-sizing: border-box;
     width: 100%;
@@ -94,243 +70,5 @@ hr {
     height: 0.0625rem;
     background-color: var(--color-border);
     margin: 2rem 0;
-}
-
-/* Markdown 内容样式 */
-.markdown-body {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: var(--color-text);
-}
-
-/* 段落样式 */
-.markdown-body p {
-    margin: 1.5rem 0;
-    text-align: justify;
-}
-
-/* 标题层级样式 */
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
-    color: var(--color-heading);
-    margin: 2rem 0 1rem 0;
-    font-weight: 600;
-    line-height: 1.3;
-}
-
-.markdown-body h1 {
-    font-size: 2rem;
-}
-
-.markdown-body h2 {
-    font-size: 1.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 0.0625rem solid var(--color-border);
-}
-
-.markdown-body h3 {
-    font-size: 1.5rem;
-}
-
-.markdown-body h4 {
-    font-size: 1.25rem;
-}
-
-.markdown-body h5 {
-    font-size: 1.1rem;
-}
-
-.markdown-body h6 {
-    font-size: 1rem;
-    color: var(--color-text);
-    opacity: 0.8;
-}
-
-/* 列表样式 */
-.markdown-body ul,
-.markdown-body ol {
-    margin: 1.5rem 0;
-    padding-left: 2rem;
-}
-
-.markdown-body li {
-    margin: 0.5rem 0;
-    transition: all 0.2s ease;
-}
-
-.markdown-body li:hover {
-    transform: translateX(0.25rem);
-}
-
-/* 链接样式 */
-.markdown-body a {
-    color: hsla(160, 100%, 37%, 1);
-    text-decoration: none;
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
-    transition: all 0.3s ease;
-    border-bottom: 0.0625rem solid transparent;
-}
-
-.markdown-body a:hover {
-    background-color: hsla(160, 100%, 37%, 0.1);
-    border-bottom-color: hsla(160, 100%, 37%, 0.5);
-    transform: translateY(-0.0625rem);
-}
-
-/* 引用样式 */
-.markdown-body blockquote {
-    border-left: 0.5rem solid hsla(160, 100%, 37%, 0.8);
-    background: linear-gradient(135deg, var(--color-background-soft) 0%, var(--color-background) 100%);
-    margin: 2rem 0;
-    padding: 1.5rem 2rem;
-    color: var(--color-text);
-    box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
-    border-radius: 0.75rem;
-    font-style: italic;
-    position: relative;
-}
-
-.markdown-body blockquote::before {
-    content: "\201C";
-    position: absolute;
-    top: -0.625rem;
-    left: 0.625rem;
-    font-size: 4rem;
-    color: hsla(160, 100%, 37%, 0.3);
-    font-family: serif;
-    line-height: 1;
-}
-
-/* 代码块样式 */
-.markdown-body pre {
-    box-shadow: 0 0.375rem 1rem var(--color-shadow);
-    border-radius: 0.75rem;
-    margin: 2rem 0;
-    padding: 1.5rem;
-    overflow: auto;
-    background: var(--color-background-mute) !important;
-    border: 0.0625rem solid var(--color-border);
-}
-
-.markdown-body code {
-    font-family: 'Fira Code', Consolas, monospace;
-    font-size: 0.95rem;
-    border-radius: 0.25rem;
-    padding: 0.125rem 0.375rem;
-    background-color: var(--color-background-soft);
-}
-
-.markdown-body pre code {
-    background-color: transparent;
-    padding: 0;
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-/* 图片样式 */
-.markdown-body img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 0.75rem;
-    box-shadow: 0 0.375rem 1rem var(--color-shadow);
-    margin: 2rem 0;
-    border: 0.1875rem solid var(--color-background-soft);
-    transition: all 0.3s ease;
-}
-
-.markdown-body img:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0.5rem 1.25rem var(--color-shadow);
-}
-
-/* 表格样式 */
-.markdown-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
-    border-radius: 0.75rem;
-    overflow: hidden;
-}
-
-.markdown-body th,
-.markdown-body td {
-    padding: 1rem 1.5rem;
-    text-align: left;
-    border-bottom: 0.0625rem solid var(--color-border);
-}
-
-.markdown-body th {
-    background: linear-gradient(135deg, hsla(160, 100%, 37%, 0.1) 0%, hsla(160, 100%, 37%, 0.05) 100%);
-    font-weight: 600;
-    color: var(--color-heading);
-}
-
-.markdown-body tr:hover {
-    background-color: var(--color-background-soft);
-}
-
-.markdown-body tr:last-child td {
-    border-bottom: none;
-}
-
-/* 强调样式 */
-.markdown-body strong {
-    font-weight: 600;
-    color: var(--color-heading);
-}
-
-.markdown-body em {
-    font-style: italic;
-    color: var(--color-text);
-}
-
-/* 列表项标记样式 */
-.markdown-body ul li::marker {
-    color: hsla(160, 100%, 37%, 0.8);
-    font-size: 1.2rem;
-}
-
-.markdown-body ol li::marker {
-    color: hsla(160, 100%, 37%, 0.8);
-    font-weight: 600;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-    section {
-        padding: 1.5rem;
-        margin: 0 1rem;
-        border-radius: 0.5rem;
-    }
-    
-    h2 {
-        font-size: 2rem;
-    }
-    
-    .markdown-body {
-        font-size: 1rem;
-        line-height: 1.7;
-    }
-    
-    .markdown-body blockquote {
-        padding: 1.2rem 1.5rem;
-        margin: 1.5rem 0;
-    }
-    
-    .markdown-body pre {
-        padding: 1.2rem;
-        margin: 1.5rem 0;
-    }
-    
-    .markdown-body th,
-    .markdown-body td {
-        padding: 0.5rem 0.625rem;
-    }
 }
 </style>
