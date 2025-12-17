@@ -31,15 +31,13 @@
                                     :src="friend.favicon"
                                     :alt="`${friend.name}的网站图标`"
                                     class="avatar favicon"
+                                    :class="{ 'loaded': friend.loaded }"
                                     loading="lazy"
-                                    @error="friend.useInitial = true"
+                                    @load="friend.loaded = true"
+                                    @error="friend.loaded = false"
                                 />
-                                <!-- 如果favicon加载失败或useInitial为true，显示首字符 -->
-                                <div v-if="friend.useInitial" class="avatar initial-avatar">
-                                    {{ friend.name.charAt(0).toUpperCase() }}
-                                </div>
-                                <!-- 初始状态显示首字符 -->
-                                <div v-else class="avatar initial-avatar placeholder">
+                                <!-- 始终显示首字符作为备用 -->
+                                <div class="avatar initial-avatar">
                                     {{ friend.name.charAt(0).toUpperCase() }}
                                 </div>
                             </div>
@@ -115,7 +113,7 @@ const fetchFriends = async () => {
             friends.value = data.map(friend => ({
                 ...friend,
                 favicon: getFaviconUrl(friend.uri),
-                useInitial: false
+                loaded: false
             }));
         } else {
             console.error('解析后的数据不是数组:', data);
@@ -141,7 +139,7 @@ const fetchFriends = async () => {
         ].map(friend => ({
             ...friend,
             favicon: getFaviconUrl(friend.uri),
-            useInitial: false
+            loaded: false
         }));
     } finally {
         loading.value = false;
@@ -224,17 +222,12 @@ h1 {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.5s ease;
     background-color: transparent;
 }
 
-.avatar[loading="lazy"] {
+.avatar.favicon {
     opacity: 0;
-}
-
-.avatar[loading="lazy"]:loaded {
-    opacity: 1;
+    transition: opacity 0.5s ease;
 }
 
 .avatar.favicon {
@@ -248,6 +241,10 @@ h1 {
     z-index: 1;
     background-color: white;
     border: 1px solid var(--color-border);
+}
+
+.avatar.favicon.loaded {
+    opacity: 1;
 }
 
 .favicon-placeholder {
