@@ -1,9 +1,45 @@
 <template>
     <div class="spotlight">
-        <h1 :data-content="text" data-only>{{ text }}</h1>
+        <h1
+            :data-content="text"
+            id="spotlight"
+            data-only
+            @click="RandomAnimate">
+            {{ text }}
+        </h1>
     </div>
 </template>
 <script setup>
+const animates = [
+    "animate__bounce",
+    "animate__flash",
+    "animate__pulse",
+    "animate__rubberBand",
+    "animate__shakeX",
+    "animate__shakeY",
+    "animate__headShake",
+    "animate__swing",
+    "animate__tada",
+    "animate__wobble",
+    "animate__jello",
+    "animate__heartBeat",
+];
+
+function getRandomAnimate() {
+    const index = Math.floor(Math.random() * animates.length);
+    return animates[index];
+}
+
+function RandomAnimate() {
+    let timer = setInterval(() => {
+        const h1 = document.querySelector("#spotlight");
+        if (h1) {
+            h1.className = `animate__animated ${getRandomAnimate()}`;
+        }
+        clearInterval(timer);
+    }, 300);
+}
+
 const text = "Hello, World!";
 </script>
 <style scoped>
