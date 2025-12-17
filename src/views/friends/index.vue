@@ -152,11 +152,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.friends-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
+
 
 h1 {
     text-align: center;
