@@ -62,8 +62,14 @@ li a:hover {
 
 .title span {
     width: fit-content;
-    background: linear-gradient(to right, #f75e06, #33f5db) no-repeat right
-        bottom;
+    background: linear-gradient(
+            135deg,
+            #8b00ff 0%,
+            #ff1493 33%,
+            #00bfff 66%,
+            #00ff7f 100%
+        )
+        no-repeat right bottom;
     background-size: 0% 0.2rem;
     transition: background-size 300ms;
 }

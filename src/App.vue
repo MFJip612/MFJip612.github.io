@@ -17,7 +17,7 @@
     <router-view class="container" />
     <footer class="footer">
         <span class="material-symbols-outlined"> location_on </span
-        ><span> 广州 </span> | <span> © 2025 MFJip612 </span> | <a href="http://icp.gov.moe/?keyword=20229994">萌ICP备20229994号</a>
+        ><span> 广州 </span> | <span> © 2025 MFJip612 </span> | <a href="http://icp.gov.moe/?keyword=20229994" target="_blank">萌ICP备20229994号</a>
     </footer>
 </template>
 
