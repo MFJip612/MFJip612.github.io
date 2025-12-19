@@ -53,6 +53,12 @@ const text = "Hello, World!";
     align-items: center;
     width: 100%;
     min-height: var(--container-height);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 h1[data-only] {
     font-weight: bold;

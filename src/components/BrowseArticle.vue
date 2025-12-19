@@ -5,8 +5,8 @@
             :key="post.path"
             :class="{ active: post === selected }"
             @click="$emit('select', post)">
-            <a href="javascript:void(0)">
-                {{ post.meta.title }} - {{ post.meta.date }}
+            <a href="javascript:void(0)" class="title">
+                <span>{{ post.meta.title }} - {{ post.meta.date }}</span>
             </a>
         </li>
     </ul>
@@ -60,8 +60,24 @@ li a:hover {
     background-color: var(--color-background-soft);
 }
 
+.title span {
+    width: fit-content;
+    background: linear-gradient(to right, #f75e06, #33f5db) no-repeat right
+        bottom;
+    background-size: 0% 0.2rem;
+    transition: background-size 300ms;
+}
+.title:hover span {
+    background-position-x: left;
+    background-size: 100% 0.2rem;
+}
+
 .active {
-    background: linear-gradient(135deg, hsla(160, 100%, 37%, 0.1) 0%, hsla(160, 100%, 37%, 0.05) 100%);
+    background: linear-gradient(
+        135deg,
+        hsla(160, 100%, 37%, 0.1) 0%,
+        hsla(160, 100%, 37%, 0.05) 100%
+    );
     font-weight: 600;
     border-left: 0.25rem solid hsla(160, 100%, 37%, 1);
 }
@@ -82,7 +98,7 @@ li a {
 }
 
 li a::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
