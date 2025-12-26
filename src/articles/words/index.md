@@ -272,7 +272,7 @@
 | behave | v. | 举止，使端庄 |
 | behaviour | n. | 行为，举止 |
 | behind | prep. | (表示位置)在……后面 |
-| behind | ad. | 在后面；向后 |
+|  | ad. | 在后面；向后 |
 | belief | n. | 信条，信念 |
 | believe | v. | 相信，认为 |
 | bell | n. | 钟，铃；钟(铃)声；钟形物 |
@@ -286,7 +286,7 @@
 | benefit | n. & v. | 利益 |
 | beside | prep. | 在……旁边；靠近 |
 | besides | prep. | 除……以外（还有） |
-| besides | ad. | 还有，此外 |
+|  | ad. | 还有，此外 |
 | between | prep. | 在（两者）之间；在……中间 |
 | beyond | prep. | (表示位置) 在……的那边 |
 | bicycle | n. | 自行车 |
@@ -303,7 +303,7 @@
 | bite (bit, bitten) | v. | 咬；叮 |
 | bitter | a. | 有苦味的；痛苦的，难过的；严酷的 |
 | black | n. | 黑色 |
-| black | a. | 黑色的 |
+|  | a. | 黑色的 |
 | blackboard | n. | 黑板 |
 | blame | n. & v. | 责备；责怪 |
 | blank | n. & a. | 空白（的） |
@@ -311,16 +311,16 @@
 | bleed | v. (bled, bled) | 流血 |
 | blind | a. | 瞎的 |
 | block | n. | 大块；（木、石等）块；街区；路障 |
-| block | vt. | 阻塞；阻挡 |
+|  | vt. | 阻塞；阻挡 |
 | blood | n. | 血，血液 |
 | blouse | n. | 宽罩衫；（妇女、儿童穿的）短上衣 |
-| blow | n. | 击；打击 |
-| blow (blew, blown) | v. | 吹；刮风；吹气 |
+| blow (blew, blown) | n. | 击；打击 |
+|  | v. | 吹；刮风；吹气 |
 | blue | n. | 蓝色 |
-| blue | a. | 蓝色的 |
-| blue | a. | 悲伤的；沮丧的 |
+|  | a. | 蓝色的 |
+|  | a. | 悲伤的；沮丧的 |
 | board | n. | 木板；布告牌；委员会；（政府的）部 |
-| board | v. | 上（船、火车、飞机） |
+|  | v. | 上（船、火车、飞机） |
 | boat | n. | 小船，小舟 |
 | body | n. | 身体 |
 | boil | v. | 沸腾；烧开；煮…… |
@@ -329,7 +329,7 @@
 | bone | n. | 骨头，骨质（复数 bones 骨骼；骨骸） |
 | bonus | n. | 奖金 |
 | book | n. | 书；本子 |
-| book | v. | 预定，定（房间、车票等） |
+|  | v. | 预定，定（房间、车票等） |
 | boot | n. | 靴子 |
 | bored | adj. | 无聊的 |
 | boring | adj. | 令人无聊的 |
@@ -337,7 +337,7 @@
 | borrow | v. | （向别人）借用；借 |
 | boss | n. | 领班；老板 |
 | both | a. | 两；双 |
-| both | pron. | 两者；双方 |
+|  | pron. | 两者；双方 |
 | bother | v. | 打扰 |
 | bottle | n. | 瓶子 |
 | bottom | n. | 底部；底 |
@@ -352,8 +352,8 @@
 | brand | n. | 品牌 |
 | brave | a. | 勇敢的 |
 | bread | n. | 面包 |
-| break | n. | 间隙 |
-| break (broke, broken) | v. | 打破（断，碎）；损坏，撕开 |
+| break (broke, broken) | n. | 间隙 |
+|  | v. | 打破（断，碎）；损坏，撕开 |
 | breakfast | n. | 早餐 |
 | breast | n. | 乳房，胸部 |
 | breath | n. | 气息；呼吸 |
@@ -366,22 +366,22 @@
 | brilliant | a. | 灿烂的；杰出的 |
 | bring (brought, brought) | vt. | 拿来，带来，取来 |
 | broad | a. | 宽的，宽大的 |
-| broadcast | n. | 广播节目 |
-| broadcast (broadcast, broadcast 或 ed, ed) | vt. | 广播 |
+| broadcast (broadcast, broadcast 或 ed, ed) | n. | 广播节目 |
+|  | vt. | 广播 |
 | broken | a. | 破碎的 |
 | broom | n. | 扫帚 |
 | brother | n. | 兄；弟 |
 | brown | n. | 褐色，棕色 |
 | brown | a. | 褐色的，棕色的 |
 | brush | v. | 刷；擦 |
-| brush | n. | 刷子 |
+|  | n. | 刷子 |
 | budget | n. | 预算；廉价的物品 |
 | build (built, built) | v. | 建筑；造 |
 | building | n. | 建筑物；房屋；大楼 |
 | bunch | n. | 束，串 |
 | burglar | n. | 窃贼 |
 | burn (ed, ed 或 burnt, burnt) | v. | 燃，烧，着火；使烧焦；使晒黑 |
-| burn | n. | 烧伤；晒伤 |
+|  | n. | 烧伤；晒伤 |
 | bury | vt. | 埋；葬 |
 | bus | n. | 公交车 |
 | bush | n. | 灌木丛，矮树丛 |
@@ -389,12 +389,12 @@
 | businessman/woman | n. | 商人/女商人 |
 | busy | a. | 忙（碌）的 |
 | but | conj. | 但是，可是 |
-| but | prep. | 除了，除……外 |
+|  | prep. | 除了，除……外 |
 | butcher | n. & vt. | 肉店；屠夫 屠宰（动物）；残杀（人） |
 | butter | n. | 黄油，奶油 |
 | butterfly | n. | 蝴蝶，蝶泳 |
 | button | n. | 纽扣；（电铃等的）按钮 |
-| button | v. | 扣（纽扣） |
+|  | v. | 扣（纽扣） |
 | buy (bought, bought) | vt. | 买 |
 | by | prep. | 靠近，在……旁；在……时间；不迟于；被；用；由；乘（车） |
 | bye-bye | int. | 再见 |
@@ -404,13 +404,13 @@
 | cake | n. | 蛋糕，糕点；饼 |
 | calculate | v. | 计算 |
 | call | n. | 喊，叫；电话，通话 |
-| call | v. | 称呼；呼唤；喊，叫 |
+|  | v. | 称呼；呼唤；喊，叫 |
 | calm | a. | 镇静的；沉着的 |
-| calm | v. | 镇静；沉着 |
+|  | v. | 镇静；沉着 |
 | camel | n. | 骆驼 |
 | camera | n. | 照相机；摄像机 |
 | camp | n. | （夏令）营 |
-| camp | vi. | 野营；宿营 |
+|  | vi. | 野营；宿营 |
 | can (could) | modal v. | 可能；能够；可以 |
 | can't = can not | modal v. | 不能 |
 | can | n. | （美）罐头；罐子；垃圾桶；开罐器 |
@@ -425,7 +425,7 @@
 | car | n. | 汽车，小卧车 |
 | card | n. | 卡片 |
 | care | n. | 照料，保护；小心 |
-| care | v. | 介意……在乎；关心 |
+|  | v. | 介意……在乎；关心 |
 | careful | a. | 小心的，仔细的，谨慎的 |
 | careless | a. | 粗心的，漫不经心的 |
 | carpenter | n. | 木匠 |
@@ -443,7 +443,7 @@
 | catch (caught, caught) | v. | 抓住；赶上；染上（疾病） |
 | cattle | n. | 牛（总称），家畜 |
 | cause | n. | 原因，起因 |
-| cause | vt. | 促使，引起，使发生 |
+|  | vt. | 促使，引起，使发生 |
 | cautious | adj. | 谨慎的 |
 | cave | n. | 洞，穴；地窖 |
 | CD = compact disk | n. | 光盘 |
@@ -466,7 +466,7 @@
 | challenging | adj. | 具有挑战性的 |
 | chance | n. | 机会，可能性 |
 | change | n. | 零钱；找头 |
-| change | v. | 改变，变化；更换；兑换 |
+|  | v. | 改变，变化；更换；兑换 |
 | channel | n. | 频道；海峡 |
 | chant | v. & n. | 圣歌；吟唱 |
 | character | n. | 性格，特征 |
@@ -477,7 +477,7 @@
 | cheap | a. | 便宜的，贱 |
 | cheat | n. & v. | 欺骗，作弊 |
 | check | n. | 检查；批改 |
-| check | vt. | 校对，核对；检查；批改 |
+|  | vt. | 校对，核对；检查；批改 |
 | cheek | n. | 面颊，脸蛋 |
 | cheer | n. & vi. | 欢呼；喝彩 |
 | cheerful | a. | 兴高采烈的，快活的 |
@@ -493,7 +493,7 @@
 | chew | v. | 咀嚼 |
 | chicken | n. | 鸡；鸡肉 |
 | chief | a. | 主要的；首要的 |
-| chief | n. | 领导，头 |
+|  | n. | 领导，头 |
 | child (复 children) | n. | 孩子，儿童 |
 | childhood | n. | 幼年时代，童年 |
 | chocolate | n. | 巧克力 |
@@ -506,7 +506,7 @@
 | cigarette | n. | 香烟 |
 | cinema | n. | 电影院；电影 |
 | circle | n. | 圆圈 |
-| circle | vt. | 将……圈起来 |
+|  | vt. | 将……圈起来 |
 | circus | n. | 马戏团 |
 | citizen | n. | 公民；居民 |
 | city | n. | 市，城市，都市 |
@@ -519,10 +519,10 @@
 | classroom | n. | 教室 |
 | claw | n. | 爪子 |
 | clean | vt. | 弄干净，擦干净 |
-| clean | a. | 清洁的，干净的 |
+|  | a. | 清洁的，干净的 |
 | cleaner | n. | 清洁工；清洁器 |
 | clear | a. | 清晰的；明亮的；清楚的 |
-| clear | v. | 清除；使干净 |
+|  | v. | 清除；使干净 |
 | clerk | n. | 书记员；办事员；职员 |
 | clever | a. | 聪明的，伶俐的 |
 | climate | n. | 气候 |
@@ -543,19 +543,19 @@
 | coal | n. | 煤；煤块 |
 | coast | n. | 海岸；海滨 |
 | coat | n. | 外套；涂层；表皮；皮毛 |
-| coat | vt. | 给……穿外套；涂上 |
+|  | vt. | 给……穿外套；涂上 |
 | coffee | n. | 咖啡 |
 | coin | n. | 硬币 |
 | coke | n. | 可卡因；可乐 |
 | cold | a. | 冷的，寒的 |
-| cold | n. | 寒冷；感冒，伤风 |
+|  | n. | 寒冷；感冒，伤风 |
 | collar | n. | 衣领；硬领 |
 | collect | vt. | 收集，搜集 |
 | college | n. | 学院；专科学校 |
 | colour (美 color) | n. | 颜色 |
-| colour (美 color) | vt. | 给……着色，涂色 |
+|  | vt. | 给……着色，涂色 |
 | comb | n. | 梳子 |
-| comb | v. | 梳 |
+|  | v. | 梳 |
 | come (came, come) | vi. | 来，来到 |
 | comfort | n. | 安慰；慰问 |
 | comfortable | a. | 舒服的；安逸的；舒服自在的 |
@@ -600,7 +600,7 @@
 | contain | v. | 包含；包括；能容纳 |
 | contemporary | a. | 当代的 |
 | content | a. | 甘愿的，满意的 |
-| content | n. | 内容 |
+|  | n. | 内容 |
 | continent | n. | 大陆，大洲；陆地 |
 | continue | vi. | 继续 |
 | contrary | adj. & n. | 相反的 |
@@ -610,23 +610,23 @@
 | convenient | a. | 便利的，方便的 |
 | conversation | n. | 谈话，交谈 |
 | cook | n. | 炊事员，厨师 |
-| cook | v. | 烹调，做饭 |
+|  | v. | 烹调，做饭 |
 | cooker | n. | 炉子 |
 | cookie | n. | 饼干 |
 | cool | a. | 凉的，凉爽的；酷 |
 | copy | n. | 抄本，副本；一本（份，册……） |
-| copy | v. | 抄写；复印；（计算机用语）拷（备份盘） |
+|  | v. | 抄写；复印；（计算机用语）拷（备份盘） |
 | corn | n. | 玉米，谷物 |
 | corner | n. | 角；角落；拐角 |
 | corporation | n. | 公司，法人 |
 | correct | v. | 改正；纠正 |
 | correct | a. | 正确的，对的；恰当的 |
 | correction | n. | 改正 |
-| cost | n. | 价格 |
-| cost (cost, cost) | v. | 值（多少钱）；花费 |
+| cost (cost, cost) | n. | 价格 |
+|  | v. | 值（多少钱）；花费 |
 | cosy | a. | 舒适的 |
 | cotton | n. | 棉花 |
-| cotton | a. | 棉花的 |
+|  | a. | 棉花的 |
 | cough | n. & vi. | 咳嗽 |
 | could | modal v. | （can 的过去式）可以……；（表示许可或请求）可以……，行 |
 | count | vt. | 数，点数 |
@@ -639,7 +639,7 @@
 | courtyard | n. | 庭院，院子 |
 | cousin | n. | 堂（表）兄弟，堂（表）姐妹 |
 | cover | n. | 盖子；罩 |
-| cover | v. | 覆盖，遮盖；掩盖 |
+|  | v. | 覆盖，遮盖；掩盖 |
 | cow | n. | 母牛，奶牛 |
 | crayon | n. | 蜡笔 |
 | crazy | a. | 疯狂的 |
@@ -650,14 +650,14 @@
 | criminal | n. | 罪犯 |
 | crop | n. | 庄稼；收成 |
 | cross | a. | 脾气不好的，易怒的 |
-| cross | n. | 十字形的东西 |
-| cross | vt. | 越过；穿过 |
+|  | n. | 十字形的东西 |
+|  | vt. | 越过；穿过 |
 | crossroads | n. | 交叉路口 |
 | crowd | n. | 人群 |
 | crowd | vt. | 拥挤，群聚 |
 | cruel | a. | 残忍的，残酷的；无情的 |
 | cry | n. | 叫喊；哭声 |
-| cry | v. | 喊叫；哭 |
+|  | v. | 喊叫；哭 |
 | culture | n. | 文化 |
 | cup | n. | 茶杯 |
 | cupboard | n. | 碗柜；橱柜 |
@@ -671,8 +671,8 @@
 | cyclist | n. | 骑自行车的人 |
 | dad = daddy | n. | （口语）爸爸，爹爹 |
 | daily | a. | 每日的；日常的 |
-| daily | ad. | 每天 |
-| daily | n. | 日报 |
+|  | ad. | 每天 |
+|  | n. | 日报 |
 | damage | n. & vt. | 毁坏，损害 |
 | damp | a. & n. | 潮湿（的） |
 | dance | n. & vi. | 跳舞 |
@@ -680,7 +680,7 @@
 | dangerous | a. | 危险的 |
 | dare | v. & aux. | （后接不带 to 的不定式；主要用于疑问，否定或条件句）敢，敢于 |
 | dark | n. | 黑暗；暗处；日暮 |
-| dark | a. | 黑暗的；暗淡的；深色的 |
+|  | a. | 黑暗的；暗淡的；深色的 |
 | darkness | n. | 黑暗 |
 | data | n. | 资料，数据 |
 | date | n. | 日期；约会；枣 |
@@ -688,10 +688,10 @@
 | day | n. | （一）天，（一）日；白天 |
 | dead | a. | 死的；无生命的 |
 | deaf | a. | 聋的 |
-| deal | n. | 量，数额；交易 |
-| deal (dealt, dealt) | v. | 处理；经营 |
+| deal (dealt, dealt) | n. | 量，数额；交易 |
+|  | v. | 处理；经营 |
 | dear | int. | 哎呀！嗬！ |
-| dear | a. | 亲爱的；贵的 |
+|  | a. | 亲爱的；贵的 |
 | death | n. | 死 |
 | debt | n. | 债务；欠款 |
 | decide | v. | 决定；下决心 |
@@ -700,7 +700,7 @@
 | decrease | v. | 减少 |
 | deed | n. | 行为；事迹 |
 | deep | a. | 深 |
-| deep | ad. | 深；深厚 |
+|  | ad. | 深；深厚 |
 | deer | n. | 鹿 |
 | defeat | vt. | 击败；战胜 |
 | defence (美 defense) | n. & v. | 防御；防务 |
@@ -716,7 +716,7 @@
 | describe | vt. | 描写，叙述 |
 | description | n. | 描述，描写 |
 | desert | n. | 沙漠 |
-| desert | vt. | 舍弃；遗弃 |
+|  | vt. | 舍弃；遗弃 |
 | deserve | v. | 应受，值得 |
 | design | n. & vt. | 设计，策划；图案，图样，样式 |
 | desire | vt. & n. | 要求；期望 |
@@ -726,7 +726,7 @@
 | detective | n. | 侦探 |
 | determine | vt. | 决定；决心 |
 | develop | v. | （使）发展；（使）发达；（使）发育；开发 |
-| develop | vt. | 冲洗（照片） |
+|  | vt. | 冲洗（照片） |
 | development | n. | 发展，发达，发育，开发 |
 | devote | vt. | 把……奉献；把……专用（于） |
 | devotion | n. | 奉献；忠诚 |
@@ -789,14 +789,14 @@
 | door | n. | 门 |
 | dormitory | n. | 学生宿舍（缩写式 dorm） |
 | double | a. | 两倍的；双的 |
-| double | n. | 两个；双 |
+|  | n. | 两个；双 |
 | doubt | n. & v. | 怀疑，疑惑 |
 | down | prep. | 沿着，沿……而下 |
-| down | ad. | 向下 |
+|  | ad. | 向下 |
 | downstairs | ad. | 在楼下；到楼下 |
 | downtown | ad. | 往或在城市的商业区（或中心区、闹市区） |
-| downtown | n. | 城市的商业区，中心区，闹市区 |
-| downtown | a. | 城市的商业区的，中心区的，闹市区的 |
+|  | n. | 城市的商业区，中心区，闹市区 |
+|  | a. | 城市的商业区的，中心区的，闹市区的 |
 | dozen | n. | 十二个；几十，许多 |
 | Dr (缩) = Doctor | n. | 医生，大夫；博士 |
 | drag | v. | 拖；拽 |
@@ -804,15 +804,15 @@
 | drawer | n. | 抽屉 |
 | dream (dreamt, dreamt 或 ed, ed) | n. & vt. | 梦，梦想 |
 | dress | n. | 女服，连衣裙；(统指)服装；童装 |
-| dress | v. | 穿衣；穿着 |
+|  | v. | 穿衣；穿着 |
 | drill | n. | 钻头；（反复的）训练 |
-| drill | vt. | 钻孔，在……上钻孔；重复训练 |
-| drink | n. | 饮料；喝酒 |
-| drink (drank, drunk) | v. | 喝，饮 |
+|  | vt. | 钻孔，在……上钻孔；重复训练 |
+| drink (drank, drunk) | n. | 饮料；喝酒 |
+|  | v. | 喝，饮 |
 | drive (drove, driven) | v. | 驾驶，开（车）；驱赶 |
 | driver | n. | 司机，驾驶员 |
 | drop | n. | 滴 |
-| drop | v. | 掉下，落下；投递；放弃 |
+|  | v. | 掉下，落下；投递；放弃 |
 | drug | n. | 药，药物；毒品 |
 | drum | n. | 鼓 |
 | drunk | a. | 醉的 |
@@ -830,13 +830,13 @@
 | eagle | n. | 鹰 |
 | ear | n. | 耳朵；耳状物；听力，听觉 |
 | early | a. | 早的 |
-| early | ad. | 早地 |
+|  | ad. | 早地 |
 | earn | vt. | 挣得，赚得 |
 | earth | n. | 地球；土，泥；大地 |
 | earthquake | n. | 地震 |
 | east | a. | 东方的；东部的；朝东的；从东方来的 |
-| east | ad. | 在东方；向东方；从东方 |
-| east | n. | 东，东方；东部 |
+|  | ad. | 在东方；向东方；从东方 |
+|  | n. | 东，东方；东部 |
 | Easter | n. | 复活节 |
 | eastern | a. | 东方的；东部的 |
 | easy | a. | 容易的，不费力的 |
@@ -850,8 +850,8 @@
 | egg | n. | 蛋；卵 |
 | eggplant | n. | 茄子 |
 | either | a. | 两方任一方的；二者之一 |
-| either | conj. | 二者之一；要么…… |
-| either | ad. | （用于否定句或短语后）也 |
+|  | conj. | 二者之一；要么…… |
+|  | ad. | （用于否定句或短语后）也 |
 | elder | n. | 长者；前辈 |
 | electric | a. | 电的 |
 | electrical | a. | 电的；与电有关的 |
@@ -867,7 +867,7 @@
 | encourage | vt. | 鼓励 |
 | encouragement | n. | 鼓励 |
 | end | n. | 末尾；终点；结束 |
-| end | v. | 结束，终止 |
+|  | v. | 结束，终止 |
 | enemy | n. | 敌人；敌军 |
 | energetic | a. | 精力旺盛的 |
 | energy | n. | 精力，能量 |
@@ -876,7 +876,7 @@
 | enjoy | vt. | 欣赏；享受……之乐趣；喜欢 |
 | enjoyable | a. | 愉快的 |
 | enough | n. | 足够；充足 |
-| enough | a. | 足够的；充分的 |
+|  | a. | 足够的；充分的 |
 | enough | ad. | 足够地；充分地 |
 | enter | vt. | 进入 |
 | enthusiastic | a. | 热情的 |
@@ -886,7 +886,7 @@
 | environment | n. | 环境 |
 | envy | vt. & n. | 忌妒；羡慕 |
 | equal | a. | 平等的 |
-| equal | vt. | 等于，使等于 |
+|  | vt. | 等于，使等于 |
 | equipment | n. | 装备，设备 |
 | eraser | n. | 橡皮擦；黑板擦 |
 | error | n. | 错误；差错 |
@@ -895,7 +895,7 @@
 | essay | n. | 短文，散文 |
 | Europe | n. | 欧洲 |
 | European | a. | 欧洲的，欧洲人的 |
-| European | n. | 欧洲人 |
+|  | n. | 欧洲人 |
 | even | ad. | 甚至，连（……都）；更 |
 | evening | n. | 傍晚，晚上 |
 | event | n. | 事件，大事 |
@@ -916,7 +916,7 @@
 | exchange | n. | 交换，掉换；交流 |
 | excite | vt. | 使兴奋，使激动 |
 | excuse | n. | 借口；辩解 |
-| excuse | vt. | 原谅；宽恕 |
+|  | vt. | 原谅；宽恕 |
 | exercise | n. | 锻炼，做操；练习，习题 |
 | exercise | vi. | 锻炼 |
 | exhibition | n. | 展览；展览会 |
@@ -935,7 +935,7 @@
 | explore | v. | 探索 |
 | export | n. & v. | 出口 |
 | express | vt. | 表达；表示；表情 |
-| express | n. | 快车，特快专递 |
+|  | n. | 快车，特快专递 |
 | expression | n. | 表达；词句；表示，说法；表情 |
 | extra | a. | 额外的，外加的 |
 | extraordinary | a. | 非凡的，特别的 |
@@ -943,37 +943,37 @@
 | eye | n. | 眼睛 |
 | eyesight | n. | 视力；视觉 |
 | face | n. | 脸 |
-| face | vt. | 面向；面对 |
+|  | vt. | 面向；面对 |
 | facial | a. | 面部用的 |
 | fact | n. | 事实，现实 |
 | factory | n. | 工厂 |
 | fail | v. | 失败；不及格；衰退 |
 | failure | n. | 失败 |
-| fair1 | a. | 公平的，合理的 |
-| fair2 | a. | (肤色)白皙的；（人）白肤金发的 |
-| fair3 | n. | 集市；庙会；展览会 |
-| fall1 | n. | （美）秋季 autumn |
-| fall2 (fell, fallen) | vi. | 落（下），降落；倒 |
+| fair | a. | 公平的，合理的 |
+|  | a. | (肤色)白皙的；（人）白肤金发的 |
+|  | n. | 集市；庙会；展览会 |
+| fall (fell, fallen) | n. | （美）秋季 autumn |
+|  | vi. | 落（下），降落；倒 |
 | false | a. | 不正确的；假的 |
 | familiar | a. | 熟悉的 |
 | family | n. | 家庭；家族；子女 |
 | famous | a. | 著名的 |
-| fan1 | n. | （电影、运动等的）迷；热心的爱好者（支持者） |
-| fan2 | n. | 风扇 |
+| fan | n. | （电影、运动等的）迷；热心的爱好者（支持者） |
+|  | n. | 风扇 |
 | fantastic | a. | 极好的，美妙的，很棒的；幻想的，奇异的 |
 | far (farther, farthest 或 further, furthest) | a. & ad. | 远的；远地 |
 | fare | n. | （乘车或船等的）费用，票（价） |
 | farm | n. | 农场；农庄 |
 | farmer | n. | 农民 |
 | fast | a. | 快的，迅速的；紧密的 |
-| fast | ad. | 快地，迅速地；紧密地 |
+|  | ad. | 快地，迅速地；紧密地 |
 | fat | n. | 脂肪 |
-| fat | a. | 胖的；肥的 |
+|  | a. | 胖的；肥的 |
 | father | n. | 父亲 |
 | fault | n. | 缺点，毛病 |
 | favour (美 favor) | n. | 恩惠；好意；帮助 |
 | favourite (美 favorite) | a. | 喜爱的 |
-| favourite (美 favorite) | n. | 特别喜爱的人（或物） |
+|  | n. | 特别喜爱的人（或物） |
 | fax | n. | 传真 |
 | fear | n. | 害怕；恐惧；担忧 |
 | feather | n. | 羽毛 |
@@ -985,7 +985,7 @@
 | female | a. | 女的；女性的；雌性的 |
 | fence | n. | 栅栏；围栏；篱笆 |
 | festival | a. | 节日的，喜庆的 |
-| festival | n. | 节日 |
+|  | n. | 节日 |
 | fetch | vt. | （去）取（物）来，（去）带（人）来 |
 | fever | n. | 发烧；发热 |
 | few | pron. | 不多；少数 |
@@ -996,50 +996,50 @@
 | file | n. | 公文柜；档案，（计算机）文档 |
 | fill | vt. | 填空，装满 |
 | film | n. | 电影；影片；胶卷 |
-| film | vt. | 拍摄，把……拍成电影 |
+|  | vt. | 拍摄，把……拍成电影 |
 | final | a. | 最后的；终极的 |
 | find (found, found) | vt. | 找到，发现，感到 |
-| fine1 | a. | 细的；晴朗的；美好的；（身体）健康的 |
-| fine2 | n. & v. | 罚款 |
+| fine | a. | 细的；晴朗的；美好的；（身体）健康的 |
+|  | n. & v. | 罚款 |
 | finger | n. | 手指 |
 | finish | v. | 结束；做完 |
 | fire | n. | 火；火炉；火灾 |
-| fire | vi. | 开火，开（枪，炮等），射击 |
-| firm1 | n. | 公司；企业 |
-| firm2 | a. | 坚固的，坚定的 |
+|  | vi. | 开火，开（枪，炮等），射击 |
+| firm | n. | 公司；企业 |
+|  | a. | 坚固的，坚定的 |
 | fish | n. | 鱼；鱼肉 |
-| fish | vi. | 钓鱼；捕鱼 |
+|  | vi. | 钓鱼；捕鱼 |
 | fisherman | n. | 渔民；钓鱼健身者 |
 | fist | n. | 拳(头) |
 | fit | a. | 健康的，适合的 |
-| fit | v. | （使）适合，安装 |
+|  | v. | （使）适合，安装 |
 | fix | vt. | 修理；安装；确定，决定 |
 | flag | n. | 旗；标志；旗舰 |
 | flame | n. | 火焰，光辉 |
 | flash | n. | 闪；闪光；转瞬间 |
 | flashlight | n. | 手电 |
 | flat | a. | 平的 |
-| flat | n. | 楼中一套房间；公寓(常用复数) |
+|  | n. | 楼中一套房间；公寓(常用复数) |
 | flesh | n. | 肉 |
 | flight1 | n. | 航班 |
 | flight2 | n. | 楼梯的一段 |
 | flood | n. | 洪水 |
-| flood | vt. | 淹没，使泛滥 |
+|  | vt. | 淹没，使泛滥 |
 | floor | n. | 地面，地板；（楼房的）层 |
 | flour | n. | 面粉，粉 |
 | flow | vi. | 流动 |
 | flower | n. | 花 |
 | flu | n. | 流行性感冒 |
 | fluent | adj. | 流畅的 |
-| fly | n. | 飞行；苍蝇 |
-| fly (flew, flown) | vi. | （鸟、飞机）飞；（人乘飞机）飞行；（旗子等）飘动 |
-| fly | vt. | 空运（乘客，货物等）；放（风筝、飞机模型等） |
+| fly (flew, flown) | n. | 飞行；苍蝇 |
+|  | vi. | （鸟、飞机）飞；（人乘飞机）飞行；（旗子等）飘动 |
+|  | vt. | 空运（乘客，货物等）；放（风筝、飞机模型等） |
 | focus | v. & n. | 焦点，聚焦 |
 | fog | n. | 雾 |
 | foggy | a. | 多雾的 |
 | fold | vt. | 折叠；合拢 |
 | folk | a. | 民间的 |
-| folk | n. | 人们 |
+|  | n. | 人们 |
 | follow | vt. | 跟随；仿效；跟得上 |
 | fond | a. | 喜爱的，爱好的 |
 | food | n. | 食物，食品 |
@@ -1048,7 +1048,7 @@
 | foot (复 feet) | n. | 足，脚；英尺 |
 | football | n. | （英式）足球；（美式）橄榄球 |
 | for | prep. | 为了……；向……；往……；与……交换；防备……；适合……；因为……；在……期间；对于……；对……来说 |
-| for | conj. | 因为，由于 |
+|  | conj. | 因为，由于 |
 | force | vt. | 强迫，迫使 |
 | forecast | n. & vt. | 预告 (forecast, forecast 或 -ed, -ed) |
 | forehead | n. | 前额 |
@@ -1080,7 +1080,7 @@
 | frog | n. | 青蛙 |
 | from | prep. | 从；从……起；距；来自 |
 | front | a. | 前面的；前部的 |
-| front | n. | 前面；前部；前线 |
+|  | n. | 前面；前部；前线 |
 | frost | n. | 霜 |
 | fruit | n. | 水果；果实 |
 | fry | v. | 油炸 |
@@ -1176,7 +1176,7 @@
 | hamburger | n. | 汉堡包 |
 | hammer | n. | 锤子，锣锤 |
 | hand | n. | 手；指针 |
-| hand | v. | 递；给；交付 交上；交进 |
+|  | v. | 递；给；交付 交上；交进 |
 | handbag | n. | 手提包 |
 | handkerchief | n. | 手帕 |
 | handle | n. | 柄，把 |
@@ -1191,7 +1191,7 @@
 | happy | a. | 幸福的；快乐的，高兴的 |
 | harbour (美 harbor) | n. | 港口 |
 | hard | ad. | 努力地；使劲；猛烈地 |
-| hard | a. | 硬的；困难的 |
+|  | a. | 硬的；困难的 |
 | hardly | ad. | 几乎不 |
 | hardship | n. | 困难 |
 | hardworking | a. | 努力工作的 |
@@ -1203,8 +1203,8 @@
 | have (had, had) | vt. | 有；吃；喝；进行；经受 |
 | he | pron. | 他 |
 | head | n. | 头；头脑(像)；才智；首脑；源头；标题 |
-| head | a. | 头部的；主要的；首席的 |
-| head | v. | 率领；加标题；用头顶；出发；(船等)驶向 |
+|  | a. | 头部的；主要的；首席的 |
+|  | v. | 率领；加标题；用头顶；出发；(船等)驶向 |
 | headache | n. | 头疼 |
 | headmaster/headmistress | n. | (英) 中小学校长 |
 | health | n. | 健康，卫生 |
@@ -1212,7 +1212,7 @@
 | hear (heard, heard) | v. | 听见；听说，得知 |
 | heart | n. | 心；心脏；纸牌中的红桃 |
 | heat | n. | 热 |
-| heat | vt. | 把……加热 |
+|  | vt. | 把……加热 |
 | heaven | n. | 天堂；天空 |
 | heavy | a. | 重的 |
 | heel | n. | 脚后跟 |
@@ -1245,21 +1245,21 @@
 | hole | n. | 洞，坑 |
 | holiday | n. | 假日；假期 |
 | home | n. | 家 |
-| home | ad. | 到家；回家 |
+|  | ad. | 到家；回家 |
 | homeland | n. | 祖国 |
 | hometown | n. | 故乡 |
 | homework | n. | 家庭作业 |
 | honest | a. | 诚实的，正直的 |
 | honey | n. | 蜂蜜 |
 | honour (美 honor) | n. | 荣誉 |
-| honour (美 honor) | vt. | 尊敬，给予荣誉 |
+|  | vt. | 尊敬，给予荣誉 |
 | hope | n. & v. | 希望 |
 | hopeful | a. | 有希望的；有前途的 |
 | hopeless | a. | 没有希望的；不可救药的 |
 | horse | n. | 马 |
 | hospital | n. | 医院 |
 | host | n. | 主人；节目主持人 |
-| host | v. | 做主人招待 |
+|  | v. | 做主人招待 |
 | hostess | n. | 女主人 |
 | hot | a. | 热的 |
 | hotdog | n. | 热狗(红肠面包) |
@@ -1304,7 +1304,7 @@
 | impression | n. | 印象，感觉 |
 | improve | vt. | 改进，更新 |
 | in | prep. | 在……里(内)；在……；以…… |
-| in | ad. | 在家，在内，向内 |
+|  | ad. | 在家，在内，向内 |
 | inch | n. | 英寸 |
 | incident | n. | 事件 |
 | include | vt. | 包含，包括 |
@@ -1325,7 +1325,7 @@
 | insect | n. | 昆虫 |
 | insert | vt. | 插入 |
 | inside | prep. | 在……里面 |
-| inside | ad. | 在里面 |
+|  | ad. | 在里面 |
 | insist | vi. | 坚持；坚决认为 |
 | inspect | vt. | 检查；检验；审视 |
 | instant | a. | 瞬间；刹那 |
@@ -1352,7 +1352,7 @@
 | invitation | n. | 邀请，请帖 |
 | invite | vt. | 邀请，招待 |
 | iron | n. | 铁，熨斗 |
-| iron | vt. | 熨烫 |
+|  | vt. | 熨烫 |
 | island | n. | 岛 |
 | it | pron. | 它 |
 | its | pron. | 它的 |
@@ -1372,18 +1372,18 @@
 | journey | n. | 旅行，路程 |
 | joy | n. | 欢乐，高兴，乐趣 |
 | judge | n. | 裁判；审判员；法官 |
-| judge | vt. | 判断，断定 |
+|  | vt. | 判断，断定 |
 | judgment | n. | 判断 |
 | juice | n. | 汁、液 |
 | jump | n. | 跳跃；跳变 |
-| jump | v. | 跳跃；惊起；猛扑 |
+|  | v. | 跳跃；惊起；猛扑 |
 | junior | a. | 初级的；年少的 |
-| just1 | ad. | 刚才；恰好；不过；仅 |
-| just2 | a. | 公正的 |
+| just | ad. | 刚才；恰好；不过；仅 |
+|  | a. | 公正的 |
 | justice | n. | 正义；公正；司法 |
 | kangaroo | n. | 大袋鼠 |
 | keep (kept, kept) | v. | 保持；保存；继续不断 |
-| keep | vt. | 培育，饲养 |
+|  | vt. | 培育，饲养 |
 | kettle | n. | (烧水用的)水壶 |
 | key | n. | 钥匙；答案；键；关键 |
 | keyboard | n. | 键盘 |
@@ -1394,7 +1394,7 @@
 | kilogram | n. | 千克 |
 | kilometre | n. | 千米（公里） |
 | kind | n. | 种；类 |
-| kind | a. | 善良的；友好的 |
+|  | a. | 善良的；友好的 |
 | kindergarten | n. | 幼儿园 |
 | kindness | n. | 仁慈；善良 |
 | king | n. | 国王 |
@@ -1413,24 +1413,24 @@
 | lamb | n. | 羔羊 |
 | lamp | n. | 灯，油灯；光源 |
 | land | n. | 陆地；土地 |
-| land | v. | 登岸（陆）；降落 |
+|  | v. | 登岸（陆）；降落 |
 | language | n. | 语言 |
 | lap | n. | (人坐时)膝部；(跑道的)一圈 |
 | large | a. | 大的；巨大的 |
-| last1 | a. | 最近刚过去的；最后的 |
-| last1 | ad. | 最近刚过去；最后地 |
-| last1 | n. | 最后 |
-| last2 | v. | 持续 |
+| last | a. | 最近刚过去的；最后的 |
+|  | ad. | 最近刚过去；最后地 |
+|  | n. | 最后 |
+|  | v. | 持续 |
 | late | a. | 晚的，迟的 |
-| late | ad. | 晚地，迟地 |
+|  | ad. | 晚地，迟地 |
 | laugh | n. & v. | 笑，大笑；嘲笑 |
 | laughter | n. | 笑；笑声 |
 | law | n. | 法律，法令；定律 |
 | lawyer | n. | 律师 |
 | lay (laid, laid) | vt. | 放，搁 |
 | lazy | a. | 懒惰的 |
-| lead1 | n. | 铅 |
-| lead2 (led, led) | v. | 领导，带领 |
+| lead (led, led) | n. | 铅 |
+|  | v. | 领导，带领 |
 | leader | n. | 领袖，领导人 |
 | leaf (复 leaves) | n. | （树，菜）叶 |
 | leak | v. | 泄漏 |
@@ -1440,12 +1440,12 @@
 | leave (left, left) | v. | 离开；把……留下，剩下 |
 | lecture | n. | 讲课，演讲 |
 | left | a. | 左边的 |
-| left | ad. | 向左 |
-| left | n. | 左，左边 |
+|  | ad. | 向左 |
+|  | n. | 左，左边 |
 | leg | n. | 腿；腿脚；支柱 |
 | legal | adj. | 合法的 |
 | lemon | n. | 柠檬 |
-| lemon | a. | 柠檬色（味）的 |
+|  | a. | 柠檬色（味）的 |
 | lemonade | n. | 柠檬水 |
 | lend (lent, lent) | vt. | 借（出），把……借给 |
 | length | n. | 长，长度，段，节 |
@@ -1456,21 +1456,21 @@
 | library | n. | 图书馆，图书室 |
 | license/ce | n. | 许可证 |
 | lid | n. | 盖子 |
-| lie1 | n. & vi. | 谎言；说谎 |
-| lie2 (lay, lain) | v. | 躺；卧；平放；位于 |
+| lie (lay, lain) | n. & vi. | 谎言；说谎 |
+|  | v. | 躺；卧；平放；位于 |
 | life (复 lives) | n. | 生命；生涯；生活；人生；生物 |
 | lift | v. | 举起，抬起； |
-| lift | n. | （英）电梯 |
+|  | n. | （英）电梯 |
 | light | n. | 光，光亮；灯，灯光 |
-| light | vt. | 点（火），点燃 |
-| light | a. | 明亮的；轻的；浅色的 |
+|  | vt. | 点（火），点燃 |
+|  | a. | 明亮的；轻的；浅色的 |
 | lightning | n. | 闪电 |
-| like1 | prep. | 像，跟……一样 |
-| like2 | vt. | 喜欢，喜爱 |
+| like | prep. | 像，跟……一样 |
+|  | vt. | 喜欢，喜爱 |
 | likely | a. | 很可能的 |
 | limit | vt. | 限制；减少 |
 | line | n. | 绳索，线， |
-| line | v. | 画线于，（使）成行 |
+|  | v. | 画线于，（使）成行 |
 | link | v. | 连接；联系 |
 | lion | n. | 狮子 |
 | lip | n. | 嘴唇 |
@@ -1482,21 +1482,21 @@
 | litre (美 liter) | n. | 升；公升(容量单位) |
 | litter | v. | 乱丢杂物 |
 | little (less, least) | a. | 小的，少的 |
-| little | ad. | 稍许 |
-| little | n. | 一点 |
-| live1 | vi. | 生活；居住 |
-| live1 | a. | 活的，活着的，现场（直播）的 |
+|  | ad. | 稍许 |
+|  | n. | 一点 |
+| live | vi. | 生活；居住 |
+|  | a. | 活的，活着的，现场（直播）的 |
 | lively | a. | 活泼的；充满生气的 |
 | load | n. | 担子，货物 |
-| load | v. | 承担，负载 |
+|  | v. | 承担，负载 |
 | local | a. | 当地的；地方的 |
 | lock | n. | 锁 |
-| lock | vt. | 锁，锁上 |
+|  | vt. | 锁，锁上 |
 | lonely | a. | 孤独的，寂寞的 |
 | long | a. | 长的，远 |
-| long | ad. | 长久 |
+|  | ad. | 长久 |
 | look | n. | 看，瞧 |
-| look | v. | 看，观看 |
+|  | v. | 看，观看 |
 | loose | a. | 松散的；宽松的 |
 | lorry | n. | （英）运货汽车，卡车 |
 | loss | n. | 丧失；损耗 |
