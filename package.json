@@ -24,10 +24,10 @@
 		"vue-router": "^4.6.3"
 	},
 	"devDependencies": {
-		"@cloudflare/vite-plugin": "^1.17.0",
+		"@cloudflare/vite-plugin": "^1.21.1",
 		"@vitejs/plugin-vue": "^6.0.2",
 		"vite": "^7.2.4",
 		"vite-plugin-vue-devtools": "^8.0.5",
-		"wrangler": "^4.53.0"
+		"wrangler": "^4.59.3"
 	}
 }
