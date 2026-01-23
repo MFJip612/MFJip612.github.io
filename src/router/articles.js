@@ -26,6 +26,5 @@ const routes = Object.entries(posts).map(([path, meta]) => {
 		meta,
 	};
 });
-console.log(routes);
 
 export default routes;
