@@ -4,15 +4,15 @@
 ```js
 const zhangsan = {
     name: 'San Zhang',
-    money: '10000',
+    money: 10000,
     machine: function(power) {
-        this.money = this.money - -(power);
+        this.money = this.money + power;
     }
 }
 
 const lisi = {
     name: 'Si Li',
-    money: '4000'
+    money: 4000
 }
 ```
 
@@ -51,7 +51,7 @@ zhangsan.machine.call(lisi, 100);
 ```js
 const zhangsan = {
     name: 'San Zhang',
-    money: '10000',
+    money: 10000,
     machine: function(power) {
         this.money = this.money - -(power);
     },
