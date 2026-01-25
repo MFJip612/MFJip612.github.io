@@ -1,338 +1,186 @@
-@import './main.css';
+/* @import './main.css'; */
+
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=location_on");
-/* Google Material Symbols */
+
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
-/* Google Fonts */
+@import "tailwindcss";
 
-/* 全局样式优化 */
-body {
-    font-family: 'Open Sans', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 1rem;
-    line-height: 1.7;
-}
+@import "tw-animate-css";
 
-/* 响应式阴影变量 */
-@media(prefers-color-scheme: light) {
-    :root {
-        --color-shadow: rgba(0, 0, 0, 0.1);
-        --color-code-border: rgba(0, 238, 59, 0.2);
-        --color-hover: hsla(160, 100%, 37%, 0.1);
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-shadow: rgba(255, 255, 255, 0.1);
-        --color-code-border: hsla(160, 100%, 37%, 0.2);
-        --color-hover: hsla(160, 100%, 37%, 0.1);
-    }
-}
+@custom-variant dark (&:is(.dark *));
 
 :root {
-    --header-height: 4.5rem;
-    --footer-height: 3.5rem;
+    --header-height: 4rem;
+    --footer-height: 4rem;
     --container-height: calc(100vh - var(--header-height) - var(--footer-height));
-    --transition-speed: 0.3s;
-    --border-radius: 0.5rem;
-    --nav-link-gap: 2rem;
+
+    --background: #ffffff;
+    --foreground: #0a0a0a;
+    --card: #ffffff;
+    --card-foreground: #0a0a0a;
+    --popover: #ffffff;
+    --popover-foreground: #0a0a0a;
+    --primary: #171717;
+    --primary-foreground: #fafafa;
+    --secondary: #f5f5f5;
+    --secondary-foreground: #171717;
+    --muted: #f5f5f5;
+    --muted-foreground: #737373;
+    --accent: #f5f5f5;
+    --accent-foreground: #171717;
+    --destructive: #e7000b;
+    --destructive-foreground: #ffffff;
+    --border: #e5e5e5;
+    --input: #e5e5e5;
+    --ring: #a1a1a1;
+    --chart-1: #91c5ff;
+    --chart-2: #3a81f6;
+    --chart-3: #2563ef;
+    --chart-4: #1a4eda;
+    --chart-5: #1f3fad;
+    --sidebar: #fafafa;
+    --sidebar-foreground: #0a0a0a;
+    --sidebar-primary: #171717;
+    --sidebar-primary-foreground: #fafafa;
+    --sidebar-accent: #f5f5f5;
+    --sidebar-accent-foreground: #171717;
+    --sidebar-border: #e5e5e5;
+    --sidebar-ring: #a1a1a1;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --radius: 0.625rem;
+    --shadow-x: 0;
+    --shadow-y: 1px;
+    --shadow-blur: 3px;
+    --shadow-spread: 0px;
+    --shadow-opacity: 0.1;
+    --shadow-color: oklch(0 0 0);
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
 }
 
-#app {
-    max-width: 100vw !important;
-    width: 100% !important;
-    display: block !important;
+.dark {
+    --background: #0a0a0a;
+    --foreground: #fafafa;
+    --card: #171717;
+    --card-foreground: #fafafa;
+    --popover: #262626;
+    --popover-foreground: #fafafa;
+    --primary: #e5e5e5;
+    --primary-foreground: #171717;
+    --secondary: #262626;
+    --secondary-foreground: #fafafa;
+    --muted: #262626;
+    --muted-foreground: #a1a1a1;
+    --accent: #404040;
+    --accent-foreground: #fafafa;
+    --destructive: #ff6467;
+    --destructive-foreground: #fafafa;
+    --border: #282828;
+    --input: #343434;
+    --ring: #737373;
+    --chart-1: #91c5ff;
+    --chart-2: #3a81f6;
+    --chart-3: #2563ef;
+    --chart-4: #1a4eda;
+    --chart-5: #1f3fad;
+    --sidebar: #171717;
+    --sidebar-foreground: #fafafa;
+    --sidebar-primary: #1447e6;
+    --sidebar-primary-foreground: #fafafa;
+    --sidebar-accent: #262626;
+    --sidebar-accent-foreground: #fafafa;
+    --sidebar-border: #282828;
+    --sidebar-ring: #525252;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --radius: 0.625rem;
+    --shadow-x: 0;
+    --shadow-y: 1px;
+    --shadow-blur: 3px;
+    --shadow-spread: 0px;
+    --shadow-opacity: 0.1;
+    --shadow-color: oklch(0 0 0);
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
-/* 链接样式优化 */
-a {
-    position: relative;
-    text-decoration: none;
-    color: hsla(160, 100%, 37%, 1);
-    transition: all var(--transition-speed) ease;
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--border-radius);
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --font-sans: var(--font-sans);
+    --font-mono: var(--font-mono);
+    --font-serif: var(--font-serif);
+
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+
+    --shadow-2xs: var(--shadow-2xs);
+    --shadow-xs: var(--shadow-xs);
+    --shadow-sm: var(--shadow-sm);
+    --shadow: var(--shadow);
+    --shadow-md: var(--shadow-md);
+    --shadow-lg: var(--shadow-lg);
+    --shadow-xl: var(--shadow-xl);
+    --shadow-2xl: var(--shadow-2xl);
 }
 
-@media (hover: hover) {
-    a:hover {
-        background-color: var(--color-hover);
-        transform: translateY(-2px);
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
     }
-}
 
-/* 导航栏样式优化 */
-nav {
-    background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-soft) 100%);
-}
-
-.nav-links {
-    gap: var(--nav-link-gap);
-}
-
-.nav-links a {
-    font-weight: 500;
-    font-size: 1rem;
-    letter-spacing: 0.5px;
-}
-
-/* 头像样式优化 */
-.avatar img {
-    width: 3.125rem;
-    height: 3.125rem;
-    border: 0.1875rem solid hsla(160, 100%, 37%, 0.8);
-    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
-    transition: all var(--transition-speed) ease;
-}
-
-.avatar img:hover {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 0.375rem 1rem rgba(0, 0, 0, 0.2);
-}
-
-/* 容器样式优化 */
-.container {
-    max-width: 75rem;
-    margin: var(--header-height) auto 0;
-    padding: 2rem;
-    background-color: var(--color-background);
-    border-radius: var(--border-radius);
-    box-shadow: 0 0.125rem 0.9375rem var(--color-shadow);
-    transition: all var(--transition-speed) ease;
-}
-
-.container:hover {
-    box-shadow: 0 0.25rem 1.25rem var(--color-shadow);
-}
-
-/* 页脚样式优化 */
-.footer {
-    background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-soft) 100%);
-    font-size: 0.9rem;
-    gap: 1.5rem;
-    padding: 0 2rem;
-}
-
-.footer span {
-    color: var(--color-text);
-    opacity: 0.8;
-    transition: opacity var(--transition-speed) ease;
-}
-
-.footer span:hover {
-    opacity: 1;
-}
-
-/* 滚动条样式优化 */
-::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--color-background-soft);
-}
-
-::-webkit-scrollbar-thumb {
-    background: hsla(160, 100%, 37%, 0.5);
-    border-radius: 0.25rem;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: hsla(160, 100%, 37%, 0.8);
-}
-
-/* Markdown 辅助样式 */
-.markdown-body {
-    font-family: 'Open Sans', Inter, sans-serif;
-    color: var(--color-text);
-    line-height: 1.8;
-}
-
-/* 确保所有 markdown 内容元素都有合适的间距 */
-.markdown-body > * {
-    margin: 1.5rem 0;
-}
-
-/* 修复第一个元素的上边距 */
-.markdown-body > :first-child {
-    margin-top: 0;
-}
-
-/* 修复最后一个元素的下边距 */
-.markdown-body > :last-child {
-    margin-bottom: 0;
-}
-
-/* 列表项的额外样式 */
-.markdown-body li {
-    position: relative;
-}
-
-/* 代码高亮样式优化 */
-
-/* 代码块整体样式 */
-pre.hljs {
-    padding: 1.5rem !important;
-    border-radius: 0.75rem !important;
-    box-shadow: 0 0.375rem 1rem var(--color-shadow) !important;
-    background: var(--color-background-mute) !important;
-    border: 0.0625rem solid var(--color-border) !important;
-    margin: 2rem 0 !important;
-    overflow: auto !important;
-}
-
-/* 代码语法高亮颜色优化 */
-.hljs {
-    color: var(--color-text) !important;
-    background: var(--color-background-mute) !important;
-}
-
-/* 关键字样式 */
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-subst {
-    color: #c792ea !important;
-    font-weight: 600 !important;
-}
-
-/* 字符串样式 */
-.hljs-string,
-.hljs-title,
-.hljs-section,
-.hljs-attribute,
-.hljs-literal,
-.hljs-template-tag,
-.hljs-template-variable,
-.hljs-type,
-.hljs-addition {
-    color: #c3e88d !important;
-}
-
-/* 注释样式 */
-.hljs-comment,
-.hljs-quote,
-.hljs-deletion {
-    color: var(--color-text) !important;
-    opacity: 0.6 !important;
-    font-style: italic !important;
-}
-
-/* 函数名样式 */
-.hljs-function .hljs-title,
-.hljs-class .hljs-title {
-    color: #82aaff !important;
-}
-
-/* 数字样式 */
-.hljs-number {
-    color: #f78c6c !important;
-}
-
-/* 布尔值样式 */
-.hljs-built_in,
-.hljs-builtin-name {
-    color: #ffcb6b !important;
-}
-
-/* 标签样式 */
-.hljs-tag {
-    color: #89ddff !important;
-}
-
-/* 属性名样式 */
-.hljs-name,
-.hljs-attr {
-    color: #82aaff !important;
-}
-
-/* 代码行号样式 */
-.markdown-body pre code.language-bash::before,
-.markdown-body pre code.language-python::before {
-    content: attr(data-line);
-    position: absolute;
-    left: -2rem;
-    color: var(--color-text);
-    opacity: 0.5;
-    font-size: 0.9rem;
-    pointer-events: none;
-}
-
-/* 代码块滚动条样式 */
-pre::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-}
-
-pre::-webkit-scrollbar-track {
-    background: var(--color-background-soft);
-    border-radius: 0.25rem;
-}
-
-pre::-webkit-scrollbar-thumb {
-    background: hsla(160, 100%, 37%, 0.5);
-    border-radius: 0.25rem;
-}
-
-pre::-webkit-scrollbar-thumb:hover {
-    background: hsla(160, 100%, 37%, 0.8);
-}
-
-/* 强调文本样式 */
-.markdown-body strong {
-    font-weight: 600;
-}
-
-/* 斜体文本样式 */
-.markdown-body em {
-    font-style: italic;
-}
-
-/* 响应式设计优化 */
-@media (max-width: 768px) {
-    :root {
-        --nav-link-gap: 1rem;
-    }
-    
-    .nav-links {
-        gap: 1rem;
-    }
-    
-    .nav-links a {
-        font-size: 0.9rem;
-        padding: 0.375rem 0.625rem;
-    }
-    
-    .avatar img {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-    
-    .container {
-        padding: 1.5rem;
-        margin: var(--header-height) 1rem 0;
-    }
-    
-    .footer {
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 1rem;
-        text-align: center;
-    }
-    
-    /* Markdown 响应式样式 */
-    .markdown-body {
-        font-size: 1rem;
-        line-height: 1.7;
-    }
-    
-    .markdown-body blockquote {
-        margin: 1.5rem 0;
-        padding: 1.2rem 1.5rem;
-    }
-    
-    .markdown-body pre {
-        margin: 1.5rem 0;
-        padding: 1.2rem;
+    body {
+        @apply bg-background text-foreground;
     }
 }

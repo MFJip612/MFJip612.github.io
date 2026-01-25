@@ -6,7 +6,7 @@
         <li
             v-for="post in sortedArticles"
             :key="post.path"
-            :class="{ active: post === selected }"
+            :class="{ active: post.path === selected?.path }"
             @click="$emit('select', post)">
             <a href="javascript:void(0)" class="title">
                 <span>{{ post.meta.title }} - {{ post.meta.date }}</span>
@@ -19,6 +19,9 @@ import articles from "@/router/articles";
 import { computed } from "vue";
 
 const props = defineProps({ selected: Object });
+
+// 定义组件可以触发的事件
+const emits = defineEmits(['select']);
 
 // 按照日期从新到旧排序文章
 const sortedArticles = computed(() => {
@@ -61,6 +64,7 @@ li a {
     text-decoration: none;
     transition: all 0.3s ease;
     background-color: var(--color-background);
+    position: relative;
 }
 
 li a:hover {
@@ -96,11 +100,11 @@ li a:hover {
 }
 
 .active a {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .active a:hover {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 /* 标题和日期的样式 */
