@@ -57,6 +57,7 @@ function onSelect(post) {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    position: relative;
 }
 .select-article {
     min-width: 20rem;

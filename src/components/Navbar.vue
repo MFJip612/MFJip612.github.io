@@ -1,4 +1,17 @@
 <script setup>
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuIndicator,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    NavigationMenuViewport,
+    navigationMenuTriggerStyle
+} from '@/components/ui/navigation-menu'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import ModeToggle from "@/components/ModeToggle.vue";
 import { RouterLink, useRouter } from "vue-router";
 import Logo from "@/assets/images/logo.jpg";
 const router = useRouter();
@@ -11,59 +24,31 @@ const routes = [...router.options.routes]
     });
 </script>
 <template>
-    <header>
+    <header
+        class="fixed top-0 left-0 w-full h-[var(--header-height)] bg-background/80 backdrop-blur-sm z-50 flex items-center px-4 shadow-md">
         <nav>
-            <div class="avatar">
-                <img :src="Logo" alt="Avatar" />
-            </div>
-            <div class="nav-links">
-                <RouterLink v-for="route in routes" :key="route.path" :to="route.path">
-                    {{ route.meta.title }}
-                </RouterLink>
-            </div>
+            <NavigationMenu>
+                <NavigationMenuList>
+                    <NavigationMenuItem>
+                        <Avatar class="w-10 h-10 cursor-pointer">
+                            <AvatarImage :src="Logo" />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem v-for="route in routes" :key="route.path">
+                        <NavigationMenuLink as-child :class="navigationMenuTriggerStyle()">
+                            <a :href="route.path">{{ route.meta.title }}</a>
+                        </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+
+                        <ModeToggle />
+
+                    </NavigationMenuItem>
+                </NavigationMenuList>
+            </NavigationMenu>
+
         </nav>
     </header>
 </template>
-<style scoped>
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    box-shadow: 0 0.125rem 0.5rem var(--color-shadow);
-    padding: 0;
-    background-color: var(--color-background);
-    z-index: 1000;
-}
-
-nav {
-    position: relative;
-    width: 100%;
-    height: var(--header-height);
-    display: flex;
-    align-items: center;
-}
-
-.avatar {
-    position: absolute;
-    left: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.avatar img {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.nav-links {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    gap: 1rem;
-}
-</style>
+<style scoped></style>

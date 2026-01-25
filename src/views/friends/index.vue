@@ -4,38 +4,46 @@
         <div v-if="loading" class="loading">加载中...</div>
         <div v-else-if="error" class="error">{{ error }}</div>
         <div v-else class="friends-list">
-            <a v-for="friend in friends" :key="friend.name" :href="friend.uri" target="_blank" rel="noopener noreferrer"
-                class="friend-card" :style="{ '--theme-hue': friend.hue || 360 }">
-                <div class="card-header">
-                    <div class="avatar-container">
-                        <!-- 头像内容 -->
-                        <div class="avatar-content">
-                            <!-- 自定义头像 -->
-                            <img v-if="friend.avatar" :src="friend.avatar" :alt="`${friend.name}的头像`" class="avatar"
-                                loading="lazy" />
-                            <!-- 网站favicon或首字符 -->
-                            <div v-else class="favicon-placeholder">
-                                <!-- 尝试加载favicon -->
-                                <img :src="friend.favicon" :alt="`${friend.name}的网站图标`" class="avatar favicon"
-                                    :class="{ 'loaded': friend.loaded }" loading="lazy" @load="friend.loaded = true"
-                                    @error="friend.loaded = false" />
-                                <!-- 始终显示首字符作为备用 -->
-                                <div class="avatar initial-avatar">
-                                    {{ friend.name.charAt(0).toUpperCase() }}
-                                </div>
-                            </div>
-                        </div>
+            <Card v-for="friend in friends" class="w-full max-w-sm">
+                <CardHeader class="flex flex-row space-y-1">
+                    <Avatar class="w-10 h-10">
+                        <AvatarImage :src="friend.avatar || friend.favicon" class="bg-white"/>
+                        <AvatarFallback>{{ friend.name.charAt(0).toUpperCase() }}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <CardTitle>{{ friend.name }}</CardTitle>
+                        <CardDescription>Link</CardDescription>
                     </div>
-                    <h3 class="friend-name">{{ friend.name }}</h3>
-                </div>
-                <p class="friend-url">{{ friend.uri }}</p>
-                <p v-if="friend.description" class="friend-description">{{ friend.description }}</p>
-            </a>
+                </CardHeader>
+                <CardContent>
+                    <p>{{ friend.description }}</p>
+                </CardContent>
+                <CardFooter class="justify-end">
+                    <Button variant="outline" >
+                        <a :href="friend.uri" target="_blank" rel="noopener noreferrer" class="hover:underline">访问</a>
+                    </Button>
+                </CardFooter>
+            </Card>
         </div>
+        
     </div>
+
+
+
 </template>
 
 <script setup>
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
 import { ref, onMounted } from "vue";
 
 const friends = ref([]);
