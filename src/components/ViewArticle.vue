@@ -60,8 +60,8 @@ p:nth-of-type(1) {
     opacity: 0.7;
     font-size: 1rem;
     margin: 0 0 2rem 0;
-    padding-bottom: 1rem;
-    border-bottom: 0.0625rem solid var(--color-border);
+    /* padding-bottom: 1rem; */
+    /* border-bottom: 0.0625rem solid var(--color-border); */
 }
 
 /* 水平分隔线样式 */
