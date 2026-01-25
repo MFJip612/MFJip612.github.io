@@ -1,41 +1,24 @@
 <template>
     <div class="friends-container">
-        <h1>Friends Link</h1>
+        <h1>友链</h1>
         <div v-if="loading" class="loading">加载中...</div>
         <div v-else-if="error" class="error">{{ error }}</div>
         <div v-else class="friends-list">
-            <a
-                v-for="friend in friends"
-                :key="friend.name"
-                :href="friend.uri"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="friend-card"
-                :style="{ '--theme-hue': friend.hue || 360 }">
+            <a v-for="friend in friends" :key="friend.name" :href="friend.uri" target="_blank" rel="noopener noreferrer"
+                class="friend-card" :style="{ '--theme-hue': friend.hue || 360 }">
                 <div class="card-header">
                     <div class="avatar-container">
                         <!-- 头像内容 -->
                         <div class="avatar-content">
                             <!-- 自定义头像 -->
-                            <img
-                                v-if="friend.avatar"
-                                :src="friend.avatar"
-                                :alt="`${friend.name}的头像`"
-                                class="avatar"
-                                loading="lazy"
-                            />
+                            <img v-if="friend.avatar" :src="friend.avatar" :alt="`${friend.name}的头像`" class="avatar"
+                                loading="lazy" />
                             <!-- 网站favicon或首字符 -->
                             <div v-else class="favicon-placeholder">
                                 <!-- 尝试加载favicon -->
-                                <img
-                                    :src="friend.favicon"
-                                    :alt="`${friend.name}的网站图标`"
-                                    class="avatar favicon"
-                                    :class="{ 'loaded': friend.loaded }"
-                                    loading="lazy"
-                                    @load="friend.loaded = true"
-                                    @error="friend.loaded = false"
-                                />
+                                <img :src="friend.favicon" :alt="`${friend.name}的网站图标`" class="avatar favicon"
+                                    :class="{ 'loaded': friend.loaded }" loading="lazy" @load="friend.loaded = true"
+                                    @error="friend.loaded = false" />
                                 <!-- 始终显示首字符作为备用 -->
                                 <div class="avatar initial-avatar">
                                     {{ friend.name.charAt(0).toUpperCase() }}
@@ -96,18 +79,18 @@ const fetchFriends = async () => {
     try {
         loading.value = true;
         error.value = '';
-        
+
         const response = await fetch('https://raw.githubusercontent.com/MFJip612/Friend-Links/refs/heads/main/main.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const text = await response.text();
         console.log('原始数据:', text);
-        
+
         // 修复并解析JSON数据
         const data = fixInvalidJson(text);
-        
+
         if (Array.isArray(data)) {
             // 处理友情链接数据，添加favicon和useInitial属性
             friends.value = data.map(friend => ({
@@ -119,7 +102,7 @@ const fetchFriends = async () => {
             console.error('解析后的数据不是数组:', data);
             friends.value = [];
         }
-        
+
         error.value = '';
     } catch (err) {
         console.error('获取友情链接失败:', err);
@@ -127,13 +110,13 @@ const fetchFriends = async () => {
         // 使用本地备用数据
         friends.value = [
             {
-                "name":"王小美的家",
-                "description":"我只希望在那一刻，回望生命中的无数段故事时，能够问心无愧地告诉自己，我不后悔自己曾做出的每一个选择。",
+                "name": "王小美的家",
+                "description": "我只希望在那一刻，回望生命中的无数段故事时，能够问心无愧地告诉自己，我不后悔自己曾做出的每一个选择。",
                 "uri": "https://ganyu.rocks"
             },
             {
-                "name":"380AM-0204",
-                "description":"交通强国，铁路先行",
+                "name": "380AM-0204",
+                "description": "交通强国，铁路先行",
                 "uri": "https://blog.zhengxian.top/"
             }
         ].map(friend => ({
@@ -152,8 +135,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
-
 h1 {
     text-align: center;
     margin-bottom: 2rem;
