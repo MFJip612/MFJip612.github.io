@@ -1,4 +1,7 @@
 <template>
+    <div id="title">
+        <h4>文章列表</h4>
+    </div>
     <ul>
         <li
             v-for="post in sortedArticles"
@@ -26,6 +29,10 @@ const sortedArticles = computed(() => {
 });
 </script>
 <style scoped>
+#title{
+    text-align: center;
+    margin-bottom: 1rem;
+}
 ul {
     list-style: none;
     padding: 0;
