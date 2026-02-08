@@ -4,13 +4,15 @@
         <p>{{ post.meta.date }}</p>
         <hr />
         <MarkdownRender v-if="content" :content="content" class="markdown-body" />
-        <div v-else>暂无内容</div>
+        <div v-else>暂无内容
+        </div>
     </section>
 </template>
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import MarkdownRender from 'markstream-vue'
 import 'markstream-vue/index.css'
+import Ads from "./Ads.vue";
 const props = defineProps({ post: Object });
 const content = ref("");
 const mdModules = import.meta.glob("../articles/**/index.md", { as: "raw" });

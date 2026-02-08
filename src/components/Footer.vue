@@ -1,9 +1,13 @@
 <template>
     <footer class="footer">
+        <Ads></Ads>
         <span class="material-symbols-outlined"> location_on </span><span> 广州 </span> | <span> © 2025 MFJip612 </span> |
         <a href="https://icp.gov.moe/?keyword=20229994" target="_blank">萌ICP备20229994号</a>
     </footer>
 </template>
+<script setup>
+import Ads from "./Ads.vue";
+</script>
 <style scoped>
 .footer {
     width: 100%;
