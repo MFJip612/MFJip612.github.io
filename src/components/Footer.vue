@@ -1,5 +1,6 @@
 <template>
     <footer data-footer class="footer">
+        <img class="counter" src="https://count.getloli.com/@MFJip?name=MFJip&theme=booru-mjg&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="">
         <Ads></Ads>
         <span class="material-symbols-outlined"> location_on </span><span> 广州 </span> | <span> © 2025 MFJip612 </span> |
         <a href="https://icp.gov.moe/?keyword=20229994" target="_blank">萌ICP备20229994号</a>
@@ -23,5 +24,9 @@ import Ads from "./Ads.vue";
     left: 0;
     bottom: 0;
     margin-top: var(--footer-height); */
+}
+.counter {
+    display: none;
+    visibility: hidden;
 }
 </style>
