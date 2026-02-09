@@ -25,7 +25,7 @@ const routes = [...router.options.routes]
 </script>
 <template>
     <header
-        class="fixed top-0 left-0 w-full h-[var(--header-height)] bg-background/80 backdrop-blur-sm z-50 flex items-center px-4 shadow-md">
+        class="fixed top-0 left-0 w-full h-(--header-height) bg-background/80 backdrop-blur-sm z-50 flex items-center px-4 shadow-md">
         <nav>
             <NavigationMenu>
                 <NavigationMenuList>
@@ -34,6 +34,7 @@ const routes = [...router.options.routes]
                             <AvatarImage :src="Logo" />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
+                        <!-- <img v-bind:src="Logo" alt="Logo"> -->
                     </NavigationMenuItem>
                     <NavigationMenuItem v-for="route in routes" :key="route.path">
                         <NavigationMenuLink as-child :class="navigationMenuTriggerStyle()">
