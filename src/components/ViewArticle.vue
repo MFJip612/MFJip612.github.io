@@ -9,6 +9,9 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
+
+import hljs from "highlight.js";
+
 const props = defineProps({ post: Object });
 const content = ref("");
 const mdModules = import.meta.glob("../articles/**/index.md", { query: '?raw', import: 'default' });
@@ -21,11 +24,44 @@ function escapeHtml(html) {
     });
 }
 
+function renderHighlightedCode(lang, code) {
+    const requestedLanguage = (lang || "").trim().toLowerCase();
+    const hasLanguage = requestedLanguage && hljs.getLanguage(requestedLanguage);
+    const result = hasLanguage
+        ? hljs.highlight(code, { language: requestedLanguage, ignoreIllegals: true })
+        : hljs.highlightAuto(code);
+    const finalLanguage = hasLanguage ? requestedLanguage : (result.language || "plaintext");
+
+    return `<pre class="md-code"><code class="hljs language-${escapeHtml(finalLanguage)}">${result.value}</code></pre>`;
+}
+
+function parseInlineMarkdown(text) {
+    let output = text.trim();
+    output = output.replace(/`([^`]+)`/g, (m, code) => `<code class="md-inline">${escapeHtml(code)}</code>`);
+    output = output.replace(/!\[([^\]]*)\]\(([^\)]+)\)/g, (m, alt, src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" class="md-img" />`);
+    output = output.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, (m, text, href) => `<a href="${escapeHtml(href)}" target="_blank">${text}</a>`);
+    output = output.replace(/\*\*([^*]+)\*\*/g, (m, text) => `<strong>${text}</strong>`);
+    output = output.replace(/\*([^*]+)\*/g, (m, text) => `<em>${text}</em>`);
+    return output;
+}
+
 function parseMarkdown(md) {
     // 代码块
     md = md.replace(/```([\w]*)\n([\s\S]*?)```/g, (m, lang, code) => {
-        const safeLang = escapeHtml((lang || "plaintext").toLowerCase());
-        return `<pre class="md-code"><code class="language-${safeLang}">${escapeHtml(code)}</code></pre>`;
+        return renderHighlightedCode(lang, code);
+    });
+    // 表格（先于全局行内语法，避免表格单元格内的嵌套内容被转义）
+    md = md.replace(/\|(.+)\|\s*\n\s*\|([\-\:\s\|]+)\|\s*\n\s*((?:.*\|.*\n)*)(?=\n|$)/g, (m, header, alignRow, rows) => {
+        const headerCells = header.split('|').filter(cell => cell.trim() !== '');
+        const ths = headerCells.map(h => `<th>${parseInlineMarkdown(h)}</th>`).join('');
+
+        const rowLines = rows.split('\n').filter(line => line.trim() !== '');
+        const trs = rowLines.map(row => {
+            const cells = row.split('|').filter(cell => cell.trim() !== '');
+            return '<tr>' + cells.map(cell => `<td>${parseInlineMarkdown(cell)}</td>`).join('') + '</tr>';
+        }).join('');
+
+        return `<table class="md-table"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
     });
     // 行内代码
     md = md.replace(/`([^`]+)`/g, (m, code) => `<code class="md-inline">${escapeHtml(code)}</code>`);
@@ -47,22 +83,13 @@ function parseMarkdown(md) {
     // 无序列表
     // 有序列表
     // 先处理有序列表
-    md = md.replace(/^(\s*)\d+\.\s(.+)$/gm, '<ol><li class="md-list-ordered">$2</li></ol>');
+    md = md.replace(/^(\s*)\d+\.\s(.+)$/gm, '<ol><li>$2</li></ol>');
     // 合并连续的<ol>
     md = md.replace(/<\/ol>\s*<ol>/g, '');
     // 再处理无序列表
-    md = md.replace(/^(\s*)[-*+]\s(.+)$/gm, '<ul class="md-list-unordered"><li class="md-list-item">$2</li></ul>');
+    md = md.replace(/^(\s*)[-*+]\s(.+)$/gm, '<ul><li>$2</li></ul>');
     // 合并连续的<ul>
     md = md.replace(/<\/ul>\s*<ul>/g, '');
-    // 表格
-    md = md.replace(/\n\|(.+)\|\n\|([\s\S]+?)\|\n/g, (m, header, rows) => {
-        const ths = header.split('|').map(h => `<th>${h.trim()}</th>`).join('');
-        const trs = rows.split('\n').map(row => {
-            if (!row.trim()) return '';
-            return '<tr>' + row.split('|').map(d => `<td>${d.trim()}</td>`).join('') + '</tr>';
-        }).join('');
-        return `<table class="md-table"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
-    });
     // 嵌入（自动识别 http/https 链接为 iframe）
     md = md.replace(/\[embed\]\(([^\)]+)\)/g, (m, url) => `<iframe src="${url}" class="md-embed" frameborder="0" allowfullscreen></iframe>`);
     // 引用
