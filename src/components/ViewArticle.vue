@@ -46,9 +46,12 @@ function parseInlineMarkdown(text) {
 }
 
 function parseMarkdown(md) {
-    // 代码块
+    const codeBlocks = [];
+    // 代码块（先提取占位，避免后续行内语法误处理代码内容）
     md = md.replace(/```([\w]*)\n([\s\S]*?)```/g, (m, lang, code) => {
-        return renderHighlightedCode(lang, code);
+        const token = `@@CODE_BLOCK_${codeBlocks.length}@@`;
+        codeBlocks.push(renderHighlightedCode(lang, code));
+        return token;
     });
     // 表格（先于全局行内语法，避免表格单元格内的嵌套内容被转义）
     md = md.replace(/\|(.+)\|\s*\n\s*\|([\-\:\s\|]+)\|\s*\n\s*((?:.*\|.*\n)*)(?=\n|$)/g, (m, header, alignRow, rows) => {
@@ -97,6 +100,10 @@ function parseMarkdown(md) {
     // 换行和段落
     md = md.replace(/\n{2,}/g, '</p><p class="md-paragraph">');
     md = `<p class="md-paragraph">${md}</p>`;
+
+    // 还原代码块
+    md = md.replace(/@@CODE_BLOCK_(\d+)@@/g, (m, index) => codeBlocks[Number(index)] || m);
+
     return md;
 }
 
