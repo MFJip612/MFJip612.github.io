@@ -1,13 +1,19 @@
 <template>
     <footer data-footer class="footer">
-        <img class="counter" src="https://count.getloli.com/@MFJip?name=MFJip&theme=booru-mjg&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="">
+        <img class="counter"
+            src="https://count.getloli.com/@MFJip?name=MFJip&theme=booru-mjg&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"
+            alt="">
         <Ads></Ads>
         <span class="material-symbols-outlined"> location_on </span><span> 广州 </span> | <span> © 2025 MFJip612 </span> |
         <a href="https://icp.gov.moe/?keyword=20229994" target="_blank">萌ICP备20229994号</a>
+        <span v-if="isProd"> | <a href="/sitemap.xml" target="_blank">网站地图</a></span>
     </footer>
 </template>
 <script setup>
 import Ads from "./Ads.vue";
+
+const isProd = process.env.NODE_ENV === 'production';
+console.log(isProd, process.env.NODE_ENV);
 </script>
 <style scoped>
 .footer {
@@ -25,6 +31,7 @@ import Ads from "./Ads.vue";
     bottom: 0;
     margin-top: var(--footer-height); */
 }
+
 .counter {
     display: none;
     visibility: hidden;
