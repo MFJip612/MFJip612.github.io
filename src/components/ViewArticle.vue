@@ -184,8 +184,8 @@ hr {
     margin: 2rem 0;
 }
 
-.markdown-body { 
-    padding: 2rem ;
+.markdown-body {
+    padding: 2rem;
 }
 </style>
 <style>
