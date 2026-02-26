@@ -6,7 +6,7 @@
         <span class="material-symbols-outlined"> location_on </span><span> 广州 </span> | <span> © 2025 MFJip612
         </span> |
         <a href="https://icp.gov.moe/?keyword=20229994" target="_blank">萌ICP备20229994号</a> | <a href="/sitemap.xml"
-            target="_blank" v-if="isProd">网站地图</a>
+            target="_blank" v-if="isProd">网站地图</a> | <a href="/rss.xml" target="_blank" v-if="isProd">RSS 订阅</a>
         <Ads></Ads>
     </footer>
     <footer data-footer class="footer" v-else>
