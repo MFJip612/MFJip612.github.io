@@ -119,7 +119,7 @@ export default function sitemapPlugin(options: SitemapPluginOptions): Plugin {
         const routePath = path.dirname(file).replace(articlesDir, '').replace(/\\/g, '/')
 
         urls.push({
-          loc: `${baseUrl}${routePath}`,
+          loc: `${baseUrl}/article${routePath}`,
           lastmod: dateRaw ? normalizeDate(dateRaw) : undefined,
           changefreq: 'monthly',
           priority: '0.6',
