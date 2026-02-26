@@ -1,18 +1,17 @@
 <template>
-    <div id="title">
-        <h4>文章列表</h4>
-    </div>
-    <ul>
-        <li
-            v-for="post in sortedArticles"
-            :key="post.path"
-            :class="{ active: post.path === selected?.path }"
-            @click="$emit('select', post)">
-            <a href="javascript:void(0)" class="title">
-                <span>{{ post.meta.title }} - {{ post.meta.date }}</span>
-            </a>
-        </li>
-    </ul>
+    <nav class="switch-post">
+        <div id="title">
+            <h4>文章列表</h4>
+        </div>
+        <ul>
+            <li v-for="post in sortedArticles" :key="post.path" :class="{ active: post.path === selected?.path }"
+                @click="$emit('select', post)">
+                <a href="javascript:void(0)" class="title">
+                    <span>{{ post.meta.title }} - {{ post.meta.date }}</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </template>
 <script setup>
 import articles from "@/router/articles";
@@ -32,10 +31,20 @@ const sortedArticles = computed(() => {
 });
 </script>
 <style scoped>
-#title{
+.switch-post {
+    position: sticky;
+    top: calc(var(--header-height) + 1rem);
+    max-height: calc(100vh - var(--header-height) - 2rem);
+    /* overflow-y: auto; */
+    /* padding: 0.75rem 1rem; */
+    box-sizing: border-box;
+}
+
+#title {
     text-align: center;
     margin-bottom: 1rem;
 }
+
 ul {
     list-style: none;
     padding: 0;
@@ -73,28 +82,24 @@ li a:hover {
 
 .title span {
     width: fit-content;
-    background: linear-gradient(
-            135deg,
+    background: linear-gradient(135deg,
             #8b00ff 0%,
             #ff1493 33%,
             #00bfff 66%,
-            #00ff7f 100%
-        )
-        no-repeat right bottom;
+            #00ff7f 100%) no-repeat right bottom;
     background-size: 0% 0.2rem;
     transition: background-size 300ms;
 }
+
 .title:hover span {
     background-position-x: left;
     background-size: 100% 0.2rem;
 }
 
 .active {
-    background: linear-gradient(
-        135deg,
-        hsla(160, 100%, 37%, 0.1) 0%,
-        hsla(160, 100%, 37%, 0.05) 100%
-    );
+    background: linear-gradient(135deg,
+            hsla(160, 100%, 37%, 0.1) 0%,
+            hsla(160, 100%, 37%, 0.05) 100%);
     font-weight: 600;
     border-left: 0.25rem solid hsla(160, 100%, 37%, 1);
 }

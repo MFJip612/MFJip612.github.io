@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "mfjip612-github-io",
+	"name": "blog",
 	"compatibility_date": "2025-12-05",
 	"main": "server/index.js",
 	"assets": {

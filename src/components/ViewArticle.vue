@@ -13,7 +13,16 @@ import { ref, watch } from "vue";
 import hljs from "highlight.js";
 
 const props = defineProps({ post: Object });
+const emit = defineEmits(["headings"]);
 const content = ref("");
+const headings = ref([]);
+
+function slugify(text) {
+    const clean = text.replace(/<[^>]+>/g, "");
+    return clean.trim().toLowerCase()
+        .replace(/[\s\u3000]+/g, "-")
+        .replace(/[^\w\-\u4e00-\u9fff]/g, "");
+}
 const mdModules = import.meta.glob("../articles/**/index.md", { query: '?raw', import: 'default' });
 
 function escapeHtml(html) {
@@ -76,13 +85,14 @@ function parseMarkdown(md) {
     md = md.replace(/\*\*([^*]+)\*\*/g, (m, text) => `<strong>${text}</strong>`);
     // 斜体
     md = md.replace(/\*([^*]+)\*/g, (m, text) => `<em>${text}</em>`);
-    // 标题
-    md = md.replace(/^######\s(.+)$/gm, '<a id="$1"><h6 class="md-h6">$1</h6></a>');
-    md = md.replace(/^#####\s(.+)$/gm, '<a id="$1"><h5 class="md-h5">$1</h5></a>');
-    md = md.replace(/^####\s(.+)$/gm, '<a id="$1"><h4 class="md-h4">$1</h4></a>');
-    md = md.replace(/^###\s(.+)$/gm, '<a id="$1"><h3 class="md-h3">$1</h3></a>');
-    md = md.replace(/^##\s(.+)$/gm, '<a id="$1"><h2 class="md-h2">$1</h2></a>');
-    md = md.replace(/^#\s(.+)$/gm, '<a id="$1"><h1 class="md-h1">$1</h1></a>');
+    // 标题（收集用于目录，同时生成 slug id）
+    md = md.replace(/^(#{1,6})\s+(.+)$/gm, (m, hashes, text) => {
+        const level = hashes.length;
+        const plainText = text.replace(/<[^>]+>/g, "");
+        const id = slugify(plainText);
+        headings.value.push({ level, text: plainText, id });
+        return `<a id="${id}"><h${level} class="md-h${level}">${text}</h${level}></a>`;
+    });
     // 无序列表
     // 有序列表
     // 先处理有序列表
@@ -109,21 +119,29 @@ function parseMarkdown(md) {
 
 async function loadMarkdown(path) {
     const mdPath = `../articles${path}/index.md`;
+    headings.value = [];
     if (mdModules[mdPath]) {
         const raw = await mdModules[mdPath]();
         content.value = parseMarkdown(raw);
     } else {
         content.value = "";
     }
+    emit("headings", headings.value);
 }
 watch(
     () => props.post?.path,
     (newPath) => {
         if (newPath) loadMarkdown(newPath.replace("/articles", ""));
-        else content.value = "";
+        else {
+            content.value = "";
+            headings.value = [];
+            emit("headings", []);
+        }
     },
     { immediate: true }
 );
+
+defineExpose({ headings });
 </script>
 <style scoped>
 section {
@@ -164,6 +182,10 @@ hr {
     height: 0.0625rem;
     background-color: var(--color-border);
     margin: 2rem 0;
+}
+
+.markdown-body { 
+    padding: 2rem ;
 }
 </style>
 <style>
