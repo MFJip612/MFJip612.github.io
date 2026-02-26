@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
+import sitemapPlugin from './vite-plugin-sitemap'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,7 +15,8 @@ export default defineConfig({
         }
       }
     }), 
-    tailwindcss()
+    tailwindcss(),
+    sitemapPlugin({ baseUrl: 'https://www.waterspo.top' }),
   ],
   resolve: {
     alias: {
