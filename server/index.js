@@ -291,13 +291,10 @@ export default {
   </footer>
   
   <script>
-    // 客户端增强：添加交互功能
     document.addEventListener('DOMContentLoaded', function() {
-      // 为访问链接添加点击统计等功能
       const visitLinks = document.querySelectorAll('.visit-link');
       visitLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-          // 可以在这里添加统计代码
           console.log('访问链接:', this.href);
         });
       });
