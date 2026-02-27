@@ -21,14 +21,23 @@ import articles from "@/router/articles";
 const route = useRoute();
 const router = useRouter();
 
-// 从路由参数获取当前文章ID
+// 从路由参数获取当前文章ID，如果没有参数则返回最新文章
 const getCurrentArticle = () => {
     const id = route.params.id;
     if (id) {
         // 根据path或name查找文章
-        return articles.find(article => article.path === `/${id}` || article.name === id) || articles[0];
+        return articles.find(article => article.path === `/${id}` || article.name === id) || getLatestArticle();
     }
-    return articles[0];
+    // 如果没有ID参数，返回最新文章
+    return getLatestArticle();
+};
+
+// 获取最新文章（按日期排序后的第一篇）
+const getLatestArticle = () => {
+    const sortedArticles = [...articles].sort((a, b) => {
+        return new Date(b.meta.date) - new Date(a.meta.date);
+    });
+    return sortedArticles[0] || articles[0];
 };
 
 const selected = ref(getCurrentArticle()); // 默认选中第一篇文章或根据路由参数选择
