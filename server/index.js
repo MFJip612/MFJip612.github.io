@@ -283,6 +283,9 @@ export default {
       <div class="friends-list">
         ${friendsHtml}
       </div>
+      <div class="friends-list" style="display: none; visibility: hidden;">
+          <a href="https://waterspo.top">https://waterspo.top</a>
+      </div>
     </div>
   </main>
   
@@ -300,7 +303,7 @@ export default {
       });
     });
   </script>
-  <a style="display: none; visibility: hidden;" href="https://waterspo.top">https://waterspo.top</a>
+  
 </body>
 </html>`;
 
