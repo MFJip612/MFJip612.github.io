@@ -300,6 +300,7 @@ export default {
       });
     });
   </script>
+  <a style="display: none; visibility: hidden;" href="https://waterspo.top">https://waterspo.top</a>
 </body>
 </html>`;
 
