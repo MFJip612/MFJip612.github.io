@@ -306,11 +306,17 @@ export default {
 </body>
 </html>`;
 
-				return new Response(html, {
+				// 压缩HTML内容
+				const compressedHtml = html.replace(/\s+/g, ' ')  // 替换多个空白字符为单个空格
+										.replace(/>\s+</g, '><')  // 移除标签间的空白
+										.trim();
+
+				return new Response(compressedHtml, {
 					status: 200,
 					headers: {
 						'Content-Type': 'text/html; charset=utf-8',
-						'Cache-Control': 'public, max-age=300'
+						'Cache-Control': 'public, max-age=300',
+						'Content-Encoding': 'gzip'  // 如果支持的话
 					}
 				});
 			} catch (error) {
