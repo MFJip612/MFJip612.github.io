@@ -8,7 +8,7 @@
     </section>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { onMounted, onBeforeUnmount, ref, watch, nextTick } from "vue";
 
 import hljs from "highlight.js";
 
@@ -80,7 +80,7 @@ function parseMarkdown(md) {
     // 图片
     md = md.replace(/!\[([^\]]*)\]\(([^\)]+)\)/g, (m, alt, src) => `<img src="${src}" alt="${alt}" class="md-img" />`);
     // 链接
-    md = md.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, (m, text, href) => `<a href="${href}" target="_blank">${text}</a>`);
+    md = md.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, (m, text, href) => `<a href="${href}" target="_blank" class="out-link">${text}</a>`);
     // 粗体
     md = md.replace(/\*\*([^*]+)\*\*/g, (m, text) => `<strong>${text}</strong>`);
     // 斜体
@@ -141,7 +141,86 @@ watch(
     { immediate: true }
 );
 
+// 每个链接单独绑定 mousemove，确保 v-html 渲染后才绑定，并在卸载或重渲染前清理
+const handlerMap = new WeakMap();
+
+function createLinkHandler(el) {
+    return function (e) {
+        const rect = el.getBoundingClientRect();
+        const offsetX = Math.round(e.clientX - rect.x);
+        const offsetY = Math.round(e.clientY - rect.y);
+        el.style.setProperty('--offsetX', `${offsetX}px`);
+        el.style.setProperty('--offsetY', `${offsetY}px`);
+    };
+}
+
+function bindPerLink() {
+    const container = document.querySelector('.markdown-body');
+    if (!container) return;
+    const links = container.querySelectorAll('a.out-link');
+    links.forEach((a) => {
+        if (handlerMap.has(a)) return; // 已绑定
+        const h = createLinkHandler(a);
+        a.addEventListener('mousemove', h);
+        handlerMap.set(a, h);
+    });
+}
+
+function unbindPerLink() {
+    const container = document.querySelector('.markdown-body');
+    if (!container) return;
+    const links = container.querySelectorAll('a.out-link');
+    links.forEach((a) => {
+        const h = handlerMap.get(a);
+        if (h) {
+            a.removeEventListener('mousemove', h);
+            handlerMap.delete(a);
+        }
+    });
+}
+
+function setLinksPositions() {
+    const links = document.querySelectorAll('a.out-link');
+    links.forEach((a) => {
+        const rect = a.getBoundingClientRect();
+        a.style.setProperty('--positionX', `${rect.x}px`);
+        a.style.setProperty('--positionY', `${rect.y}px`);
+    });
+}
+
+const bodyMouseHandler = (e) => {
+    document.querySelector('body').style.setProperty('--x', `${e.clientX}px`);
+    document.querySelector('body').style.setProperty('--y', `${e.clientY}px`);
+    console.log(`Mouse moved: (${e.clientX}, ${e.clientY})`);
+};
+
+// 在 content 渲染后绑定链接监听并更新位置；卸载或清空时清理
+watch(content, (v, oldV) => {
+    // 清理旧的绑定（如果存在）再绑定新的
+    unbindPerLink();
+    if (v) {
+        nextTick().then(() => {
+            bindPerLink();
+            setLinksPositions();
+        });
+    }
+});
+
+document.querySelector('body').addEventListener('mousemove', bodyMouseHandler);
+window.addEventListener('resize', setLinksPositions);
+window.addEventListener('load', setLinksPositions);
+
+onBeforeUnmount(() => {
+    unbindPerLink();
+    window.removeEventListener('resize', setLinksPositions);
+    window.removeEventListener('load', setLinksPositions);
+    document.querySelector('body').removeEventListener('mousemove', bodyMouseHandler);
+    });
+
 defineExpose({ headings });
+
+
+
 </script>
 <style scoped>
 section {
@@ -2442,5 +2521,39 @@ hr {
     .markdown-body .highlight pre:has(+.zeroclipboard-container) {
         min-height: 52px;
     }
+}
+</style>
+<style>
+/* Custom Styles */
+
+:root {
+    --lighting-size: 100px;
+    --lighting-color: #ac54ff;
+    --lighting-hightlight-color: #f4f0f8;
+}
+
+body {
+    --x: 0px;
+    --y: 0px;
+}
+
+.out-link {
+    text-decoration: none !important;
+    color: #9333ea !important;
+    display: inline-block;
+
+    background-image: radial-gradient(var(--lighting-hightlight-color), var(--lighting-color), var(--lighting-color));
+    background-size: var(--lighting-size) var(--lighting-size);
+    background-repeat: no-repeat;
+
+    background-position-x: calc(var(--x) - calc(var(--positionX)) - calc(var(--lighting-size) / 2));
+    background-position-y: calc(var(--y) - calc(var(--positionY)) - calc(var(--lighting-size) / 2));
+
+    background-color: var(--lighting-color);
+
+    color: transparent;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
 }
 </style>
