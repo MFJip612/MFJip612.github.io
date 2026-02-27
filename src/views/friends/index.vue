@@ -88,7 +88,7 @@ const fetchFriends = async () => {
         loading.value = true;
         error.value = '';
 
-        const response = await fetch('https://raw.githubusercontent.com/MFJip612/Friend-Links/refs/heads/main/main.json');
+        const response = await fetch('https://friends.im-a.gay');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -100,10 +100,10 @@ const fetchFriends = async () => {
         const data = fixInvalidJson(text);
 
         if (Array.isArray(data)) {
-            // 处理友情链接数据，添加favicon和useInitial属性
+            // 处理友情链接数据，优先使用avatar_uri，否则获取favicon
             friends.value = data.map(friend => ({
                 ...friend,
-                favicon: getFaviconUrl(friend.uri),
+                favicon: friend.avatar_uri || getFaviconUrl(friend.uri),
                 loaded: false
             }));
         } else {
@@ -115,23 +115,6 @@ const fetchFriends = async () => {
     } catch (err) {
         console.error('获取友情链接失败:', err);
         error.value = `加载友情链接失败: ${err.message}`;
-        // 使用本地备用数据
-        friends.value = [
-            {
-                "name": "王小美的家",
-                "description": "我只希望在那一刻，回望生命中的无数段故事时，能够问心无愧地告诉自己，我不后悔自己曾做出的每一个选择。",
-                "uri": "https://ganyu.rocks"
-            },
-            {
-                "name": "380AM-0204",
-                "description": "交通强国，铁路先行",
-                "uri": "https://blog.zhengxian.top/"
-            }
-        ].map(friend => ({
-            ...friend,
-            favicon: getFaviconUrl(friend.uri),
-            loaded: false
-        }));
     } finally {
         loading.value = false;
     }
