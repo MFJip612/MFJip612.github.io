@@ -88,7 +88,7 @@ const fetchFriends = async () => {
         loading.value = true;
         error.value = '';
 
-        const response = await fetch('https://friends.im-a.gay');
+        const response = await fetch('/api/friends-proxy');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
