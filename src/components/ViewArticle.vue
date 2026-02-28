@@ -212,11 +212,9 @@ window.addEventListener('load', setLinksPositions);
 
 onBeforeUnmount(() => {
     unbindPerLink();
-    window.removeEventListener('resize', setLinksPositions);
-    window.removeEventListener('load', setLinksPositions);
-    document.querySelector('body').removeEventListener('mousemove', bodyMouseHandler);
     });
 
+    
 defineExpose({ headings });
 
 
@@ -2555,5 +2553,12 @@ body {
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
+
+    transition: all 0.3s ease;
 }
+
+.out-link:hover {
+    color: purple !important;
+}
+
 </style>
