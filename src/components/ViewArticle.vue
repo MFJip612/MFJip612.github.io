@@ -2554,11 +2554,12 @@ body {
     -moz-background-clip: text;
     background-clip: text;
 
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .out-link:hover {
     color: purple !important;
+    
 }
 
 </style>
