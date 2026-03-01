@@ -16,6 +16,8 @@ import { SimplePlayer } from 'xgplayer';
 import PC from 'xgplayer/es/plugins/pc';
 import Progress from 'xgplayer/es/plugins/progress';
 import Play from 'xgplayer/es/plugins/play'
+import TextTrack from 'xgplayer/es/plugins/track'
+import "xgplayer/es/plugins/track/index.css"
 import 'xgplayer/dist/index.min.css'
 import { set } from '@vueuse/core';
 
@@ -37,12 +39,11 @@ const playerConfig = {
 	id: "mse",
 	url: props.url ? props.url : '//sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4',
 	videoInit: true,
-	height: '100%',
-	width: '100%',
 	plugins: [
 		PC,
 		Progress,
-		Play
+		Play,
+		TextTrack
 	],
 	textTrack: props.srt ?
 		[{
