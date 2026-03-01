@@ -13,11 +13,17 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import Dialog from '@/components/Dialog.vue';
 import { SimplePlayer } from 'xgplayer';
-import PC from 'xgplayer/es/plugins/pc';
-import Progress from 'xgplayer/es/plugins/progress';
+import Start from 'xgplayer/es/plugins/start'
+import PC from 'xgplayer/es/plugins/pc'
+import Progress from 'xgplayer/es/plugins/progress'
+import Time from 'xgplayer/es/plugins/time'
 import Play from 'xgplayer/es/plugins/play'
+import Error from 'xgplayer/es/plugins/error'
 import TextTrack from 'xgplayer/es/plugins/track'
-import "xgplayer/es/plugins/track/index.css"
+import Volume from 'xgplayer/es/plugins/volume';
+import CssFullScreen from 'xgplayer/es/plugins/cssFullScreen';
+import Fullscreen from 'xgplayer/es/plugins/fullscreen';
+import Loading from 'xgplayer';
 import 'xgplayer/dist/index.min.css'
 import { set } from '@vueuse/core';
 
@@ -38,23 +44,23 @@ const adbIsEnabled = ref(true);
 const playerConfig = {
 	id: "mse",
 	url: props.url ? props.url : '//sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4',
-	videoInit: true,
-	plugins: [
-		PC,
-		Progress,
-		Play,
-		TextTrack
-	],
-	textTrack: props.srt ?
+	width: 1080,
+	height: 720,
+	plugins: [Start, PC, Progress, Play, Time, Error, TextTrack, Volume, CssFullScreen, Fullscreen, Loading],
+	texttrack: props.srt ?
 		[{
 			src: props.srt,
-			kind: "subtitles",
-			label: "Zimu",
-			srclang: "zh",
+			id: "subtitles",
+			label: "中文",
+			language: "zh-cn",
 			default: true
 		}] : [],
 	textTrackStyle: {
 		color: "#000"
+	},
+	controls: {
+		mode: 'normal',
+		autoHide: true
 	}
 }
 
@@ -75,13 +81,11 @@ onUnmounted(() => {
 });
 
 
-
 const showMessage = setInterval(() => {
 	if (adbIsEnabled.value === true) {
 		document.querySelector(".window").showModal();
 		clearInterval(showMessage);
 	}
-	console.log(adbIsEnabled.value);
 }, 2000);
 
 </script>
