@@ -15,6 +15,7 @@ import Dialog from '@/components/Dialog.vue';
 import { SimplePlayer } from 'xgplayer';
 import Start from 'xgplayer/es/plugins/start'
 import PC from 'xgplayer/es/plugins/pc'
+import Mobile from 'xgplayer/es/plugins/mobile';
 import Progress from 'xgplayer/es/plugins/progress'
 import Time from 'xgplayer/es/plugins/time'
 import Play from 'xgplayer/es/plugins/play'
@@ -46,7 +47,7 @@ const playerConfig = {
 	url: props.url ? props.url : '//sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4',
 	width: 1080,
 	height: 720,
-	plugins: [Start, PC, Progress, Play, Time, Error, TextTrack, Volume, CssFullScreen, Fullscreen, Loading],
+	plugins: [Start, PC, Mobile, Progress, Play, Time, Error, TextTrack, Volume, CssFullScreen, Fullscreen, Loading],
 	texttrack: props.srt ?
 		[{
 			src: props.srt,
