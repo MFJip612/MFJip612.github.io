@@ -31,6 +31,7 @@ const props = defineProps({
 });
 let player = null;
 let playerHasBeenBlocked = false;
+const adbIsEnabled = ref(true);
 
 const playerConfig = {
 	id: "mse",
@@ -61,8 +62,8 @@ function loadVideo() {
 }
 
 onMounted(() => {
+	adbIsEnabled.value = false;
 	setTimeout(loadVideo(), 1000);
-	adbIsEnabled = false
 })
 
 onUnmounted(() => {
@@ -75,11 +76,12 @@ onUnmounted(() => {
 
 
 const showMessage = setInterval(() => {
-	if (typeof adbIsEnabled === "undefined") {
+	if (adbIsEnabled.value === true) {
 		document.querySelector(".window").showModal();
 		clearInterval(showMessage);
 	}
-}, 1000);
+	console.log(adbIsEnabled.value);
+}, 2000);
 
 </script>
 <style scoped>
