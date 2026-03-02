@@ -1,9 +1,12 @@
 <template>
     <dialog class="Message" ref="dialogEl">
         <div class="dialog-content">
-            <div class="dialog-main-content">
+            <div class="dialog-main-content flex flex-col gap-4">
                 <slot name="title" class="title"></slot>
                 <slot class="content"></slot>
+                <Button variant="outline" class="text-center items-center justify-center" @click="backToHome">
+                    Back to Home
+                </Button>
             </div>
         </div>
     </dialog>
@@ -11,6 +14,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { Button } from '@/components/ui/button'
 
 const dialogEl = ref(null)
 
@@ -20,6 +24,10 @@ function show() {
 
 function hide() {
     dialogEl.value?.close()
+}
+
+const backToHome = () => {
+    window.location.href = '/';
 }
 
 defineExpose({ show, hide })
