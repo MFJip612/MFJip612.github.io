@@ -15,7 +15,7 @@ import Dialog from '@/components/Dialog.vue';
 import { SimplePlayer } from 'xgplayer';
 import Start from 'xgplayer/es/plugins/start'
 import PC from 'xgplayer/es/plugins/pc'
-import Mobile from 'xgplayer/es/plugins/mobile';
+// import Mobile from 'xgplayer/es/plugins/mobile';
 import Progress from 'xgplayer/es/plugins/progress'
 import Time from 'xgplayer/es/plugins/time'
 import Play from 'xgplayer/es/plugins/play'
@@ -26,7 +26,6 @@ import CssFullScreen from 'xgplayer/es/plugins/cssFullScreen';
 import Fullscreen from 'xgplayer/es/plugins/fullscreen';
 import Loading from 'xgplayer';
 import 'xgplayer/dist/index.min.css'
-import { set } from '@vueuse/core';
 
 const props = defineProps({
 	url: {
@@ -47,7 +46,7 @@ const playerConfig = {
 	url: props.url ? props.url : '//sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4',
 	width: 1080,
 	height: 720,
-	plugins: [Start, PC, Mobile, Progress, Play, Time, Error, TextTrack, Volume, CssFullScreen, Fullscreen, Loading],
+	plugins: [Start, PC, Progress, Play, Time, Error, TextTrack, Volume, CssFullScreen, Fullscreen, Loading],
 	texttrack: props.srt ?
 		[{
 			src: props.srt,
@@ -62,8 +61,16 @@ const playerConfig = {
 	controls: {
 		mode: 'normal',
 		autoHide: true
+	},
+	keyShortcut: "on",
+	keyboard: {
+		'space': {              //空格键，播放/暂停切换
+			code: 32,             //对应快捷键索引
+			action: 'playPause',  //具体触发的业务操作，如果为字符串，则执行keyborad对应接口
+			disable: false        // 是否禁用
+		}
 	}
-}
+};
 
 function loadVideo() {
 	player = new SimplePlayer(playerConfig);

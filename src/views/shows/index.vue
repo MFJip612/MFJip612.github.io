@@ -10,7 +10,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import Player from '@/components/player.vue';
+import Player from '@/components/Player.vue';
 
 const route = useRoute();
 const videoUrl = computed(() => route.query.url || '');
