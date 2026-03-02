@@ -38,7 +38,6 @@ const props = defineProps({
 	}
 });
 let player = null;
-let playerHasBeenBlocked = false;
 const adbIsEnabled = ref(true);
 
 const playerConfig = {
