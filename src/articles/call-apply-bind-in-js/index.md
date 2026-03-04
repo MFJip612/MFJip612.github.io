@@ -1,11 +1,13 @@
-阅读完本文章，你将了解JavaScript中的call(), apply(), bind()区别以及用法。
+
+阅读完本文章，你将了解 JavaScript 中 `call()`、`apply()` 与 `bind()` 的区别以及常见用法。
 
 ## 情景描述
+
 ```js
 const zhangsan = {
     name: 'San Zhang',
     money: 10000,
-    machine: function(power) {
+    machine: function (power) {
         this.money = this.money + power;
     }
 }
@@ -16,7 +18,7 @@ const lisi = {
 }
 ```
 
-如代码所示，有张三，李四两人。其中张三有一部机器，通过此机器可以赚钱。
+上面代码表示张三和李四。张三有一台可以赚钱的机器（`machine` 方法），李四没有机器但想借用张三的机器来赚钱。
 
 ```js
 console.log(zhangsan)
@@ -26,63 +28,84 @@ console.log(zhangsan)
 
 我们演示一下：
 ![](https://vip.123pan.cn/1812581465/ymjew503t0n000d9i8lgcqv3e8bfnpvdDIYPDqJ1DIFzAGxxDIrP.png)
-可以看到，张三成功的赚取到了1000块。
-李四也想赚钱，但是李四并不想购买机器。
-于是李四便借用张三的机器来赚钱。
+
+可以看到张三成功赚到 1000 块。
+
+李四也想赚钱，但不想买机器，于是他可以借用张三的方法。下面分别介绍 `call`、`apply` 和 `bind` 的用法。
 
 ## call
 
-在上文中，张三自己赚钱调用的是`zhangsan.machine(1000)`。
-那么李四使用机器就要更改一下写法：
+张三自己用机器是这样写的：`zhangsan.machine(1000)`。
+
+如果要让李四使用这台机器，可以用 `call`：
+
 ```js
 zhangsan.machine.call(thisArg, ...args);
 ```
-`thisArg`指的是对象，在这个场景里通俗地说，就是谁使用张三的机器，场景中是李四，自然而然对象就是李四。
-`...args`就是原来方法要的参数，在`zhangsan.machine(power)`中，只需要一个`power`参数。
-因此调用的方式为
+
+其中 `thisArg` 表示函数执行时的 `this` 值，在这个例子中即为 `lisi`；`...args` 是原函数的参数列表（本例中是 `power`）。
+
+所以可以这样调用：
+
 ```js
 zhangsan.machine.call(lisi, 100);
 ```
+
 ![](https://vip.123pan.cn/1812581465/ymjew503t0n000d9i8t4lxdf8gbiw82xDIYPDqJ1DIFzAGxxDIrP.png)
-李四成功的赚到了100块。
+
+李四成功赚到 100 块。
 
 ## apply
-为张三创建一个金额相加的函数：
+
+`apply` 与 `call` 类似，区别在于第二个参数是参数数组。
+
+例如为张三添加一个示例方法：
+
 ```js
 const zhangsan = {
     name: 'San Zhang',
     money: 10000,
-    machine: function(power) {
-        this.money = this.money - -(power);
+    machine: function (power) {
+        this.money = this.money + power;
     },
-    getMoney: function(first, added) {
+    getMoney: function (first, added) {
         this.money = first + added;
     }
 }
 ```
-假设现在李四最开始有300块钱，调用`getMoney`函数为他赚取100块：
+
+假设李四最开始有 300 块钱，想通过 `getMoney` 增加 100 块，可以这样调用：
+
 ```js
 zhangsan.getMoney.apply(thisArg, [...args]);
 ```
-`thisArg`同上。
-`[...args]`就是把原来方法要的参数用数组传入。例如，本情景中`getMoney`函数接收两个参数，那么传入的参数就是`[first, added]`。
-因此调用的方式为
+
+`thisArg` 与上面相同，`[...args]` 是把原函数的参数按顺序放入数组中。本例中 `getMoney` 接收两个参数，所以传入 `[first, added]`：
+
 ```js
 zhangsan.getMoney.apply(lisi, [300, 100]);
 ```
+
 ![](https://vip.123pan.cn/1812581465/yk6baz03t0m000d9jmisa5cgqagbdxksDIYPDqJ1DIFzAGxxDIrP.png)
-李四成功地从300增加到了400块。
+
+李四的金额从 300 增加到 400。
 
 ## bind
-`bind`函数有所不同，它返回的是一个函数。
-所以我们需要用一个变量接收返回的函数。
+
+`bind` 与前两者不同，它返回一个新的函数，并把 `this` 绑定到指定对象。
+
+需要用一个变量接收返回的函数，例如：
+
 ```js
 const lisiGetMoney = zhangsan.machine.bind(lisi);
 lisiGetMoney(300)
 ```
-接下来，如果李四要赚钱，只需要调用`lisiGetMoney`就可以了。
-![](https://vip.123pan.cn/1812581465/ymjew503t0m000d9ia5my1dyn2buppluDIYPDqJ1DIFzAGxxDIrP.png)
-李四成功地赚到300块。
+
+以后李四只要调用 `lisiGetMoney`，内部的 `this` 都会指向 `lisi`。
+
+![](https://vip.123pan.cn/1812581465/ymjew503t0n000d9ia5my1dyn2buppluDIYPDqJ1DIFzAGxxDIrP.png)
+
+李四成功赚到 300 块。
 
 ## 另请参阅
 - [MDN: Function.prototype.call()](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
