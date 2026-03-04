@@ -71,7 +71,7 @@
 ## 一键模块（KernelSU）
 
 如果你希望更便捷地完成上述操作，可以下载并刷入以下 KernelSU 模块：  
-[**点此下载 EnableGoogleGemini.zip**](https://download.im-a.gay/EnableGoogleGemini.zip)
+[**点此下载 GoogleGemini.zip**](https://download.im-a.gay/GoogleGemini.zip)
 
 ## 附：自行制作模块参考
 
