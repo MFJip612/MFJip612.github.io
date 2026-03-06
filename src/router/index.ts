@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, createMemoryHistory, RouteRecordRaw, RouterHistory } from 'vue-router'
 import articleRoutes from './articles'
 
 interface PageMeta {
@@ -63,9 +63,20 @@ if (articleComponent) {
 	} as RouteRecordRaw);
 }
 
-const router = createRouter({
-	history: createWebHistory(),
-	routes: [...routes, ...articleRoutes],
-});
+const baseRoutes: RouteRecordRaw[] = [...routes, ...articleRoutes];
+
+export function createRouterInstance(history?: RouterHistory) {
+	return createRouter({
+		history: history ?? createWebHistory(),
+		routes: baseRoutes,
+	});
+}
+
+export function createMemoryRouter() {
+	return createRouterInstance(createMemoryHistory());
+}
+
+// Default client-side router instance
+const router = createRouterInstance();
 
 export default router;

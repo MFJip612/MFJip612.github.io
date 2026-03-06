@@ -2,14 +2,13 @@ import 'animate.css'
 import './assets/css/custom.css'
 import 'katex/dist/katex.min.css'
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createWebHistory } from 'vue-router'
+import { createApp } from './app'
 import { setupHighlightTheme } from './lib/setupHighlightTheme'
 
-const app = createApp(App)
+const { app, router } = createApp({ history: createWebHistory(), isSSR: false })
 
-app.use(router)
-setupHighlightTheme()
-
-app.mount('#app')
+router.isReady().then(() => {
+	setupHighlightTheme()
+	app.mount('#app')
+})

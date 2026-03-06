@@ -25,6 +25,7 @@ export default defineConfig({
       language: 'zh-cn',
     }),
   ],
+  appType: 'custom',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -33,6 +34,14 @@ export default defineConfig({
   optimizeDeps: {
     include: ['vue', 'vue-router'],
     exclude: []
+  },
+  build: {
+    outDir: 'dist/client',
+    manifest: true,
+    ssrManifest: true,
+  },
+  ssr: {
+    target: 'webworker',
   },
   assetsInclude: [
     "**/*.md"  // 将markdown文件视为资源
