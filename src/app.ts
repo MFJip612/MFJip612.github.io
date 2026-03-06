@@ -1,5 +1,5 @@
 import { createSSRApp, createApp as createCSRApp } from 'vue'
-import type { RouterHistory } from 'vue-router'
+import { createMemoryHistory, createWebHistory, type RouterHistory } from 'vue-router'
 import App from './App.vue'
 import { createRouterInstance } from './router'
 
@@ -10,8 +10,9 @@ interface CreateAppOptions {
 
 export function createApp(options: CreateAppOptions = {}) {
   const { history, isSSR = typeof window === 'undefined' } = options
+  const resolvedHistory = history ?? (isSSR ? createMemoryHistory() : createWebHistory())
   const app = (isSSR ? createSSRApp : createCSRApp)(App)
-  const router = createRouterInstance(history)
+  const router = createRouterInstance(resolvedHistory)
 
   app.use(router)
 
