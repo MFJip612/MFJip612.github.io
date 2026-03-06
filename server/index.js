@@ -1,129 +1,54 @@
-import manifest from '../dist/client/.vite/ssr-manifest.json' assert { type: 'json' }
-import { render } from '../dist/server/entry-server.js'
-
-const SSR_HEAD_PLACEHOLDER = '<!--preload-links-->'
-const SSR_APP_PLACEHOLDER = '<!--app-html-->'
-
 export default {
-	fetch: async (request, env) => {
-		const url = new URL(request.url)
+	fetch: async (request) => {
+		const url = new URL(request.url);
 
-		const corsHeaders = {
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
-			'Access-Control-Allow-Headers': 'Content-Type, Accept',
-		}
-
+		// CORS helper: attach Access-Control-Allow-Origin to responses
 		const withCors = (resp) => {
-			const headers = new Headers(resp.headers || {})
-			Object.entries(corsHeaders).forEach(([key, value]) => headers.set(key, value))
+			const headers = new Headers(resp.headers || {});
+			headers.set("Access-Control-Allow-Origin", "*");
+			headers.set("Access-Control-Allow-Methods", "GET,HEAD,POST,OPTIONS");
+			headers.set("Access-Control-Allow-Headers", "Content-Type, Accept");
 			return new Response(resp.body, {
 				status: resp.status || 200,
 				headers,
-			})
-		}
+			});
+		};
 
-		if (request.method === 'OPTIONS') {
-			return withCors(new Response(null, { status: 204 }))
-		}
-
-		if (url.pathname === '/friends' && request.method === 'GET') {
-			return withCors(await renderFriendsPage())
-		}
-
-		if (url.pathname === '/api/friends-proxy') {
-			return await handleFriendsProxy(withCors)
-		}
-
-		if (url.pathname.startsWith('/api/')) {
-			return withCors(Response.json({ name: 'Cloudflare' }))
-		}
-
-		// Try to serve static assets first. If 404, fall back to SSR.
-		if (env?.ASSETS) {
-			const assetResponse = await env.ASSETS.fetch(request)
-			if (assetResponse && assetResponse.status !== 404) {
-				return assetResponse
-			}
-		}
-
-		try {
-			const templateResponse = await env.ASSETS.fetch(new Request(new URL('/index.html', request.url)))
-			const template = await templateResponse.text()
-			const { appHtml, preloadLinks } = await render(url.pathname + url.search, manifest)
-
-			const html = template
-				.replace(SSR_HEAD_PLACEHOLDER, preloadLinks || '')
-				.replace(SSR_APP_PLACEHOLDER, appHtml)
-
-			return new Response(html, {
-				status: 200,
-				headers: { 'Content-Type': 'text/html; charset=utf-8' },
-			})
-		} catch (error) {
-			console.error('SSR render error:', error)
-			return new Response('Internal Server Error', { status: 500 })
-		}
-	},
-}
-
-async function handleFriendsProxy(withCors) {
-	try {
-		const remoteResp = await fetch('https://friends.im-a.gay')
-		const body = await remoteResp.arrayBuffer()
-		const headers = new Headers(remoteResp.headers)
-		if (!headers.has('content-type')) headers.set('content-type', 'application/json; charset=utf-8')
-
-		const resp = new Response(body, {
-			status: remoteResp.status,
-			headers,
-		})
-		return withCors(resp)
-	} catch (e) {
-		return withCors(
-			new Response(JSON.stringify({ error: e.message }), {
-				status: 502,
-				headers: { 'content-type': 'application/json' },
-			}),
-		)
-	}
-}
-
-async function renderFriendsPage() {
-	try {
-		const friendsResponse = await fetch('https://friends.im-a.gay')
-		const friendsData = await friendsResponse.json()
-
-		const friendsHtml = friendsData
-			.map(
-				(friend) => `
-				<div class="friend-card">
-					<div class="card-header">
-						<div class="avatar-container">
-							<div class="avatar-content">
-								<img src="${friend.avatar_uri || ''}" alt="${friend.name}" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-								<div class="favicon-placeholder">
-									<div class="initial-avatar">${friend.name.charAt(0).toUpperCase()}</div>
+		// 预渲染HTML模板函数
+		const renderFriendsPage = async () => {
+			try {
+				// 获取友链数据
+				const friendsResponse = await fetch("https://friends.im-a.gay");
+				const friendsData = await friendsResponse.json();
+				
+				// 生成友链卡片HTML
+				const friendsHtml = friendsData.map(friend => `
+					<div class="friend-card">
+						<div class="card-header">
+							<div class="avatar-container">
+								<div class="avatar-content">
+									<img src="${friend.avatar_uri || ''}" alt="${friend.name}" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+									<div class="favicon-placeholder">
+										<div class="initial-avatar">${friend.name.charAt(0).toUpperCase()}</div>
+									</div>
 								</div>
 							</div>
+							<div>
+								<h3 class="friend-name">${friend.name}</h3>
+								<p class="friend-url">Link</p>
+							</div>
 						</div>
-						<div>
-							<h3 class="friend-name">${friend.name}</h3>
-							<p class="friend-url">Link</p>
+						<div class="card-content">
+							<p class="friend-description">${friend.description || ''}</p>
+						</div>
+						<div class="card-footer">
+							<a href="${friend.uri}" target="_blank" rel="noopener noreferrer" class="visit-link">访问</a>
 						</div>
 					</div>
-					<div class="card-content">
-						<p class="friend-description">${friend.description || ''}</p>
-					</div>
-					<div class="card-footer">
-						<a href="${friend.uri}" target="_blank" rel="noopener noreferrer" class="visit-link">访问</a>
-					</div>
-				</div>
-			`,
-			)
-			.join('')
+				`).join('');
 
-		const html = `<!DOCTYPE html>
+				// 返回完整的HTML页面
+				const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -380,18 +305,25 @@ async function renderFriendsPage() {
   </script>
   
 </body>
-</html>`
+</html>`;
 
-		return new Response(html, {
-			status: 200,
-			headers: {
-				'Content-Type': 'text/html; charset=utf-8',
-				'Cache-Control': 'public, max-age=300',
-			},
-		})
-	} catch (error) {
-		console.error('预渲染友链页面失败:', error)
-		const errorHtml = `<!DOCTYPE html>
+				// 压缩HTML内容
+				const compressedHtml = html.replace(/\s+/g, ' ')  // 替换多个空白字符为单个空格
+										.replace(/>\s+</g, '><')  // 移除标签间的空白
+										.trim();
+
+				return new Response(compressedHtml, {
+					status: 200,
+					headers: {
+						'Content-Type': 'text/html; charset=utf-8',
+						'Cache-Control': 'public, max-age=300',
+						'Content-Encoding': 'gzip'  // 如果支持的话
+					}
+				});
+			} catch (error) {
+				console.error('预渲染友链页面失败:', error);
+				// 如果预渲染失败，返回错误页面
+				const errorHtml = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -405,11 +337,48 @@ async function renderFriendsPage() {
     <p><small>错误信息: ${error.message}</small></p>
   </div>
 </body>
-</html>`
+</html>`;
+				
+				return new Response(errorHtml, {
+					status: 500,
+					headers: { 'Content-Type': 'text/html; charset=utf-8' }
+				});
+			}
+		};
 
-		return new Response(errorHtml, {
-			status: 500,
-			headers: { 'Content-Type': 'text/html; charset=utf-8' },
-		})
-	}
-}
+		// 处理 /friends 路径的预渲染
+		if (url.pathname === "/friends" && request.method === "GET") {
+			return await renderFriendsPage();
+		}
+
+		// Handle a proxy endpoint for friends data
+		if (url.pathname === "/api/friends-proxy") {
+			if (request.method === "OPTIONS") {
+				return withCors(new Response(null, { status: 204 }));
+			}
+
+			// Fetch remote data from the friends host and return it with CORS headers
+			try {
+				const remoteResp = await fetch("https://friends.im-a.gay");
+				const body = await remoteResp.arrayBuffer();
+				const headers = new Headers(remoteResp.headers);
+				// Ensure content-type is present
+				if (!headers.has("content-type")) headers.set("content-type", "application/json; charset=utf-8");
+				// Build response and attach CORS
+				const resp = new Response(body, {
+					status: remoteResp.status,
+					headers,
+				});
+				return withCors(resp);
+			} catch (e) {
+				return withCors(new Response(JSON.stringify({ error: e.message }), { status: 502, headers: { 'content-type': 'application/json' } }));
+			}
+		}
+
+		if (url.pathname.startsWith("/api/")) {
+			return Response.json({ name: "Cloudflare" });
+		}
+
+		return new Response(null, { status: 404 });
+	},
+};

@@ -8,13 +8,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run type-check && npm run build:client && npm run build:server",
-    "build:client": "vite build",
-    "build:server": "vite build --ssr src/entry-server.ts --outDir dist/server",
+    "build": "vue-tsc && vite build",
     "preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
     "dev:ts": "vite --host",
-    "build:ts": "npm run build",
+    "build:ts": "vue-tsc && vite build",
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
