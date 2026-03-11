@@ -46,6 +46,7 @@
     "typescript": "^5.7.2",
     "vite": "^7.2.4",
     "vite-plugin-vue-devtools": "^8.0.6",
+    "vite-plugin-vue-inspector": "^5.3.2",
     "vue-tsc": "^3.2.5",
     "wrangler": "^4.67.0"
   }

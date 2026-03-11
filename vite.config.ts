@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import inspect from 'vite-plugin-inspect'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 import sitemapPlugin from './vite-plugin-sitemap'
@@ -15,7 +16,7 @@ export default defineConfig({
           isCustomElement: (tag) => tag.endsWith('.md')
         }
       }
-    }), 
+    }), inspect(),
     tailwindcss(),
     sitemapPlugin({ baseUrl: 'https://www.waterspo.top' }),
     rssPlugin({
