@@ -36,6 +36,39 @@ function escapeHtml(html) {
     });
 }
 
+// 按行切割 hljs 输出，保持 span 标签完整性（跨行 span 会在切割处自动闭合并重开）
+function splitHighlightedLines(html) {
+    const lines = [];
+    let current = '';
+    const stack = [];
+    let i = 0;
+    while (i < html.length) {
+        if (html[i] === '<') {
+            const end = html.indexOf('>', i);
+            if (end === -1) { current += html.slice(i); break; }
+            const tag = html.slice(i, end + 1);
+            if (tag.startsWith('</')) {
+                stack.pop();
+            } else if (!tag.endsWith('/>')) {
+                const name = tag.match(/^<([a-zA-Z][a-zA-Z0-9]*)/)?.[1];
+                if (name) stack.push({ tag, name });
+            }
+            current += tag;
+            i = end + 1;
+        } else if (html[i] === '\n') {
+            for (let j = stack.length - 1; j >= 0; j--) current += `</${stack[j].name}>`;
+            lines.push(current);
+            current = '';
+            for (let j = 0; j < stack.length; j++) current += stack[j].tag;
+            i++;
+        } else {
+            current += html[i++];
+        }
+    }
+    if (current !== '') lines.push(current);
+    return lines;
+}
+
 function renderHighlightedCode(lang, code) {
     const requestedLanguage = (lang || "").trim().toLowerCase();
     const hasLanguage = requestedLanguage && hljs.getLanguage(requestedLanguage);
@@ -44,7 +77,13 @@ function renderHighlightedCode(lang, code) {
         : hljs.highlightAuto(code);
     const finalLanguage = hasLanguage ? requestedLanguage : (result.language || "plaintext");
 
-    return `<pre class="md-code"><code class="hljs language-${escapeHtml(finalLanguage)}">${result.value}</code></pre>`;
+    const lines = splitHighlightedLines(result.value);
+    if (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
+    // 每行包裹 md-line，配合 CSS counter 生成行号
+    const numbered = lines.map(l => `<span class="md-line">${l || '\u200b'}</span>`).join('');
+
+    const langLabel = escapeHtml(finalLanguage);
+    return `<div class="md-code-wrapper"><div class="md-code-header"><span class="md-code-lang">${langLabel}</span></div><pre class="md-code"><code class="hljs language-${langLabel}">${numbered}</code></pre></div>`;
 }
 
 function parseInlineMarkdown(text) {
@@ -2583,6 +2622,76 @@ body {
 .out-link:hover {
     color: purple !important;
     
+}
+
+/* Code block with line numbers and language label */
+.md-code-wrapper {
+    margin: 1rem 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #d1d9e0;
+    font-size: 85%;
+}
+
+.md-code-header {
+    display: flex;
+    align-items: center;
+    padding: 0.35rem 1rem;
+    background-color: #e8ecf0;
+    border-bottom: 1px solid #d1d9e0;
+    user-select: none;
+}
+
+.md-code-lang {
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+    font-size: 0.8em;
+    color: #59636e;
+    letter-spacing: 0.03em;
+}
+
+.md-code-wrapper .md-code {
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    counter-reset: line-counter;
+    padding: 1rem 0;
+    overflow: auto;
+}
+
+.md-code-wrapper .md-code .md-line {
+    display: block;
+    padding: 0 1rem 0 0;
+    counter-increment: line-counter;
+}
+
+.md-code-wrapper .md-code .md-line::before {
+    content: counter(line-counter);
+    display: inline-block;
+    min-width: 2.5em;
+    padding-right: 0.8em;
+    margin-right: 0.8em;
+    text-align: right;
+    color: #a0aab4;
+    border-right: 1px solid #d1d9e0;
+    user-select: none;
+}
+
+.dark .md-code-wrapper {
+    border-color: #3d444d;
+}
+
+.dark .md-code-header {
+    background-color: #272e38;
+    border-bottom-color: #3d444d;
+}
+
+.dark .md-code-lang {
+    color: #9198a1;
+}
+
+.dark .md-code-wrapper .md-code .md-line::before {
+    color: #656d76;
+    border-right-color: #3d444d;
 }
 
 </style>
