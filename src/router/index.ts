@@ -13,14 +13,12 @@ const pages = import.meta.glob<{ default: PageMeta }>('../views/**/page.ts', {
 	eager: true,
 	import: 'default'
 });
-const components = import.meta.glob('../views/**/index.vue', {
-	eager: true,
-	import: 'default'
-});
+// 惰性加载视图组件：仅在路由跳转时按需加载对应页面
+const components = import.meta.glob('../views/**/index.vue');
 const componentsMap: Record<string, any> = Object.fromEntries(
-	Object.entries(components).map(([path, component]) => {
+	Object.entries(components).map(([path, loader]) => {
 		const routePath = path.replace('../views', '').replace('/index.vue', '') || '/';
-		return [routePath || '/', component];
+		return [routePath || '/', loader];
 	})
 );
 

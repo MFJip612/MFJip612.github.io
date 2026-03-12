@@ -3,7 +3,7 @@
         <aside class="select-article">
             <BrowseArticle :selected="selected" @select="onSelect" />
         </aside>
-        <ViewArticle :post="selected" @headings="onHeadings" />
+        <ViewArticle :post="selected" @headings="onHeadings" class="view-article"/>
         <aside class="toc-sidebar">
             <TableOfContents :headings="headings" />
         </aside>
@@ -85,6 +85,11 @@ function onSelect(post) {
     border-right: 0.1rem solid var(--color-border);
     box-sizing: border-box;
 }
+
+.view-article {
+    max-width: 60%;
+}
+
 .toc-sidebar {
     min-width: 14rem;
     max-width: 14rem;

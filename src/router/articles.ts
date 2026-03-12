@@ -14,16 +14,13 @@ const posts = import.meta.glob<{ default: ArticleMeta }>('../articles/**/post.ts
   import: 'default',
 });
 
-// 同步导入所有markdown文件作为Vue组件
-const components = import.meta.glob('../articles/**/index.md', {
-  eager: true,
-  import: 'default'
-});
+// 惰性加载文章 MD 文件：路由匹配时才按需加载
+const components = import.meta.glob('../articles/**/index.md');
 
 const componentsMap: Record<string, any> = Object.fromEntries(
-  Object.entries(components).map(([path, component]) => {
+  Object.entries(components).map(([path, loader]) => {
     const routePath = path.replace('../articles', '').replace('/index.md', '') || '/';
-    return [routePath || '/', component];
+    return [routePath || '/', loader];
   })
 );
 

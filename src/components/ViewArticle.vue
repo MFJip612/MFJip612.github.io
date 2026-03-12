@@ -11,6 +11,8 @@
 import { onMounted, onBeforeUnmount, ref, watch, nextTick } from "vue";
 
 import hljs from "highlight.js";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 
 const props = defineProps({ post: Object });
 const emit = defineEmits(["headings"]);
@@ -23,6 +25,7 @@ function slugify(text) {
         .replace(/[\s\u3000]+/g, "-")
         .replace(/[^\w\-\u4e00-\u9fff]/g, "");
 }
+// 惰性加载：仅在实际访问时才读取对应文章的 md 文件
 const mdModules = import.meta.glob("../articles/**/index.md", { query: '?raw', import: 'default' });
 
 function escapeHtml(html) {
@@ -54,12 +57,32 @@ function parseInlineMarkdown(text) {
     return output;
 }
 
+function renderKatex(tex, displayMode) {
+    try {
+        return katex.renderToString(tex, { displayMode, throwOnError: false, output: "htmlAndMathml" });
+    } catch (e) {
+        return escapeHtml(tex);
+    }
+}
+
 function parseMarkdown(md) {
     const codeBlocks = [];
     // 代码块（先提取占位，避免后续行内语法误处理代码内容）
     md = md.replace(/```([\w]*)\n([\s\S]*?)```/g, (m, lang, code) => {
         const token = `@@CODE_BLOCK_${codeBlocks.length}@@`;
         codeBlocks.push(renderHighlightedCode(lang, code));
+        return token;
+    });
+    // 块级 LaTeX：$$...$$（多行）
+    md = md.replace(/\$\$([\s\S]+?)\$\$/g, (m, tex) => {
+        const token = `@@CODE_BLOCK_${codeBlocks.length}@@`;
+        codeBlocks.push(`<div class="katex-block">${renderKatex(tex.trim(), true)}</div>`);
+        return token;
+    });
+    // 行内 LaTeX：$...$（单行，避免匹配 $$ 以及跨行）
+    md = md.replace(/(?<!\$)\$([^\$\n]+?)\$(?!\$)/g, (m, tex) => {
+        const token = `@@CODE_BLOCK_${codeBlocks.length}@@`;
+        codeBlocks.push(renderKatex(tex, false));
         return token;
     });
     // 表格（先于全局行内语法，避免表格单元格内的嵌套内容被转义）
@@ -225,7 +248,7 @@ section {
     box-sizing: border-box;
     width: 100%;
     min-height: 100%;
-    padding: 2rem;
+    padding: .5rem;
     margin: 0 auto;
     max-width: 62.5rem;
     background-color: var(--color-background);
