@@ -87,6 +87,7 @@ function onSelect(post) {
 }
 
 .view-article {
+    width: 60%;
     max-width: 60%;
 }
 
