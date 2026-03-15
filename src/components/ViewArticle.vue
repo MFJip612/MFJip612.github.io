@@ -253,7 +253,6 @@ function setLinksPositions() {
 const bodyMouseHandler = (e) => {
     document.querySelector('body').style.setProperty('--x', `${e.clientX}px`);
     document.querySelector('body').style.setProperty('--y', `${e.clientY}px`);
-    console.log(`Mouse moved: (${e.clientX}, ${e.clientY})`);
 };
 
 // 在 content 渲染后绑定链接监听并更新位置；卸载或清空时清理
