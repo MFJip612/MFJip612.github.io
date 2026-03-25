@@ -10,9 +10,8 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref, watch, nextTick } from "vue";
 
-import hljs from "highlight.js";
-import katex from "katex";
-import "katex/dist/katex.min.css";
+let hljs: any = null;
+let katex: any = null;
 
 const props = defineProps({ post: Object });
 const emit = defineEmits(["headings"]);
@@ -72,6 +71,11 @@ function splitHighlightedLines(html) {
 
 function renderHighlightedCode(lang, code) {
     const requestedLanguage = (lang || "").trim().toLowerCase();
+    // If highlight.js hasn't been loaded (SSR or early client), fall back to plain code block
+    if (!hljs) {
+        const escaped = escapeHtml(code);
+        return `<div class="md-code-wrapper"><div class="md-code-header"><span class="md-code-lang">${escapeHtml(requestedLanguage || 'plaintext')}</span></div><pre class="md-code"><code class="hljs">${escaped}</code></pre></div>`;
+    }
     const hasLanguage = requestedLanguage && hljs.getLanguage(requestedLanguage);
     const result = hasLanguage
         ? hljs.highlight(code, { language: requestedLanguage, ignoreIllegals: true })
@@ -98,6 +102,8 @@ function parseInlineMarkdown(text) {
 }
 
 function renderKatex(tex, displayMode) {
+    // If katex is not loaded (SSR), return escaped TeX as fallback
+    if (!katex) return escapeHtml(tex);
     try {
         return katex.renderToString(tex, { displayMode, throwOnError: false, output: "htmlAndMathml" });
     } catch (e) {
@@ -275,6 +281,30 @@ watch(content, (v, oldV) => {
 
 onMounted(() => {
     if (!isClient) return;
+
+    // 动态加载客户端依赖以减少 SSR 时的打包体积
+    (async () => {
+        try {
+            const hljsMod = await import('highlight.js');
+            hljs = hljsMod.default || hljsMod;
+        } catch (e) {
+            console.warn('highlight.js 加载失败，使用回退渲染', e);
+        }
+        try {
+            // 动态注入 katex 样式并加载 katex
+            await import('katex/dist/katex.min.css');
+            const katexMod = await import('katex');
+            katex = katexMod.default || katexMod;
+        } catch (e) {
+            console.warn('katex 加载失败，使用回退渲染', e);
+        }
+
+        // 如果在 SSR 阶段已有内容（或初始 post），重新解析以应用高亮/KaTeX
+        if (props.post?.path) {
+            loadMarkdown(props.post.path.replace('/articles', ''));
+        }
+    })();
+
     document.body.addEventListener('mousemove', bodyMouseHandler);
     window.addEventListener('resize', setLinksPositions);
     window.addEventListener('load', setLinksPositions);

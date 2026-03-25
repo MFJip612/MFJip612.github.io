@@ -45,10 +45,19 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { ref, onMounted } from "vue";
+import { usePageContext } from 'vike-vue/usePageContext';
+
+const pageContext = usePageContext();
 
 const friends = ref([]);
 const loading = ref(true);
 const error = ref('');
+
+// 如果服务端注入了 friends 数据，则优先使用它（SSR）
+if (pageContext?.friends && Array.isArray(pageContext.friends)) {
+	friends.value = pageContext.friends;
+	loading.value = false;
+}
 
 // 修复JSON格式，处理无效的JSON结构
 const fixInvalidJson = (jsonText) => {
@@ -121,7 +130,9 @@ const fetchFriends = async () => {
 };
 
 onMounted(() => {
-	fetchFriends();
+	if (!friends.value || friends.value.length === 0) {
+		fetchFriends();
+	}
 });
 </script>
 

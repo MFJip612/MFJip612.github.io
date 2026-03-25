@@ -12,20 +12,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import Dialog from '@/components/Dialog.vue';
-import { SimplePlayer } from 'xgplayer';
-import Start from 'xgplayer/es/plugins/start'
-import PC from 'xgplayer/es/plugins/pc'
-// import Mobile from 'xgplayer/es/plugins/mobile';
-import Progress from 'xgplayer/es/plugins/progress'
-import Time from 'xgplayer/es/plugins/time'
-import Play from 'xgplayer/es/plugins/play'
-import Error from 'xgplayer/es/plugins/error'
-import TextTrack from 'xgplayer/es/plugins/track'
-import Volume from 'xgplayer/es/plugins/volume';
-import CssFullScreen from 'xgplayer/es/plugins/cssFullScreen';
-import Fullscreen from 'xgplayer/es/plugins/fullscreen';
-import Loading from 'xgplayer';
-import 'xgplayer/dist/index.min.css'
+
+// xgplayer and its plugins are large - load them lazily on the client in onMounted
 
 const props = defineProps({
 	url: {
@@ -41,46 +29,71 @@ let player = null;
 const adbIsEnabled = ref(true);
 let showMessageTimer = null;
 
-const playerConfig = {
-	id: "mse",
-	url: props.url ? props.url : '//sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4',
-	width: 1080,
-	height: 720,
-	plugins: [Start, PC, Progress, Play, Time, Error, TextTrack, Volume, CssFullScreen, Fullscreen, Loading],
-	texttrack: props.srt ?
-		[{
-			src: props.srt,
-			id: "subtitles",
-			label: "中文",
-			language: "zh-cn",
-			default: true
-		}] : [],
-	textTrackStyle: {
-		color: "#000"
-	},
-	controls: {
-		mode: 'normal',
-		autoHide: true
-	},
-	keyShortcut: "on",
-	keyboard: {
-		'space': {              //空格键，播放/暂停切换
-			code: 32,             //对应快捷键索引
-			action: 'playPause',  //具体触发的业务操作，如果为字符串，则执行keyborad对应接口
-			disable: false        // 是否禁用
-		}
-	}
-};
-
-function loadVideo() {
-	player = new SimplePlayer(playerConfig);
-}
+let loadVideo = null;
 
 onMounted(() => {
 	adbIsEnabled.value = false;
-	window.setTimeout(() => {
-		loadVideo();
-	}, 1000);
+
+	// 延迟并在客户端懒加载播放器及其插件
+	(async () => {
+		try {
+			const [xgplayerMod, StartMod, PCMod, ProgressMod, TimeMod, PlayMod, ErrorMod, TrackMod, VolumeMod, CssFullScreenMod, FullscreenMod] = await Promise.all([
+				import('xgplayer'),
+				import('xgplayer/es/plugins/start'),
+				import('xgplayer/es/plugins/pc'),
+				import('xgplayer/es/plugins/progress'),
+				import('xgplayer/es/plugins/time'),
+				import('xgplayer/es/plugins/play'),
+				import('xgplayer/es/plugins/error'),
+				import('xgplayer/es/plugins/track'),
+				import('xgplayer/es/plugins/volume'),
+				import('xgplayer/es/plugins/cssFullScreen'),
+				import('xgplayer/es/plugins/fullscreen'),
+			]);
+			// 动态注入样式
+			try { await import('xgplayer/dist/index.min.css'); } catch (e) { /* ignore */ }
+
+			const SimplePlayer = xgplayerMod.default || xgplayerMod;
+			const Start = StartMod.default || StartMod;
+			const PC = PCMod.default || PCMod;
+			const Progress = ProgressMod.default || ProgressMod;
+			const Time = TimeMod.default || TimeMod;
+			const Play = PlayMod.default || PlayMod;
+			const ErrorP = ErrorMod.default || ErrorMod;
+			const TextTrack = TrackMod.default || TrackMod;
+			const Volume = VolumeMod.default || VolumeMod;
+			const CssFullScreen = CssFullScreenMod.default || CssFullScreenMod;
+			const Fullscreen = FullscreenMod.default || FullscreenMod;
+
+			const playerConfig = {
+				id: "mse",
+				url: props.url ? props.url : '//sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4',
+				width: 1080,
+				height: 720,
+				plugins: [Start, PC, Progress, Play, Time, ErrorP, TextTrack, Volume, CssFullScreen, Fullscreen],
+				texttrack: props.srt ?
+					[{
+						src: props.srt,
+						id: "subtitles",
+						label: "中文",
+						language: "zh-cn",
+						default: true
+					}] : [],
+				textTrackStyle: { color: "#000" },
+				controls: { mode: 'normal', autoHide: true },
+				keyShortcut: "on",
+				keyboard: { 'space': { code: 32, action: 'playPause', disable: false } }
+			};
+
+			loadVideo = () => { player = new SimplePlayer(playerConfig); };
+
+			window.setTimeout(() => {
+				loadVideo?.();
+			}, 1000);
+		} catch (e) {
+			console.warn('播放器加载失败或被拦截', e);
+		}
+	})();
 
 	showMessageTimer = window.setInterval(() => {
 		if (adbIsEnabled.value === true) {
@@ -90,6 +103,7 @@ onMounted(() => {
 			showMessageTimer = null;
 		}
 	}, 2000);
+
 })
 
 onUnmounted(() => {
