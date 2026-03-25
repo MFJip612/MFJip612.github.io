@@ -1,6 +1,4 @@
 import Page from './+Page.vue'
-import type { PageContextServer } from 'vike/types'
-
 export { Page }
 
 function fixInvalidJson(jsonText: string) {
@@ -16,7 +14,7 @@ function fixInvalidJson(jsonText: string) {
   }
 }
 
-export async function onBeforeRender(pageContext: PageContextServer) {
+export async function onBeforeRender() {
   try {
     const resp = await fetch('https://friends.im-a.gay')
     const text = await resp.text()
