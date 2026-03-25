@@ -5,8 +5,23 @@
 <script setup>
 import { onMounted } from 'vue';
 
-    onMounted(() => {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    });
+const props = defineProps({
+    adSlot: {
+        type: String,
+        default: '0000000000'
+    },
+    adFormat: {
+        type: String,
+        default: 'auto'
+    },
+    adStyle: {
+        type: [String, Object],
+        default: () => ({ display: 'block' })
+    }
+});
+
+onMounted(() => {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+});
 </script>
 <style></style>

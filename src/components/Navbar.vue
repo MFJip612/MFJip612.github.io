@@ -12,11 +12,24 @@ import {
 } from '@/components/ui/navigation-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import ModeToggle from "@/components/ModeToggle.vue";
-import { RouterLink, useRouter } from "vue-router";
 import Logo from "@/assets/images/logo.jpg";
-const router = useRouter();
-const routes = [...router.options.routes]
-    .filter(route => !route.meta?.hidden) // 过滤掉hidden为true的路由
+
+const pages = import.meta.glob('/src/views/**/page.ts', {
+    eager: true,
+    import: 'default'
+});
+
+const routes = Object.entries(pages)
+    .map(([filePath, meta]) => {
+        const routePath = filePath
+            .replace('/src/views', '')
+            .replace('/page.ts', '') || '/';
+        return {
+            path: routePath === '' ? '/' : routePath,
+            meta,
+        };
+    })
+    .filter(route => !route.meta?.hidden)
     .sort((a, b) => {
         const orderA = a.meta?.menuOrder ?? 9999;
         const orderB = b.meta?.menuOrder ?? 9999;

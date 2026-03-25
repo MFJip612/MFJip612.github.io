@@ -39,6 +39,7 @@ const props = defineProps({
 });
 let player = null;
 const adbIsEnabled = ref(true);
+let showMessageTimer = null;
 
 const playerConfig = {
 	id: "mse",
@@ -77,7 +78,18 @@ function loadVideo() {
 
 onMounted(() => {
 	adbIsEnabled.value = false;
-	setTimeout(loadVideo(), 1000);
+	window.setTimeout(() => {
+		loadVideo();
+	}, 1000);
+
+	showMessageTimer = window.setInterval(() => {
+		if (adbIsEnabled.value === true) {
+			const dialogEl = document.querySelector('.window');
+			dialogEl?.showModal?.();
+			clearInterval(showMessageTimer);
+			showMessageTimer = null;
+		}
+	}, 2000);
 })
 
 onUnmounted(() => {
@@ -85,15 +97,11 @@ onUnmounted(() => {
 	if (player) {
 		player.destroy();
 	}
-});
-
-
-const showMessage = setInterval(() => {
-	if (adbIsEnabled.value === true) {
-		document.querySelector(".window").showModal();
-		clearInterval(showMessage);
+	if (showMessageTimer) {
+		clearInterval(showMessageTimer);
+		showMessageTimer = null;
 	}
-}, 2000);
+});
 
 </script>
 <style scoped>

@@ -11,19 +11,20 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, watch, computed } from "vue";
+import { usePageContext } from "vike-vue/usePageContext";
+import { navigate } from "vike/client/router";
 import BrowseArticle from "@/components/BrowseArticle.vue";
 import ViewArticle from "@/components/ViewArticle.vue";
 import TableOfContents from "@/components/TableOfContents.vue";
 import articles from "@/router/articles";
 
-const route = useRoute();
-const router = useRouter();
+const pageContext = usePageContext();
+const articleId = computed(() => pageContext.routeParams?.id || "");
 
 // 从路由参数获取当前文章ID，如果没有参数则返回最新文章
 const getCurrentArticle = () => {
-	const id = route.params.id;
+	const id = articleId.value;
 	if (id) {
 		// 根据path或name查找文章
 		return articles.find(article => article.path === `/${id}` || article.name === id) || getLatestArticle();
@@ -49,7 +50,7 @@ function onHeadings(list) {
 
 // 当路由参数变化时，更新选中的文章
 watch(
-	() => route.params.id,
+	() => articleId.value,
 	() => {
 		selected.value = getCurrentArticle();
 	},
@@ -59,8 +60,7 @@ watch(
 function onSelect(post) {
 	selected.value = post;
 	headings.value = [];
-	// 更新URL，使用文章的name作为路由参数
-	router.push(`/article/${post.name}`);
+	navigate(`/article/${post.name}`);
 }
 </script>
 

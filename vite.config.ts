@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vike from 'vike/plugin'
 import inspect from 'vite-plugin-inspect'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
@@ -9,6 +10,7 @@ import rssPlugin from './vite-plugin-rss'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    vike(),
     vue({
       template: {
         compilerOptions: {
@@ -32,7 +34,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['vue', 'vue-router'],
+    include: ['vue'],
     exclude: []
   },
   assetsInclude: [

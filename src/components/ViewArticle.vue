@@ -18,6 +18,7 @@ const props = defineProps({ post: Object });
 const emit = defineEmits(["headings"]);
 const content = ref("");
 const headings = ref([]);
+const isClient = typeof window !== 'undefined' && typeof document !== 'undefined';
 
 function slugify(text) {
     const clean = text.replace(/<[^>]+>/g, "");
@@ -217,6 +218,7 @@ function createLinkHandler(el) {
 }
 
 function bindPerLink() {
+    if (!isClient) return;
     const container = document.querySelector('.markdown-body');
     if (!container) return;
     const links = container.querySelectorAll('a.out-link');
@@ -229,6 +231,7 @@ function bindPerLink() {
 }
 
 function unbindPerLink() {
+    if (!isClient) return;
     const container = document.querySelector('.markdown-body');
     if (!container) return;
     const links = container.querySelectorAll('a.out-link');
@@ -242,6 +245,7 @@ function unbindPerLink() {
 }
 
 function setLinksPositions() {
+    if (!isClient) return;
     const links = document.querySelectorAll('a.out-link');
     links.forEach((a) => {
         const rect = a.getBoundingClientRect();
@@ -251,12 +255,14 @@ function setLinksPositions() {
 }
 
 const bodyMouseHandler = (e) => {
-    document.querySelector('body').style.setProperty('--x', `${e.clientX}px`);
-    document.querySelector('body').style.setProperty('--y', `${e.clientY}px`);
+    if (!isClient) return;
+    document.body.style.setProperty('--x', `${e.clientX}px`);
+    document.body.style.setProperty('--y', `${e.clientY}px`);
 };
 
 // 在 content 渲染后绑定链接监听并更新位置；卸载或清空时清理
 watch(content, (v, oldV) => {
+    if (!isClient) return;
     // 清理旧的绑定（如果存在）再绑定新的
     unbindPerLink();
     if (v) {
@@ -267,11 +273,20 @@ watch(content, (v, oldV) => {
     }
 });
 
-document.querySelector('body').addEventListener('mousemove', bodyMouseHandler);
-window.addEventListener('resize', setLinksPositions);
-window.addEventListener('load', setLinksPositions);
+onMounted(() => {
+    if (!isClient) return;
+    document.body.addEventListener('mousemove', bodyMouseHandler);
+    window.addEventListener('resize', setLinksPositions);
+    window.addEventListener('load', setLinksPositions);
+    setLinksPositions();
+});
 
 onBeforeUnmount(() => {
+    if (isClient) {
+        document.body.removeEventListener('mousemove', bodyMouseHandler);
+        window.removeEventListener('resize', setLinksPositions);
+        window.removeEventListener('load', setLinksPositions);
+    }
     unbindPerLink();
     });
 

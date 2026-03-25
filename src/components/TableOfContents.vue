@@ -28,8 +28,11 @@ const props = defineProps({
 
 const activeId = ref("");
 let observer = null;
+let observerTimer = null;
+const isClient = typeof window !== 'undefined' && typeof document !== 'undefined';
 
 function scrollTo(id) {
+    if (!isClient) return;
     const el = document.getElementById(id);
     if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -37,13 +40,14 @@ function scrollTo(id) {
 }
 
 function setupObserver() {
+    if (!isClient) return;
     if (observer) {
         observer.disconnect();
     }
     if (!props.headings.length) return;
 
     // 等待 DOM 更新后再观察
-    setTimeout(() => {
+    observerTimer = window.setTimeout(() => {
         const elements = props.headings
             .map((h) => document.getElementById(h.id))
             .filter(Boolean);
@@ -73,6 +77,10 @@ function setupObserver() {
 watch(() => props.headings, setupObserver, { immediate: true, deep: true });
 
 onBeforeUnmount(() => {
+    if (observerTimer) {
+        clearTimeout(observerTimer);
+        observerTimer = null;
+    }
     if (observer) observer.disconnect();
 });
 </script>

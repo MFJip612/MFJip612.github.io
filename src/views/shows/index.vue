@@ -9,12 +9,17 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { usePageContext } from 'vike-vue/usePageContext';
 import Player from '@/components/Player.vue';
 
-const route = useRoute();
-const videoUrl = computed(() => route.query.url || '');
-const srtUrl = computed(() => route.query.srt || '');
+const pageContext = usePageContext();
+const searchParams = computed(() => {
+    if (typeof window === 'undefined') return new URLSearchParams();
+    const url = pageContext.urlOriginal || '/';
+    return new URL(url, window.location.origin).searchParams;
+});
+const videoUrl = computed(() => searchParams.value.get('url') || '');
+const srtUrl = computed(() => searchParams.value.get('srt') || '');
 </script>
 
 <style scoped>

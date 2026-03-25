@@ -1,6 +1,6 @@
 # mfjip612-github-io
 
-This template should help get you started developing with Vue 3 in Vite.
+基于 Vue 3 + Vite + Vike 的个人博客项目。
 
 ## Recommended IDE Setup
 
@@ -19,6 +19,14 @@ This template should help get you started developing with Vue 3 in Vite.
 
 See [Vite Configuration Reference](https://vite.dev/config/).
 
+## Routing
+
+- 使用 Vike 文件路由，页面目录位于 `pages/`
+- 全局布局位于 `pages/+Layout.vue`
+- 全局 Vike 配置位于 `pages/+config.ts`
+- 当前已启用 SSR（服务端渲染）
+- 应用入口由 Vike 接管（不再使用 `src/main.ts` / `src/App.vue` / `vue-router`）
+
 ## Project Setup
 
 ```sh
@@ -36,3 +44,8 @@ npm run dev
 ```sh
 npm run build
 ```
+
+构建产物：
+
+- 客户端静态资源：`dist/client`
+- 服务端产物：`dist/server`

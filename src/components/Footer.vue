@@ -20,7 +20,7 @@
 <script setup>
 import Ads from "./Ads.vue";
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = import.meta.env.PROD;
 </script>
 <style scoped>
 .footer {

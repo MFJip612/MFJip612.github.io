@@ -33,6 +33,9 @@
     ]
   },
   "include": [
+    "pages/**/*.ts",
+    "pages/**/*.d.ts",
+    "pages/**/*.vue",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",

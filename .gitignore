@@ -1,5 +1,7 @@
 # Customize this .gitignore file as needed
 .trae/*
+.vscode
+.lingma
 
 # Logs
 logs
