@@ -1,5 +1,8 @@
+import '../dist/server/entry.mjs'
+import universalVikeHandler from 'vike/universal-middleware'
+
 export default {
-	fetch: async (request) => {
+	fetch: async (request, env) => {
 		const url = new URL(request.url);
 
 		// CORS helper: attach Access-Control-Allow-Origin to responses
@@ -44,6 +47,15 @@ export default {
 			return Response.json({ name: "Cloudflare" });
 		}
 
-		return new Response(null, { status: 404 });
+		// Serve static assets first (favicon, CSS/JS chunks, sitemap, etc.)
+		if ((request.method === 'GET' || request.method === 'HEAD') && env?.ASSETS) {
+			const assetResp = await env.ASSETS.fetch(request)
+			if (assetResp.status !== 404) {
+				return assetResp
+			}
+		}
+
+		// Fallback to Vike SSR rendering for application routes
+		return universalVikeHandler(request, {}, {})
 	},
 };
