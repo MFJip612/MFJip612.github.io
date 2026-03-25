@@ -6,11 +6,11 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "blog",
 	"compatibility_date": "2025-12-05",
-	"main": "server/index.js",
-	"assets": {
-		"directory": "./dist/client/",
-		"not_found_handling": "single-page-application"
-	},
+	"main": "virtual:photon:cloudflare:server-entry",
+	// Only required if your app (or one of your libraries) uses a Node.js API
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
 	"observability": {
 		"enabled": true
 	}
