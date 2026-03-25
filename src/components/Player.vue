@@ -31,8 +31,20 @@ let showMessageTimer = null;
 
 let loadVideo = null;
 
+const ensureXgplayerStyle = () => {
+	if (typeof document === 'undefined') return
+	const styleId = 'xgplayer-stylesheet'
+	if (document.getElementById(styleId)) return
+	const link = document.createElement('link')
+	link.id = styleId
+	link.rel = 'stylesheet'
+	link.href = 'https://unpkg.com/xgplayer/dist/index.min.css'
+	document.head.appendChild(link)
+}
+
 onMounted(() => {
 	adbIsEnabled.value = false;
+	ensureXgplayerStyle();
 
 	// 延迟并在客户端懒加载播放器及其插件
 	(async () => {
@@ -50,9 +62,6 @@ onMounted(() => {
 				import('xgplayer/es/plugins/cssFullScreen'),
 				import('xgplayer/es/plugins/fullscreen'),
 			]);
-			// 动态注入样式
-			try { await import('xgplayer/dist/index.min.css'); } catch (e) { /* ignore */ }
-
 			const SimplePlayer = xgplayerMod.default || xgplayerMod;
 			const Start = StartMod.default || StartMod;
 			const PC = PCMod.default || PCMod;
