@@ -10,8 +10,8 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref, watch, nextTick } from "vue";
 
-let hljs: any = null;
-let katex: any = null;
+let hljs = null;
+let katex = null;
 
 const props = defineProps({ post: Object });
 const emit = defineEmits(["headings"]);

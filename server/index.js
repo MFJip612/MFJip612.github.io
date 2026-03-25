@@ -14,10 +14,7 @@ export default {
 			});
 		};
 
-		// Legacy pre-render helper removed. Vike SSR pages handle server rendering now.
 
-    // NOTE: legacy pre-rendering for /friends was removed in favor of Vike SSR pages.
-    // The Vike server/pages system now handles rendering /friends on the server side.
 
 		// Handle a proxy endpoint for friends data
 		if (url.pathname === "/api/friends-proxy") {

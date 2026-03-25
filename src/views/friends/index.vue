@@ -43,6 +43,7 @@ import {
 } from '@/components/ui/card'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 
 import { ref, onMounted } from "vue";
 import { usePageContext } from 'vike-vue/usePageContext';
@@ -54,8 +55,8 @@ const loading = ref(true);
 const error = ref('');
 
 // 如果服务端注入了 friends 数据，则优先使用它（SSR）
-if (pageContext?.friends && Array.isArray(pageContext.friends)) {
-	friends.value = pageContext.friends;
+if (pageContext?.pageProps?.friends && Array.isArray(pageContext.pageProps.friends)) {
+	friends.value = pageContext.pageProps.friends;
 	loading.value = false;
 }
 
