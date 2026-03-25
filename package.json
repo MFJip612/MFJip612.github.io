@@ -22,6 +22,7 @@
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"gasp": "^0.0.2",
+		"gsap": "^3.14.2",
 		"highlight.js": "^11.11.1",
 		"katex": "^0.16.42",
 		"lucide-vue-next": "^0.575.0",
