@@ -1,8 +1,7 @@
-import Page from './+Page.vue'
-export { Page }
-
 function fixInvalidJson(jsonText: string) {
-  try { return JSON.parse(jsonText) } catch (e) {
+  try {
+    return JSON.parse(jsonText)
+  } catch {
     let fixedText = jsonText.trim()
     if (fixedText.startsWith('{') && fixedText.endsWith('}')) {
       fixedText = fixedText.substring(1, fixedText.length - 1).trim()
@@ -26,10 +25,6 @@ export async function onBeforeRender() {
         }))
       : []
 
-    console.log('onBeforeRender: fetched friends count', friends.length)
-    // Vike expects data to be provided under `pageProps` to be available
-    // to the page component and serialized to the client. Put friends
-    // into pageContext.pageProps.
     return { pageContext: { pageProps: { friends } } }
   } catch (err) {
     console.error('onBeforeRender friends fetch failed', err)
