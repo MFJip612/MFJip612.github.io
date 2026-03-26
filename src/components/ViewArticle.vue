@@ -2737,8 +2737,4 @@ body {
     color: #656d76;
     border-right-color: #3d444d;
 }
-
-.md-paragraph { 
-    text-indent: 2rem;
-}
 </style>
