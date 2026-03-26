@@ -7,7 +7,7 @@
 		"node": "^20.19.0 || >=22.12.0"
 	},
 	"scripts": {
-		"dev": "vike",
+		"dev": "vike dev",
 		"build": "vue-tsc && vike build",
 		"preview": "pnpm run build && wrangler dev",
 		"deploy": "pnpm run build && wrangler deploy",
@@ -22,7 +22,6 @@
 		"animate.css": "^4.1.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"gasp": "^0.0.2",
 		"gsap": "^3.14.2",
 		"highlight.js": "^11.11.1",
 		"katex": "^0.16.42",
