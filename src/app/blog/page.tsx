@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 
@@ -8,7 +9,7 @@ export default function BlogPage() {
   return (
     <>
       <Navbar />
-      <div className="p-8 min-h-screen">
+      <div className="p-8">
         <main className="max-w-3xl mx-auto">
           <h1 className="text-3xl font-bold mb-6">博客</h1>
 
@@ -25,6 +26,7 @@ export default function BlogPage() {
           </ul>
         </main>
       </div>
+      <Footer />
     </>
   );
 }
