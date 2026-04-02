@@ -42,14 +42,14 @@ const routes = Object.entries(pages)
         <nav>
             <NavigationMenu>
                 <NavigationMenuList>
-                    <NavigationMenuItem>
+                    <NavigationMenuItem class="flex justify-start">
                         <Avatar class="w-10 h-10 cursor-pointer">
                             <AvatarImage :src="Logo" />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         <!-- <img v-bind:src="Logo" alt="Logo"> -->
                     </NavigationMenuItem>
-                    <NavigationMenuItem v-for="route in routes" :key="route.path">
+                    <NavigationMenuItem v-for="route in routes" :key="route.path" class="flex justify-end">
                         <NavigationMenuLink as-child :class="navigationMenuTriggerStyle()">
                             <a :href="route.path">{{ route.meta.title }}</a>
                         </NavigationMenuLink>

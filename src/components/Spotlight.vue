@@ -1,15 +1,13 @@
 <template>
     <div class="spotlight">
-        <h1
-            :data-content="text"
-            id="spotlight"
-            data-only
-            @click="RandomAnimate">
+        <h1 :data-content="text" id="spotlight" data-only @click="RandomAnimate">
             {{ text }}
         </h1>
     </div>
 </template>
 <script setup>
+import { ref, onMounted } from 'vue';
+
 const animates = [
     "animate__bounce",
     "animate__flash",
@@ -31,21 +29,32 @@ function getRandomAnimate() {
 }
 
 function RandomAnimate() {
-    let timer = setInterval(() => {
-        const h1 = document.querySelector("#spotlight");
-        if (h1) {
-            h1.className = `animate__animated ${getRandomAnimate()}`;
-        }
-        clearInterval(timer);
-    }, 300);
+    const h1 = document.querySelector("#spotlight");
+    if (h1) {
+        h1.className = `animate__animated ${getRandomAnimate()}`;
+    }
 }
 
-const text = "Hello, World!";
+const text = ref("");
+
+const texts = [
+    "無限の進歩",
+    "无限成长",
+    "Infinite Growth"
+];
+
+onMounted(() => {
+    setTimeout(() => {
+        const index = Math.floor(Math.random() * texts.length);
+        text.value = texts[index];
+    }, 3000);
+});
 </script>
 <style scoped>
 * {
     text-align: center;
 }
+
 .spotlight {
     /* background-color: #222; */
     display: flex;
@@ -60,6 +69,7 @@ const text = "Hello, World!";
     -ms-user-select: none;
     user-select: none;
 }
+
 h1[data-only] {
     font-weight: bold;
     color: #333;
@@ -70,6 +80,7 @@ h1[data-only] {
     /* letter-spacing: -0.3rem; */
     position: relative;
 }
+
 h1[data-only]::after {
     font-weight: bold;
     content: attr(data-content);
@@ -80,13 +91,11 @@ h1[data-only]::after {
     -webkit-clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
     clip-path: ellipse(6.25rem 6.25rem at 0% 50%);
     animation: spotlight 5s infinite;
-    background-image: linear-gradient(
-        69.7deg,
-        rgba(244, 37, 243, 1) 1.4%,
-        rgba(244, 87, 1, 1) 36.2%,
-        rgba(255, 204, 37, 1) 72.2%,
-        rgba(20, 196, 6, 1) 113%
-    );
+    background-image: linear-gradient(69.7deg,
+            rgba(244, 37, 243, 1) 1.4%,
+            rgba(244, 87, 1, 1) 36.2%,
+            rgba(255, 204, 37, 1) 72.2%,
+            rgba(20, 196, 6, 1) 113%);
     background-position: center center;
     -webkit-background-clip: text;
     background-clip: text;
