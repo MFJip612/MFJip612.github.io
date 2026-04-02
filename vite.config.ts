@@ -7,18 +7,17 @@ import path from 'node:path'
 import sitemapPlugin from './vite-plugin-sitemap'
 import rssPlugin from './vite-plugin-rss'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vike(),
     vue({
       template: {
         compilerOptions: {
-          // 处理 .md 文件作为组件
           isCustomElement: (tag) => tag.endsWith('.md')
         }
       }
-    }), inspect(),
+    }),
+    inspect(),
     tailwindcss(),
     sitemapPlugin({ baseUrl: 'https://www.waterspo.top' }),
     rssPlugin({
@@ -34,10 +33,43 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['vue'],
+    include: ['vue', 'highlight.js', 'katex'],
     exclude: []
   },
   assetsInclude: [
-    "**/*.md"  // 将markdown文件视为资源
-  ]
+    "**/*.md"
+  ],
+  build: {
+    target: 'es2020',
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id: string) => {
+          if (id.includes('node_modules/vue') || id.includes('node_modules/vike-vue')) {
+            return 'vendor-vue'
+          }
+          if (id.includes('node_modules/highlight.js')) {
+            return 'vendor-highlight'
+          }
+          if (id.includes('node_modules/katex')) {
+            return 'vendor-katex'
+          }
+          if (id.includes('node_modules/animate.css')) {
+            return 'vendor-animate'
+          }
+          if (id.includes('node_modules/gsap')) {
+            return 'vendor-gsap'
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 500,
+  },
+  preview: {
+    port: 4173,
+  },
+  server: {
+    port: 5173,
+    host: true,
+  },
 })
