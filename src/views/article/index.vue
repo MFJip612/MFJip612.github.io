@@ -13,7 +13,6 @@
 <script setup>
 import { ref, watch, computed } from "vue";
 import { usePageContext } from "vike-vue/usePageContext";
-import { navigate } from "vike/client/router";
 import BrowseArticle from "@/components/BrowseArticle.vue";
 import ViewArticle from "@/components/ViewArticle.vue";
 import TableOfContents from "@/components/TableOfContents.vue";
@@ -60,7 +59,9 @@ watch(
 function onSelect(post) {
 	selected.value = post;
 	headings.value = [];
-	navigate(`/article/${post.name}`);
+	document.dispatchEvent(new CustomEvent('vike:preNavigate', {
+		detail: { to: `/article/${post.name}` }
+	}))
 }
 </script>
 

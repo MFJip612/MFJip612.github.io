@@ -5,51 +5,85 @@
   </main>
   <Footer />
   <Loading v-if="loadingVisible" ref="loadingRef" />
-  <!-- Loading is displayed during client-side navigation -->
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import Loading from '@/components/Loading.vue'
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { navigate } from 'vike/client/router'
+import type { ComponentPublicInstance } from 'vue'
 
 const loadingVisible = ref(false)
-const loadingRef = ref(null)
+const loadingRef = ref<ComponentPublicInstance & {
+  start: () => void
+  exit: () => Promise<void>
+  startExitAnimation: () => Promise<void>
+  isActive: boolean
+} | null>(null)
+let pendingNavigate: string | null = null
+let isSelfNavigation = false
 
-let observer = null
+async function handlePreNavigate(event: CustomEvent<{ to: string }>) {
+  if (pendingNavigate) return
 
-function showLoader() {
-  if (loadingVisible.value) return
+  pendingNavigate = event.detail.to
+  isSelfNavigation = true
   loadingVisible.value = true
-  nextTick(() => {
-    loadingRef.value?.start?.()
-  })
+
+  await loadingRef.value?.startExitAnimation()
+
+  if (loadingRef.value) {
+    loadingRef.value.isActive = false
+  }
+
+  const destination = pendingNavigate
+  pendingNavigate = null
+
+  await navigate(destination)
+
+  isSelfNavigation = false
+  loadingVisible.value = false
 }
 
-function hideLoader() {
-  if (!loadingVisible.value) return
-  // play exit animation then hide
-  const exitPromise = loadingRef.value?.exit?.() || Promise.resolve()
-  exitPromise.then(() => {
+function handleVikeStart() {
+  if (isSelfNavigation) return
+
+  if (!loadingVisible.value) {
+    loadingVisible.value = true
+  }
+}
+
+function handleVikeEnd() {
+  if (!loadingRef.value) {
     loadingVisible.value = false
-  })
+    return
+  }
+
+  if (isSelfNavigation) return
+
+  loadingRef.value.isActive = true
+  loadingRef.value.start?.()
+
+  setTimeout(() => {
+    loadingRef.value?.exit?.().then(() => {
+      if (!pendingNavigate) {
+        loadingVisible.value = false
+      }
+    })
+  }, 1200)
 }
 
 onMounted(() => {
-  // Use Vike client routing hooks: listen for global events dispatched by
-  // +onPageTransitionStart / +onPageTransitionEnd hooks so the loader is
-  // triggered by Vike instead of DOM interception.
-  const onVikeStart = () => showLoader()
-  const onVikeEnd = () => hideLoader()
-
-  document.addEventListener('vike:onPageTransitionStart', onVikeStart)
-  document.addEventListener('vike:onPageTransitionEnd', onVikeEnd)
+  document.addEventListener('vike:preNavigate', (e: Event) => handlePreNavigate(e as CustomEvent<{ to: string }>))
+  document.addEventListener('vike:onPageTransitionStart', handleVikeStart)
+  document.addEventListener('vike:onPageTransitionEnd', handleVikeEnd)
 
   onUnmounted(() => {
-    document.removeEventListener('vike:onPageTransitionStart', onVikeStart)
-    document.removeEventListener('vike:onPageTransitionEnd', onVikeEnd)
-    if (observer) observer.disconnect()
+    document.removeEventListener('vike:preNavigate', (e: Event) => handlePreNavigate(e as CustomEvent<{ to: string }>))
+    document.removeEventListener('vike:onPageTransitionStart', handleVikeStart)
+    document.removeEventListener('vike:onPageTransitionEnd', handleVikeEnd)
   })
 })
 </script>

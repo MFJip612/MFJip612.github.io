@@ -35,6 +35,26 @@ const routes = Object.entries(pages)
         const orderB = b.meta?.menuOrder ?? 9999;
         return orderA - orderB;
     });
+
+function handleNavClick(event, path) {
+    const target = event.currentTarget
+
+    if (target.host !== window.location.host) {
+        return
+    }
+
+    event.preventDefault()
+    event.stopPropagation()
+
+    const currentPath = window.location.pathname
+    if (currentPath === path || currentPath === path + '/') {
+        return
+    }
+
+    document.dispatchEvent(new CustomEvent('vike:preNavigate', {
+        detail: { to: path }
+    }))
+}
 </script>
 <template>
     <header
@@ -47,11 +67,10 @@ const routes = Object.entries(pages)
                             <AvatarImage :src="Logo" />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
-                        <!-- <img v-bind:src="Logo" alt="Logo"> -->
                     </NavigationMenuItem>
                     <NavigationMenuItem v-for="route in routes" :key="route.path" class="flex justify-end">
                         <NavigationMenuLink as-child :class="navigationMenuTriggerStyle()">
-                            <a :href="route.path">{{ route.meta.title }}</a>
+                            <a :href="route.path" @click="(e) => handleNavClick(e, route.path)">{{ route.meta.title }}</a>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>

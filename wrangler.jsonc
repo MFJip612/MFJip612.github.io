@@ -15,12 +15,7 @@
 	},
 	"assets": {
 		"directory": "./dist/client/",
-		"binding": "ASSETS",
-		"cacheControl": {
-			"browseCacheMaxAge": "86400",
-			"edgeCacheMaxAge": "43200",
-			"staleWhileRevalidate": "86400"
-		}
+		"binding": "ASSETS"
 	},
 	"vars": {
 		"CDN_CACHE_MAX_AGE": "43200"
