@@ -1,4 +1,4 @@
-import { ArticleMeta } from '@/types'
+import type { ArticleMeta } from '@/types'
 
 const meta: ArticleMeta = {
   title: 'How I Build My Blog',

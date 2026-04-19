@@ -1,4 +1,4 @@
-import { ArticleMeta } from '@/types';
+import type { ArticleMeta } from '@/types';
 
 export interface ArticleRouteInfo {
   path: string;

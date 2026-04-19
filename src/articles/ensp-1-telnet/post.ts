@@ -1,4 +1,4 @@
-import { ArticleMeta } from '@/types'
+import type { ArticleMeta } from '@/types'
 
 const meta: ArticleMeta = {
   title: '小型网络安装与调试：配置交换机支持Telnet',

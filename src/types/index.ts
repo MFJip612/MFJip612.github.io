@@ -3,19 +3,13 @@ export interface ArticleMeta {
   date: string;
   description?: string;
   tags?: string[];
-  [key: string]: any;
+  menuOrder?: number;
+  hidden?: boolean;
 }
 
 export interface PageMeta {
-  title?: string;
+  title: string;
+  description?: string;
   menuOrder?: number;
   hidden?: boolean;
-  [key: string]: any;
-}
-
-export interface RouteInfo {
-  path: string;
-  name: string;
-  component: any;
-  meta: ArticleMeta | PageMeta;
 }

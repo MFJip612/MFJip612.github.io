@@ -1,75 +1,49 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vike from 'vike/plugin'
-import inspect from 'vite-plugin-inspect'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'node:path'
-import sitemapPlugin from './vite-plugin-sitemap'
-import rssPlugin from './vite-plugin-rss'
+import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
+// https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vike(),
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag.endsWith('.md')
-        }
-      }
-    }),
-    inspect(),
-    tailwindcss(),
-    sitemapPlugin({ baseUrl: 'https://www.waterspo.top' }),
-    rssPlugin({
-      baseUrl: 'https://www.waterspo.top',
-      title: 'Waterspo\'s Blog',
-      description: '分享技术、学习与生活',
-      language: 'zh-cn',
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': resolve(__dirname, './src')
     }
   },
-  optimizeDeps: {
-    include: ['vue', 'highlight.js', 'katex'],
-    exclude: []
-  },
-  assetsInclude: [
-    "**/*.md"
-  ],
   build: {
-    target: 'es2020',
+    // 构建优化
+    target: 'es2015',
+    minify: 'terser',
     cssCodeSplit: true,
     rollupOptions: {
       output: {
-        manualChunks: (id: string) => {
-          if (id.includes('node_modules/vue') || id.includes('node_modules/vike-vue')) {
-            return 'vendor-vue'
+        // 代码分割
+        manualChunks(id) {
+          if (id.includes('react') || id.includes('react-dom')) {
+            return 'react';
           }
-          if (id.includes('node_modules/highlight.js')) {
-            return 'vendor-highlight'
+          if (id.includes('react-router-dom')) {
+            return 'router';
           }
-          if (id.includes('node_modules/katex')) {
-            return 'vendor-katex'
+          if (id.includes('clsx') || id.includes('tailwind-merge')) {
+            return 'ui';
           }
-          if (id.includes('node_modules/animate.css')) {
-            return 'vendor-animate'
-          }
-          if (id.includes('node_modules/gsap')) {
-            return 'vendor-gsap'
-          }
-        },
-      },
+        }
+      }
     },
-    chunkSizeWarningLimit: 500,
+
   },
-  preview: {
-    port: 4173,
+  optimizeDeps: {
+    // 依赖预构建
+    include: ['react', 'react-dom', 'react-router-dom', 'clsx', 'tailwind-merge'],
+    exclude: []
   },
   server: {
-    port: 5173,
-    host: true,
-  },
+    // 开发服务器优化
+    port: 3000,
+    open: true,
+    hmr: {
+      overlay: true
+    }
+  }
 })

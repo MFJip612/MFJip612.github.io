@@ -1,4 +1,4 @@
-import { ArticleMeta } from '@/types'
+import type { ArticleMeta } from '@/types'
 
 const meta: ArticleMeta = {
   title: '在SPA网站中返回内容',

@@ -1,4 +1,4 @@
-import { PageMeta } from '@/types'
+import type { PageMeta } from '@/types'
 
 const meta: PageMeta = {
   title: '产品',
