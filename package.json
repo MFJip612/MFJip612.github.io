@@ -27,7 +27,7 @@
 		"katex": "^0.16.44",
 		"lucide-vue-next": "^0.575.0",
 		"markstream-vue": "^0.0.7",
-		"mermaid": "^11.14.0",
+		"mermaid": "^11.15.0",
 		"reka-ui": "^2.9.3",
 		"shiki": "^3.23.0",
 		"stream-markdown": "^0.0.14",
