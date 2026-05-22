@@ -34,7 +34,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['vue', 'highlight.js', 'katex'],
-    exclude: []
   },
   assetsInclude: [
     "**/*.md"
