@@ -1,4 +1,7 @@
 <script>
+  import Navbar from '$lib/components/Navbar.svelte';
+  import Footer from '$lib/components/Footer.svelte';
+
   const links = [
     {
       name: 'Cloudflare Blog',
@@ -52,24 +55,7 @@
 
 <div class="page-wrapper">
   <!-- Navigation -->
-  <nav class="nav-bar">
-    <div class="container nav-inner">
-      <a href="/" class="nav-brand">
-        <span class="brand-prefix">&gt;_</span>
-        <span class="brand-name">MFJip612</span>
-      </a>
-      <div class="nav-links">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="/links" class="nav-link active" aria-current="page">Links</a>
-      </div>
-      <button class="nav-mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
-        <span class="toggle-bar"></span>
-        <span class="toggle-bar"></span>
-        <span class="toggle-bar"></span>
-      </button>
-    </div>
-  </nav>
+  <Navbar activePath="/links" />
 
   <!-- Page Header -->
   <header class="page-header">
@@ -129,21 +115,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-left">
-        <span class="footer-brand">&gt;_ MFJip612</span>
-        <span class="footer-sep">//</span>
-        <span class="footer-text">Built with precision.</span>
-      </div>
-      <div class="footer-right">
-        <span class="footer-status">
-          <span class="status-dot"></span>
-          All systems operational
-        </span>
-      </div>
-    </div>
-  </footer>
+  <Footer />
 </div>
 
 <style>
@@ -153,91 +125,6 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-  }
-
-  /* === Navigation (shared) === */
-  .nav-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-outline-variant);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-  }
-
-  .nav-brand {
-    display: flex;
-    align-items: baseline;
-    text-decoration: none;
-    color: var(--color-on-surface);
-    font-family: var(--font-headline);
-    font-weight: 700;
-    font-size: 1.125rem;
-    letter-spacing: -0.02em;
-  }
-
-  .brand-prefix { color: var(--color-secondary-container); }
-  .brand-name { color: var(--color-primary); }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .nav-link {
-    font-family: var(--font-headline);
-    font-size: var(--text-label-md);
-    font-weight: 500;
-    color: var(--color-on-surface-variant);
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.25rem 0;
-    position: relative;
-    transition: color var(--transition-fast);
-  }
-
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--color-primary-container);
-    transition: width var(--transition-base);
-  }
-
-  .nav-link:hover,
-  .nav-link.active { color: var(--color-primary); }
-  .nav-link.active::after,
-  .nav-link:hover::after { width: 100%; }
-
-  .nav-mobile-toggle {
-    display: none;
-    flex-direction: column;
-    gap: 4px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-  }
-
-  .toggle-bar {
-    display: block;
-    width: 20px;
-    height: 2px;
-    background-color: var(--color-on-surface-variant);
-    border-radius: var(--radius-full);
   }
 
   /* === Page Header === */
@@ -445,57 +332,12 @@
     word-break: break-all;
   }
 
-  /* === Footer === */
-  .site-footer {
-    border-top: 1px solid var(--color-outline-variant);
-    padding: 1.5rem 0;
-    background-color: var(--color-surface-container-lowest);
-    margin-top: auto;
-  }
-
-  .footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .footer-left {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-headline);
-    font-size: 0.8125rem;
-  }
-
-  .footer-brand { color: var(--color-primary); font-weight: 600; }
-  .footer-sep { color: var(--color-outline-variant); }
-  .footer-text { color: var(--color-on-surface-variant); }
-
-  .footer-right {
-    font-family: var(--font-headline);
-    font-size: 0.75rem;
-    color: var(--color-on-surface-variant);
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: var(--radius-full);
-    background-color: #28c840;
-    box-shadow: 0 0 6px rgba(40, 200, 64, 0.5);
-  }
-
   @media (max-width: 767px) {
-    .nav-links { display: none; }
-    .nav-mobile-toggle { display: flex; }
+    .links-grid {
+      grid-template-columns: 1fr;
+    }
     .page-header { padding: 2rem 0 1.5rem; }
     .main-content { padding: 2rem 0 3rem; }
     .filter-bar { flex-direction: column; align-items: flex-start; }
-    .footer-inner { flex-direction: column; text-align: center; }
   }
 </style>
