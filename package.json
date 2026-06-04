@@ -1,21 +1,44 @@
 {
-  "name": "mfjip612-github-io",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^7.1.2",
-    "@tsconfig/svelte": "^5.0.8",
-    "@types/node": "^24.12.3",
-    "svelte": "^5.55.5",
-    "svelte-check": "^4.4.8",
-    "typescript": "~6.0.2",
-    "vite": "^8.0.12"
-  }
+	"name": "mfjip612-github-io",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "wrangler types --check && vite build",
+		"preview": "wrangler dev .svelte-kit/cloudflare/_worker.js --port 4173",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"gen": "wrangler types",
+		"test:e2e": "playwright install && playwright test",
+		"test": "npm run test:e2e",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@playwright/test": "^1.60.0",
+		"@sveltejs/adapter-cloudflare": "^7.2.8",
+		"@sveltejs/kit": "^2.57.0",
+		"@sveltejs/vite-plugin-svelte": "^7.0.0",
+		"@tailwindcss/forms": "^0.5.11",
+		"@tailwindcss/typography": "^0.5.19",
+		"@tailwindcss/vite": "^4.2.2",
+		"@types/node": "^24",
+		"eslint": "^10.4.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-svelte": "^3.17.0",
+		"globals": "^17.4.0",
+		"mdsvex": "^0.12.7",
+		"prettier": "^3.8.1",
+		"prettier-plugin-svelte": "^3.5.1",
+		"prettier-plugin-tailwindcss": "^0.7.2",
+		"svelte": "^5.55.2",
+		"svelte-check": "^4.4.6",
+		"tailwindcss": "^4.2.2",
+		"typescript": "^6.0.2",
+		"vite": "^8.0.7",
+		"wrangler": "^4.81.0"
+	}
 }
