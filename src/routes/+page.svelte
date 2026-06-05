@@ -1,4 +1,5 @@
 <script>
+  import { resolve } from '$app/paths';
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
 
@@ -116,7 +117,7 @@
           <div class="article-list">
             {#each articles as article (article.slug)}
               <article class="article-card card">
-                <a href="/blog/{article.slug}" class="article-link">
+                <a href={resolve('/blog/[slug]', { slug: article.slug })} class="article-link">
                   <div class="article-meta">
                     <time datetime={article.date} class="article-date">{formatDate(article.date)}</time>
                     <span class="article-read-time">{article.readTime}</span>
