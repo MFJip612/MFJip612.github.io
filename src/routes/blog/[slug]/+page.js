@@ -4,6 +4,13 @@ const articles = {
     date: '2026-06-01',
     readTime: '8 min',
     tags: ['Cloudflare', 'Serverless', 'Edge Computing'],
+    summary: 'Cloudflare Workers represent a paradigm shift in how we think about server-side computation. Instead of traditional server-based architectures, Workers run your code at the edge — in data centers distributed across more than 300 cities worldwide.',
+    author: {
+      name: 'MFJip612',
+      role: 'Edge Engineer',
+      bio: 'Software engineer focused on building fast, reliable systems at the edge. Writing about serverless computing and distributed architectures.'
+    },
+    heroImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80',
     content: `
 ## Introduction
 
@@ -31,7 +38,7 @@ export default {
 ### Key Benefits
 
 1. **Global distribution** — Code runs in 300+ locations
-2. **Cold start times** &lt; 5ms (V8 isolates, not containers)
+2. **Cold start times** < 5ms (V8 isolates, not containers)
 3. **Free tier** — 100,000 requests/day
 4. **Native integrations** — KV, D1, R2, Queues
 
@@ -80,6 +87,13 @@ Cloudflare Workers offer a compelling platform for building globally-distributed
     date: '2026-05-25',
     readTime: '12 min',
     tags: ['Svelte', 'Reactivity', 'Frontend'],
+    summary: 'Explore how Svelte 5 runes transform reactive programming with fine-grained reactivity and compile-time optimization.',
+    author: {
+      name: 'MFJip612',
+      role: 'Frontend Engineer',
+      bio: 'Software engineer focused on building fast, reliable systems at the edge. Writing about frontend frameworks and reactive programming.'
+    },
+    heroImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80',
     content: `
 ## The Runes Revolution
 
@@ -152,6 +166,13 @@ Migrating from Svelte 3/4 to Svelte 5 involves replacing \`let\` with \`$state()
     date: '2026-05-18',
     readTime: '10 min',
     tags: ['Rust', 'WebAssembly', 'Performance'],
+    summary: 'Practical guide to compiling Rust modules for WASM and integrating them into high-performance web applications.',
+    author: {
+      name: 'MFJip612',
+      role: 'Systems Engineer',
+      bio: 'Software engineer focused on building fast, reliable systems at the edge. Writing about low-level performance and systems programming.'
+    },
+    heroImage: 'https://images.unsplash.com/photo-1515879218367-8466d910adfe?w=1200&q=80',
     content: `
 ## Why Rust for WASM?
 
@@ -213,6 +234,13 @@ In our tests comparing JavaScript vs Rust/WASM implementations:
     date: '2026-05-10',
     readTime: '15 min',
     tags: ['Design Systems', 'CSS', 'Architecture'],
+    summary: 'How to build maintainable design systems using design tokens, CSS custom properties, and automated visual regression testing.',
+    author: {
+      name: 'MFJip612',
+      role: 'Design Engineer',
+      bio: 'Software engineer focused on building fast, reliable systems at the edge. Writing about design systems and CSS architecture.'
+    },
+    heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80',
     content: `
 ## The Token Philosophy
 
@@ -287,10 +315,31 @@ export function load({ params }) {
     };
   }
 
+  // Build related articles list (exclude current)
+  const related = Object.entries(articles)
+    .filter(([slug]) => slug !== params.slug)
+    .slice(0, 3)
+    .map(([slug, a]) => ({
+      slug,
+      title: a.title,
+      date: a.date
+    }));
+
+  // Build TOC from content headings
+  const toc = [];
+  const headingRegex = /^##\s+(.+)$/gm;
+  let match;
+  while ((match = headingRegex.exec(article.content)) !== null) {
+    const text = match[1].replace(/`/g, '').trim();
+    toc.push(text);
+  }
+
   return {
-    props: {
-      article,
-      slug: params.slug
-    }
+    article: {
+      ...article,
+      toc,
+      related
+    },
+    slug: params.slug
   };
 }
