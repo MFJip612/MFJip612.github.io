@@ -8,6 +8,9 @@ interface ArticleMeta {
   [key: string]: any;
 }
 
+// 文章详情页组件（统一）
+const ArticleDetail = () => import('../views/article/detail.vue');
+
 // 自动检索articles目录下所有含post.ts的子目录并生成路由
 const posts = import.meta.glob<{ default: ArticleMeta }>('../articles/**/post.ts', {
   eager: true,
@@ -15,25 +18,30 @@ const posts = import.meta.glob<{ default: ArticleMeta }>('../articles/**/post.ts
 });
 
 // 惰性加载文章 MD 文件：路由匹配时才按需加载
-const components = import.meta.glob('../articles/**/index.md');
+const mdModules = import.meta.glob<string>('../articles/**/index.md', {
+  query: '?raw',
+  import: 'default',
+});
 
-const componentsMap: Record<string, any> = Object.fromEntries(
-  Object.entries(components).map(([path, loader]) => {
-    const routePath = path.replace('../articles', '').replace('/index.md', '') || '/';
-    return [routePath || '/', loader];
+const mdMap: Record<string, () => Promise<string>> = Object.fromEntries(
+  Object.entries(mdModules).map(([path, loader]) => {
+    const id = path.replace('../articles/', '').replace('/index.md', '');
+    return [id, loader as () => Promise<string>];
   })
 );
 
 const routes: RouteRecordRaw[] = Object.entries(posts).map(([path, meta]) => {
-  const routePath = path.replace('../articles', '').replace('/post.ts', '') || '/';
-  const name = routePath === '/' ? 'index' : routePath.slice(1).split('/').join('-');
+  const id = path.replace('../articles/', '').replace('/post.ts', '');
+  const name = `article-${id}`;
   return {
-    path: routePath,
+    path: `/article/${id}`,
     name,
-    component: componentsMap[routePath],
+    component: ArticleDetail,
     meta: {
       ...meta,
-      hidden: true  // 自动将文章路由设置为隐藏
+      hidden: true,
+      articleId: id,
+      mdLoader: mdMap[id],
     },
   } as RouteRecordRaw;
 });

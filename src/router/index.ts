@@ -27,10 +27,9 @@ const routes: RouteRecordRaw[] = Object.entries(pages).map(([path, meta]) => {
 	} as RouteRecordRaw;
 });
 
-// 添加文章动态路由
+// 添加文章列表路由（文章详情路由由 articles.ts 自动生成）
 const articleComponent = componentsMap['/article'];
 if (articleComponent) {
-	// 添加文章列表根路由
 	routes.push({
 		path: '/article',
 		name: 'article-list',
@@ -39,18 +38,6 @@ if (articleComponent) {
 			title: '文章列表',
 			menuOrder: 9998,
 			hidden: true
-		}
-	} as RouteRecordRaw);
-	
-	// 添加文章详情路由
-	routes.push({
-		path: '/article/:id',
-		name: 'article-detail',
-		component: articleComponent,
-		meta: {
-			title: '文章详情',
-			menuOrder: 9999,
-			hidden: true // 不在导航栏中显示
 		}
 	} as RouteRecordRaw);
 }

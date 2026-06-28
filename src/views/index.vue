@@ -1,54 +1,44 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { ref, computed } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import LayoutFooter from '@/components/LayoutFooter.vue'
+import type { ArticleMeta } from '@/types'
+
+const router = useRouter()
 
 interface Post {
-  id: number
+  id: string
   title: string
   excerpt: string
   date: string
-  tags: { label: string; variant: 'brand' | 'subtle' }[]
+  tags: string[]
+  path: string
 }
 
-const posts: Post[] = [
-  {
-    id: 1,
-    title: '深入理解 WebSocket',
-    excerpt: '从协议握手到心跳保活，全面解析 WebSocket 在实时通信中的核心机制与最佳实践',
-    date: '2026-06-15',
-    tags: [
-      { label: '网络协议', variant: 'brand' },
-      { label: '实战', variant: 'subtle' }
-    ]
-  },
-  {
-    id: 2,
-    title: '用 Rust 重写 CLI 工具',
-    excerpt: '记录将 Python CLI 迁移到 Rust 的完整过程，性能提升 40 倍的经验总结',
-    date: '2026-06-08',
-    tags: [
-      { label: 'Rust', variant: 'brand' },
-      { label: '性能优化', variant: 'subtle' }
-    ]
-  },
-  {
-    id: 3,
-    title: 'K8s 集群优化实战',
-    excerpt: '从资源调度到网络策略，系统性优化生产环境 Kubernetes 集群的完整指南',
-    date: '2026-05-28',
-    tags: [
-      { label: 'K8s', variant: 'brand' },
-      { label: 'DevOps', variant: 'subtle' }
-    ]
-  }
-]
+// 从路由自动获取最新文章（取前 3 篇）
+const posts = computed<Post[]>(() => {
+  return router.getRoutes()
+    .filter((r) => r.meta?.date && r.path.startsWith('/article/'))
+    .map((r) => {
+      const meta = r.meta as ArticleMeta
+      return {
+        id: (r.meta?.articleId as string) ?? '',
+        title: meta.title,
+        excerpt: meta.description ?? '',
+        date: meta.date,
+        tags: meta.tags ?? [],
+        path: r.path,
+      }
+    })
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3)
+})
 
 const techStack = ['Go', 'Rust', 'TypeScript', 'Kubernetes', 'Linux', 'Neovim', 'Docker', 'PostgreSQL']
 
 // hover state for the article cards
-const hoveredCard = ref<number | null>(null)
+const hoveredCard = ref<string | null>(null)
 </script>
 
 <template>
@@ -90,7 +80,7 @@ const hoveredCard = ref<number | null>(null)
         <RouterLink
           v-for="post in posts"
           :key="post.id"
-          :to="`/article/${post.id}`"
+          :to="post.path"
           class="home-card"
           :data-dom-id="`post-${post.id}`"
           :style="{
@@ -106,11 +96,10 @@ const hoveredCard = ref<number | null>(null)
             <span class="home-card__date">{{ post.date }}</span>
             <div class="home-card__tags">
               <span
-                v-for="(tag, idx) in post.tags"
-                :key="idx"
-                class="home-card__tag"
-                :class="`home-card__tag--${tag.variant}`"
-              >{{ tag.label }}</span>
+                v-for="tag in post.tags"
+                :key="tag"
+                class="home-card__tag home-card__tag--brand"
+              >{{ tag }}</span>
             </div>
           </div>
         </RouterLink>

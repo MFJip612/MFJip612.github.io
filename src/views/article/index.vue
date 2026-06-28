@@ -1,79 +1,55 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import LayoutFooter from '@/components/LayoutFooter.vue'
 import LucideIcon from '@/components/LucideIcon.vue'
+import type { ArticleMeta } from '@/types'
+
+// 从路由自动获取文章列表：articles.ts 生成的文章路由均带 date 字段且 hidden
+const router = useRouter()
 
 interface Article {
-  id: number
+  id: string
   title: string
   excerpt: string
   date: string
-  readTime: string
-  category: string
+  tags: string[]
+  path: string
 }
 
-const articles: Article[] = [
-  {
-    id: 1,
-    title: '深入理解 WebSocket 协议',
-    excerpt: '从握手过程到帧结构，深入分析 WebSocket 协议的底层实现，包括连接管理、心跳机制与性能优化策略。',
-    date: '2026.06.15',
-    readTime: '8 min read',
-    category: '后端'
-  },
-  {
-    id: 2,
-    title: '用 Rust 构建高性能 CLI',
-    excerpt: '使用 Clap 和 Tokio 构建生产级命令行工具，涵盖异步 I/O、错误处理与发布优化的完整流程。',
-    date: '2026.06.08',
-    readTime: '12 min read',
-    category: '系统编程'
-  },
-  {
-    id: 3,
-    title: 'Kubernetes 集群自动扩缩容',
-    excerpt: '基于 HPA 与 KEDA 实现弹性伸缩，详细讲解指标采集、扩缩策略与成本优化的最佳实践。',
-    date: '2026.05.29',
-    readTime: '10 min read',
-    category: 'DevOps'
-  },
-  {
-    id: 4,
-    title: 'TypeScript 类型体操进阶',
-    excerpt: '深入条件类型、映射类型与模板字面量类型，掌握高级类型编程技巧与工程实践中的类型安全模式。',
-    date: '2026.05.20',
-    readTime: '6 min read',
-    category: '前端'
-  },
-  {
-    id: 5,
-    title: 'Linux 内核调度器分析',
-    excerpt: '剖析 CFS 调度器的数据结构与算法实现，从虚拟运行时间到红黑树操作的完整源码解读。',
-    date: '2026.05.12',
-    readTime: '15 min read',
-    category: '系统编程'
-  },
-  {
-    id: 6,
-    title: 'Docker 多阶段构建优化',
-    excerpt: '从镜像体积到构建速度的全方位优化，涵盖层缓存策略、Alpine 基础镜像与 BuildKit 高级特性。',
-    date: '2026.05.03',
-    readTime: '7 min read',
-    category: 'DevOps'
-  }
-]
+const articles = computed<Article[]>(() => {
+  return router.getRoutes()
+    .filter((r) => r.meta?.date && r.path.startsWith('/article/'))
+    .map((r) => {
+      const meta = r.meta as ArticleMeta
+      return {
+        id: (r.meta?.articleId as string) ?? r.path.replace('/article/', ''),
+        title: meta.title,
+        excerpt: meta.description ?? '',
+        date: meta.date,
+        tags: meta.tags ?? [],
+        path: r.path,
+      }
+    })
+    .sort((a, b) => b.date.localeCompare(a.date))
+})
 
-const categories = ['全部', '后端', '前端', 'DevOps', '系统编程', 'AI/ML']
+// 从文章标签自动汇总分类
+const categories = computed(() => {
+  const set = new Set<string>()
+  articles.value.forEach((a) => a.tags.forEach((t) => set.add(t)))
+  return ['全部', ...Array.from(set).sort()]
+})
+
 const activeCategory = ref('全部')
 const searchQuery = ref('')
 const backHovered = ref(false)
 
 const filteredArticles = computed(() => {
-  let list = articles
+  let list = articles.value
   if (activeCategory.value !== '全部') {
-    list = list.filter((a) => a.category === activeCategory.value)
+    list = list.filter((a) => a.tags.includes(activeCategory.value))
   }
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase()
@@ -81,7 +57,7 @@ const filteredArticles = computed(() => {
       (a) =>
         a.title.toLowerCase().includes(q) ||
         a.excerpt.toLowerCase().includes(q) ||
-        a.category.toLowerCase().includes(q)
+        a.tags.some((t) => t.toLowerCase().includes(q))
     )
   }
   return list
@@ -139,7 +115,7 @@ const setCategory = (c: string) => {
         class="articles-filter"
         :class="{
           'articles-filter--active': activeCategory === cat,
-          'articles-filter--pill': cat === '全部' || cat === '后端' || cat === '前端' || cat === 'DevOps'
+          'articles-filter--pill': cat === '全部'
         }"
         :data-dom-id="`filter-${cat}`"
         :aria-pressed="activeCategory === cat"
@@ -152,7 +128,7 @@ const setCategory = (c: string) => {
       <RouterLink
         v-for="article in filteredArticles"
         :key="article.id"
-        :to="`/article/${article.id}`"
+        :to="article.path"
         class="article-card"
         :data-dom-id="`article-${article.id}`"
       >
@@ -161,9 +137,14 @@ const setCategory = (c: string) => {
         <div class="article-card__meta">
           <div class="article-card__info">
             <span class="article-card__date">{{ article.date }}</span>
-            <span class="article-card__read">{{ article.readTime }}</span>
           </div>
-          <span class="article-card__tag">{{ article.category }}</span>
+          <div class="article-card__tags">
+            <span
+              v-for="tag in article.tags"
+              :key="tag"
+              class="article-card__tag"
+            >{{ tag }}</span>
+          </div>
         </div>
       </RouterLink>
     </div>
