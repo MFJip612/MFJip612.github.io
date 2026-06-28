@@ -447,6 +447,12 @@ onMounted(() => {
   margin: 1em 0;
 }
 
+.markdown-body :deep(img) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .markdown-body :deep(code) {
   font-family: var(--geek-font-mono);
   font-size: 0.9em;
