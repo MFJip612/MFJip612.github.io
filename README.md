@@ -1,42 +1,42 @@
-# sv
+# mfjip612-github-io
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+This template should help get you started developing with Vue 3 in Vite.
 
-## Creating a project
+## Recommended IDE Setup
 
-If you're seeing this, you've probably already done this step. Congrats!
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Recommended Browser Setup
 
-To recreate this project with the same configuration:
+- Chromium-based browsers (Chrome, Edge, Brave, etc.):
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
+- Firefox:
+  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
+  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
-```sh
-# recreate this project
-pnpm dlx sv@0.15.4 create --template minimal --types jsdoc --add tailwindcss="plugins:typography,forms" sveltekit-adapter="adapter:cloudflare+cfTarget:workers" mdsvex playwright prettier eslint --install pnpm my-app
-```
+## Type Support for `.vue` Imports in TS
 
-## Developing
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Customize configuration
 
-```sh
-npm run dev
+See [Vite Configuration Reference](https://vite.dev/config/).
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
+## Project Setup
 
 ```sh
-npm run build
+pnpm install
 ```
 
-You can preview the production build with `npm run preview`.
+### Compile and Hot-Reload for Development
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```sh
+pnpm dev
+```
+
+### Type-Check, Compile and Minify for Production
+
+```sh
+pnpm build
+```
