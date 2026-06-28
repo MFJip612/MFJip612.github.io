@@ -19,7 +19,7 @@ let editor: Monaco.editor.IStandaloneCodeEditor | null = null
 // 配置 loader 的 Monaco 版本
 loader.config({
     paths: {
-        vs: 'https://unpkg.com/npm/monaco-editor@0.54.0/min/vs',
+        vs: 'https://unpkg.com/monaco-editor@0.54.0/min/vs',
     },
     'vs/nls': {
         availableLanguages: { '*': 'zh-cn' } // 配置为中文
