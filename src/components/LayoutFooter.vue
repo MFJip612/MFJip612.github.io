@@ -11,7 +11,7 @@
   >
     <div class="layout-footer__inner">
       <p class="layout-footer__copy">
-        &copy; 2026 geekBlog &mdash; built with caffeine and curiosity
+        &copy; 2026 MFJip612 &mdash; built with caffeine and curiosity
       </p>
       <p class="layout-footer__echo">
         <span class="layout-footer__echo-dollar">$</span> echo &quot;hello world&quot;
