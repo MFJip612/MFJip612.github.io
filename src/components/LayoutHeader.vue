@@ -44,21 +44,11 @@ const colorFor = (key: string) => {
 </script>
 
 <template>
-  <header
-    class="layout-header"
-    data-dom-id="global-header"
-  >
+  <header class="layout-header" data-dom-id="global-header">
     <div class="layout-header__inner">
       <!-- Logo -->
-      <RouterLink
-        to="/"
-        class="layout-header__logo"
-        data-nav-key="home"
-        data-dom-id="nav-home"
-        :data-active="String(isActive('index'))"
-        @mouseenter="hovered = 'index'"
-        @mouseleave="hovered = null"
-      >
+      <RouterLink to="/" class="layout-header__logo" data-nav-key="home" data-dom-id="nav-home"
+        :data-active="String(isActive('index'))" @mouseenter="hovered = 'index'" @mouseleave="hovered = null">
         <span class="layout-header__logo-dollar">$</span>
         <span>~/mfjip612</span>
         <span class="layout-header__logo-cursor" />
@@ -66,15 +56,8 @@ const colorFor = (key: string) => {
 
       <!-- Nav Links -->
       <nav class="layout-header__nav" data-dom-id="main-nav">
-        <RouterLink
-          v-for="item in navItems"
-          :key="item.key"
-          :to="item.to"
-          class="layout-header__nav-link"
-          :data-nav-key="item.key"
-          :data-dom-id="`nav-${item.key}`"
-          :data-active="String(isActive(item.key))"
-          :style="{
+        <RouterLink v-for="item in navItems" :key="item.key" :to="item.to" class="layout-header__nav-link"
+          :data-nav-key="item.key" :data-dom-id="`nav-${item.key}`" :data-active="String(isActive(item.key))" :style="{
             color: colorFor(item.key),
             fontFamily: 'var(--geek-font-mono)',
             fontSize: 'var(--geek-text-sm)',
@@ -82,10 +65,7 @@ const colorFor = (key: string) => {
             padding: '4px 0',
             position: 'relative',
             transition: 'color 120ms cubic-bezier(.2,.8,.2,1)'
-          }"
-          @mouseenter="hovered = item.key"
-          @mouseleave="hovered = null"
-        >
+          }" @mouseenter="hovered = item.key" @mouseleave="hovered = null">
           {{ item.label }}
         </RouterLink>
       </nav>
@@ -180,10 +160,12 @@ const colorFor = (key: string) => {
 }
 
 @keyframes geek-blink {
+
   0%,
   50% {
     opacity: 1;
   }
+
   51%,
   100% {
     opacity: 0;
@@ -192,11 +174,13 @@ const colorFor = (key: string) => {
 
 @media (prefers-reduced-motion: reduce) {
   @keyframes geek-blink {
+
     0%,
     100% {
       opacity: 1;
     }
   }
+
   .layout-header__logo-cursor::before,
   .layout-header__nav-link[data-active='true']::before {
     animation: none;

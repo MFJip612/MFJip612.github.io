@@ -25,23 +25,18 @@ interface TimelineEntry {
 const timeline: TimelineEntry[] = [
   {
     period: '2024 - 至今',
-    title: '高级后端工程师 @ TechCorp',
-    description: '负责微服务架构设计与性能优化'
+    title: 'Web学习 @ TechCorp',
+    description: '从前端到后端，深入学习掌握Web开发技术栈'
   },
   {
-    period: '2022 - 2024',
-    title: '后端工程师 @ StartupXYZ',
-    description: '从零搭建分布式系统'
+    period: '2023 - 2024',
+    title: '进一步学习 @ OpenSource',
+    description: '从Python到C++，深入理解系统编程'
   },
   {
-    period: '2020 - 2022',
-    title: '全栈开发 @ OpenSource',
-    description: '核心贡献者，维护多个开源项目'
-  },
-  {
-    period: '2016 - 2020',
-    title: 'CS @ University',
-    description: '计算机科学学士学位'
+    period: '2020 - 2023',
+    title: '编程入门 @ Beginner',
+    description: '从易语言开始'
   }
 ]
 
@@ -55,14 +50,9 @@ const backHovered = ref(false)
     <!-- Page header -->
     <div class="about-header">
       <h2 class="geek-h2 about-header__title">关于我</h2>
-      <RouterLink
-        to="/"
-        class="about-header__back"
-        :style="{ color: backHovered ? 'var(--geek-brand-500)' : 'var(--geek-text-tertiary)' }"
-        data-dom-id="back-home"
-        @mouseenter="backHovered = true"
-        @mouseleave="backHovered = false"
-      >&larr; Home</RouterLink>
+      <RouterLink to="/" class="about-header__back"
+        :style="{ color: backHovered ? 'var(--geek-brand-500)' : 'var(--geek-text-tertiary)' }" data-dom-id="back-home"
+        @mouseenter="backHovered = true" @mouseleave="backHovered = false">&larr; Home</RouterLink>
     </div>
 
     <!-- Bio section -->
@@ -74,14 +64,14 @@ const backHovered = ref(false)
       <div class="about-bio">
         <div class="about-bio__body">
           <p class="about-bio__lead">
-            <span class="about-bio__accent">全栈工程师</span> /
+            <span class="about-bio__accent">学生</span> /
             <span class="about-bio__accent">开源爱好者</span>
           </p>
           <p class="about-bio__text">
-            专注于系统编程、分布式系统与开发者工具。喜欢从底层理解事物的工作原理，热衷于用代码构建高效的解决方案。日常在终端里度过大部分时间，坚信好的工具能改变开发者体验。
+            喜欢探索新事物。
           </p>
           <p class="about-bio__text">
-            常驻湾区，拥有 5 年以上全栈开发经验。目前专注于后端架构设计与性能优化，同时对云原生技术、基础设施自动化保持浓厚兴趣。
+            常驻湾区，正在学习全栈开发。目前专注于后端架构设计与性能优化，同时对云原生技术、基础设施自动化保持浓厚兴趣。
           </p>
         </div>
       </div>
@@ -107,11 +97,7 @@ const backHovered = ref(false)
       <h3 class="geek-h3 about-section__title">经历</h3>
       <div class="about-timeline">
         <div class="about-timeline__line" />
-        <div
-          v-for="(entry, idx) in timeline"
-          :key="idx"
-          class="about-timeline__entry"
-        >
+        <div v-for="(entry, idx) in timeline" :key="idx" class="about-timeline__entry">
           <span class="about-timeline__dot" />
           <p class="about-timeline__period">{{ entry.period }}</p>
           <p class="about-timeline__role">{{ entry.title }}</p>
@@ -129,27 +115,17 @@ const backHovered = ref(false)
       <div class="about-contact">
         <p class="about-contact__comment"># 找到我</p>
         <div class="about-contact__list">
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="about-contact__link"
-          >
+          <a href="https://github.com/MFJip612" target="_blank" rel="noopener noreferrer" class="about-contact__link">
             <LucideIcon name="github" :size="16" />
-            <span>github.com/geek-dev</span>
+            <span>github.com/MFJip612</span>
           </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="about-contact__link"
-          >
+          <a href="https://twitter.com/mfjip612" target="_blank" rel="noopener noreferrer" class="about-contact__link">
             <LucideIcon name="twitter" :size="16" />
-            <span>@geek_dev</span>
+            <span>@mfjip612</span>
           </a>
-          <a href="mailto:hello@geekblog.dev" class="about-contact__link">
+          <a href="mailto:contact@waterspo.top" class="about-contact__link">
             <LucideIcon name="mail" :size="16" />
-            <span>hello@geekblog.dev</span>
+            <span>contact@waterspo.top</span>
           </a>
         </div>
       </div>
@@ -236,7 +212,7 @@ const backHovered = ref(false)
   margin: 0;
 }
 
-.about-bio__body p + p {
+.about-bio__body p+p {
   margin-top: 16px;
 }
 

@@ -5,10 +5,7 @@
 </script>
 
 <template>
-  <footer
-    class="layout-footer"
-    data-dom-id="global-footer"
-  >
+  <footer class="layout-footer" data-dom-id="global-footer">
     <div class="layout-footer__inner">
       <p class="layout-footer__copy">
         &copy; 2026 MFJip612 &mdash; built with caffeine and curiosity
