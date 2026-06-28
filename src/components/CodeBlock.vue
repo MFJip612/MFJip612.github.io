@@ -13,12 +13,13 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const editorRef = ref<HTMLDivElement | null>(null)
+const useFallback = ref(false)
 let editor: Monaco.editor.IStandaloneCodeEditor | null = null
 
 // 配置 loader 的 Monaco 版本
 loader.config({
     paths: {
-        vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.54.0/min/vs',
+        vs: 'https://unpkg.com/npm/monaco-editor@0.54.0/min/vs',
     },
     'vs/nls': {
         availableLanguages: { '*': 'zh-cn' } // 配置为中文
@@ -72,6 +73,7 @@ onMounted(async () => {
         updateEditorHeight()
     } catch (error) {
         console.error('Failed to initialize Monaco Editor:', error)
+        useFallback.value = true
     }
 })
 
@@ -212,7 +214,8 @@ watch(
 
 <template>
     <div class="code-block">
-        <div ref="editorRef" class="code-block__editor" />
+        <pre v-if="useFallback" class="code-block__fallback"><code>{{ code }}</code></pre>
+        <div v-else ref="editorRef" class="code-block__editor" />
     </div>
 </template>
 
@@ -230,6 +233,24 @@ watch(
     min-height: 250px;
     max-height: 600px;
     background: #111827;
+}
+
+.code-block__fallback {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+    color: #e5e7eb;
+    background: #111827;
+    font-family: 'Fira Code', 'JetBrains Mono', 'Monaco', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre;
+}
+
+.code-block__fallback code {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
 }
 
 /* Monaco Editor 样式覆盖 */
