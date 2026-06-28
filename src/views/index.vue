@@ -39,6 +39,31 @@ const techStack = ['Go', 'Rust', 'TypeScript', 'Kubernetes', 'Linux', 'Neovim', 
 
 // hover state for the article cards
 const hoveredCard = ref<string | null>(null)
+
+const asciiLines = [
+	' _____ ______   ________    ___  ___  ________  ________   _____    _______     ',
+	'|\\   _ \\  _   \\|\\  _____\\  |\\  \\|\\  \\|\\   __  \\|\\   ____\\ / __  \\  /  ___  \\    ',
+	'\\ \\  \\\\\\__\\ \\  \\ \\  \\__/   \\ \\  \\ \\  \\ \\  \\|\\  \\ \\  \\___||\\/_|\\  \\/__/|_/  /|   ',
+	' \\ \\  \\\\|__| \\  \\ \\   __\\__ \\ \\  \\ \\  \\ \\   ____\\ \\  \\___\\|/ \\ \\  \\__|//  / /    ',
+	'  \\ \\  \\    \\ \\  \\ \\  \\_|\\  \\\\_\\  \\ \\  \\ \\  \\___|\\ \\  ___  \\  \\ \\  \\  /  /_/__   ',
+	'   \\ \\__\\    \\ \\__\\ \\__\\\\ \\________\\ \\__\\ \\__\\    \\ \\_______\\  \\ \\__\\|\\________\\ ',
+	'    \\|__|     \\|__|\\|__| \\|________|\\|__|\\|__|     \\|_______|   \\|__| \\|_______|'
+]
+
+const boxedAsciiArt = computed(() => {
+	const normalizedLines = asciiLines.map((line) => line.trimEnd())
+	const maxLineLength = normalizedLines.reduce((max, line) => Math.max(max, line.length), 0)
+	const leftPadding = 3
+	const rightPadding = 12
+	const horizontalLength = maxLineLength + leftPadding + rightPadding
+	const leftSpaces = ' '.repeat(leftPadding)
+	const rightSpaces = ' '.repeat(rightPadding)
+	const top = `+${'-'.repeat(horizontalLength)}+`
+	const middle = normalizedLines.map((line) => `|${leftSpaces}${line.padEnd(maxLineLength, ' ')}${rightSpaces}|`)
+	const bottom = `+${'-'.repeat(horizontalLength)}+`
+
+	return [top, ...middle, bottom].join('\n')
+})
 </script>
 
 <template>
@@ -55,7 +80,8 @@ const hoveredCard = ref<string | null>(null)
 					<span class="home-hero__prompt-cmd">whoami</span>
 				</div>
 				<div class="home-hero__response">
-					<h1 class="geek-h1 home-hero__title">MFJip612</h1>
+					<h1 class="sr-only">MFJip612</h1>
+					<pre class="home-hero__ascii" aria-label="MFJip612">{{ boxedAsciiArt }}</pre>
 					<p class="geek-body home-hero__lead">
 						探索技术的无限可能<br />
 						<span class="home-hero__lead-muted">Coder. Student.</span>
@@ -195,6 +221,29 @@ const hoveredCard = ref<string | null>(null)
 	word-break: keep-all;
 	overflow-wrap: break-word;
 	margin: 0 0 var(--geek-space-sm) 0;
+}
+
+.home-hero__ascii {
+	margin: 0 0 var(--geek-space-sm) 0;
+	padding: 0;
+	overflow-x: auto;
+	color: var(--geek-brand-500);
+	font-family: var(--geek-font-mono);
+	font-size: clamp(8px, 1vw, 12px);
+	line-height: 1.2;
+	white-space: pre;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
 .home-hero__lead {
