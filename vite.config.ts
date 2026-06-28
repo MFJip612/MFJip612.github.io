@@ -5,13 +5,23 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 import { cloudflare } from "@cloudflare/vite-plugin"
+import { viteSsgPlugin } from './vite-ssg-plugin'
 
 // https://vite.dev/config/
 export default defineConfig({
+	server: {
+		hmr: {
+			overlay: false,
+		},
+	},
+	optimizeDeps: {
+		include: ['monaco-editor'],
+	},
 	plugins: [
 		vue(),
 		vueDevTools(),
-		cloudflare()
+		cloudflare(),
+		viteSsgPlugin()
 	],
 	resolve: {
 		alias: {

@@ -3,6 +3,8 @@
   "extends": "@tsconfig/node24/tsconfig.json",
   "include": [
     "vite.config.*",
+    "vite-ssg-plugin.ts",
+    "scripts/**/*",
     "vitest.config.*",
     "cypress.config.*",
     "playwright.config.*",

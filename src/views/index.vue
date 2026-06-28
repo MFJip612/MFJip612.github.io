@@ -21,7 +21,7 @@ const posts = computed<Post[]>(() => {
   return router.getRoutes()
     .filter((r) => r.meta?.date && r.path.startsWith('/article/'))
     .map((r) => {
-      const meta = r.meta as ArticleMeta
+      const meta = r.meta as unknown as ArticleMeta
       return {
         id: (r.meta?.articleId as string) ?? '',
         title: meta.title,

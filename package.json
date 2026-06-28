@@ -6,16 +6,19 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "run-p type-check \"build-only {@}\" --",
+		"build-only": "vite build && tsx scripts/render-html.ts",
 		"preview": "pnpm run build && wrangler dev",
-		"build-only": "vite build",
-		"type-check": "vue-tsc --build",
+		"type-check": "vue-tsc --noEmit",
 		"deploy": "pnpm run build && wrangler deploy",
-		"cf-typegen": "wrangler types"
+		"cf-typegen": "wrangler types",
+		"render:html": "tsx scripts/render-html.ts",
+		"ssg:info": "cat dist/ssg-routes.json | jq ."
 	},
 	"dependencies": {
 		"@typescript/native-preview": "7.0.0-dev.20260626.1",
 		"gsap": "^3.15.0",
 		"marked": "^18.0.5",
+		"monaco-editor": "^0.55.1",
 		"vue": "^3.5.39",
 		"vue-router": "^5.1.0"
 	},
@@ -25,6 +28,7 @@
 		"@types/node": "^24.13.2",
 		"@vitejs/plugin-vue": "^6.0.7",
 		"@vue/tsconfig": "^0.9.1",
+		"fast-glob": "^3.3.2",
 		"naive-ui": "^2.44.1",
 		"npm-run-all2": "^9.0.2",
 		"typescript": "~6.0.3",

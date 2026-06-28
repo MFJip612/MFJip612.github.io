@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, nextTick, createApp } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { marked } from 'marked'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import LayoutFooter from '@/components/LayoutFooter.vue'
+import CodeBlock from '@/components/CodeBlock.vue'
 import type { ArticleMeta } from '@/types'
 
 const route = useRoute()
@@ -21,7 +22,7 @@ const articleList = computed<ArticleItem[]>(() => {
   return router.getRoutes()
     .filter((r) => r.meta?.date && r.path.startsWith('/article/'))
     .map((r) => {
-      const meta = r.meta as ArticleMeta
+      const meta = r.meta as unknown as ArticleMeta
       return {
         id: r.meta?.articleId as string,
         title: meta.title,
@@ -34,7 +35,7 @@ const articleList = computed<ArticleItem[]>(() => {
 
 // ── 当前文章 ──────────────────────────────────────────
 const articleId = computed(() => route.meta?.articleId as string)
-const currentMeta = computed(() => route.meta as ArticleMeta)
+const currentMeta = computed(() => route.meta as unknown as ArticleMeta)
 const html = ref('')
 const loading = ref(true)
 
@@ -46,6 +47,17 @@ interface TocItem {
 }
 const toc = ref<TocItem[]>([])
 const activeHeading = ref('')
+let codeBlockIndex = 0
+
+// ── 配置 marked 的自定义 renderer ──────────────────────
+const renderer = new marked.Renderer()
+renderer.code = function({ text, lang }: { text: string; lang?: string }) {
+  const id = `code-block-${codeBlockIndex++}`
+  // 返回一个占位符 div，稍后会被 Vue 组件替换
+  return `<div id="${id}" class="code-block-placeholder" data-code="${encodeURIComponent(text)}" data-lang="${lang || 'plaintext'}"></div>`
+}
+
+marked.setOptions({ renderer })
 
 // 从渲染后的 HTML 提取标题生成目录
 function extractToc(htmlStr: string) {
@@ -77,11 +89,13 @@ async function loadArticle(id: string) {
   }
   try {
     const raw = await mdLoader()
+    codeBlockIndex = 0
     const rendered = marked.parse(raw) as string
     const { html: htmlWithIds, toc: tocItems } = extractToc(rendered)
     html.value = htmlWithIds
     toc.value = tocItems
     await nextTick()
+    mountCodeBlocks()
     setupScrollSpy()
   } finally {
     loading.value = false
@@ -120,6 +134,23 @@ function scrollToHeading(id: string) {
   }
 }
 
+// ── 挂载代码块组件 ──────────────────────────────────────
+function mountCodeBlocks() {
+  const placeholders = document.querySelectorAll('.code-block-placeholder')
+  placeholders.forEach((placeholder) => {
+    const code = decodeURIComponent((placeholder as HTMLElement).dataset.code || '')
+    const lang = (placeholder as HTMLElement).dataset.lang || 'plaintext'
+    
+    // 创建一个容器来挂载组件
+    const container = document.createElement('div')
+    placeholder.replaceWith(container)
+    
+    // 使用 createApp 挂载 CodeBlock 组件
+    const app = createApp(CodeBlock, { code, lang })
+    app.mount(container)
+  })
+}
+
 // ── 路由变化时重新加载 ──────────────────────────────────
 watch(
   () => articleId.value,
@@ -142,19 +173,14 @@ onMounted(() => {
 
 <template>
   <LayoutHeader />
-
+  
   <main class="article-detail">
     <!-- 左栏：文章列表 -->
     <aside class="article-detail__list">
       <h3 class="article-detail__list-title">文章列表</h3>
       <nav class="article-detail__list-nav">
-        <RouterLink
-          v-for="item in articleList"
-          :key="item.id"
-          :to="item.path"
-          class="article-detail__list-item"
-          :class="{ 'article-detail__list-item--active': item.id === articleId }"
-        >
+        <RouterLink v-for="item in articleList" :key="item.id" :to="item.path" class="article-detail__list-item"
+          :class="{ 'article-detail__list-item--active': item.id === articleId }">
           <span class="article-detail__list-item-title">{{ item.title }}</span>
           <span class="article-detail__list-item-date">{{ item.date }}</span>
         </RouterLink>
@@ -165,16 +191,10 @@ onMounted(() => {
     <aside class="article-detail__toc">
       <h3 class="article-detail__toc-title">目录</h3>
       <nav class="article-detail__toc-nav">
-        <a
-          v-for="item in toc"
-          :key="item.id"
-          class="article-detail__toc-item"
-          :class="[
-            `article-detail__toc-item--level-${item.level}`,
-            { 'article-detail__toc-item--active': activeHeading === item.id }
-          ]"
-          @click="scrollToHeading(item.id)"
-        >{{ item.text }}</a>
+        <a v-for="item in toc" :key="item.id" class="article-detail__toc-item" :class="[
+          `article-detail__toc-item--level-${item.level}`,
+          { 'article-detail__toc-item--active': activeHeading === item.id }
+        ]" @click="scrollToHeading(item.id)">{{ item.text }}</a>
       </nav>
     </aside>
 
@@ -185,20 +205,12 @@ onMounted(() => {
         <div class="article-detail__meta">
           <span class="article-detail__date">{{ currentMeta.date }}</span>
           <div class="article-detail__tags" v-if="currentMeta.tags?.length">
-            <span
-              v-for="tag in currentMeta.tags"
-              :key="tag"
-              class="article-detail__tag"
-            >{{ tag }}</span>
+            <span v-for="tag in currentMeta.tags" :key="tag" class="article-detail__tag">{{ tag }}</span>
           </div>
         </div>
       </header>
 
-      <div
-        v-if="!loading"
-        class="article-detail__body markdown-body"
-        v-html="html"
-      />
+      <div v-if="!loading" class="article-detail__body markdown-body" v-html="html" />
       <div v-else class="article-detail__loading">
         <span class="article-detail__loading-dollar">$</span>
         <span class="article-detail__loading-text">loading article...</span>
@@ -314,12 +326,34 @@ onMounted(() => {
   border-left-color: var(--geek-brand-500);
 }
 
-.article-detail__toc-item--level-1 { padding-left: 8px; font-weight: var(--geek-weight-medium); }
-.article-detail__toc-item--level-2 { padding-left: 20px; }
-.article-detail__toc-item--level-3 { padding-left: 32px; font-size: var(--geek-text-xs); }
-.article-detail__toc-item--level-4 { padding-left: 44px; font-size: var(--geek-text-xs); }
-.article-detail__toc-item--level-5 { padding-left: 56px; font-size: var(--geek-text-xs); }
-.article-detail__toc-item--level-6 { padding-left: 68px; font-size: var(--geek-text-xs); }
+.article-detail__toc-item--level-1 {
+  padding-left: 8px;
+  font-weight: var(--geek-weight-medium);
+}
+
+.article-detail__toc-item--level-2 {
+  padding-left: 20px;
+}
+
+.article-detail__toc-item--level-3 {
+  padding-left: 32px;
+  font-size: var(--geek-text-xs);
+}
+
+.article-detail__toc-item--level-4 {
+  padding-left: 44px;
+  font-size: var(--geek-text-xs);
+}
+
+.article-detail__toc-item--level-5 {
+  padding-left: 56px;
+  font-size: var(--geek-text-xs);
+}
+
+.article-detail__toc-item--level-6 {
+  padding-left: 68px;
+  font-size: var(--geek-text-xs);
+}
 
 /* ── 右栏：正文 ─────────────────────────────────────── */
 .article-detail__content {
@@ -391,10 +425,21 @@ onMounted(() => {
   scroll-margin-top: 88px;
 }
 
-.markdown-body :deep(h1) { font-size: 1.8em; }
-.markdown-body :deep(h2) { font-size: 1.5em; }
-.markdown-body :deep(h3) { font-size: 1.25em; }
-.markdown-body :deep(h4) { font-size: 1.1em; }
+.markdown-body :deep(h1) {
+  font-size: 1.8em;
+}
+
+.markdown-body :deep(h2) {
+  font-size: 1.5em;
+}
+
+.markdown-body :deep(h3) {
+  font-size: 1.25em;
+}
+
+.markdown-body :deep(h4) {
+  font-size: 1.1em;
+}
 
 .markdown-body :deep(p) {
   color: var(--geek-text-secondary);
@@ -477,6 +522,7 @@ onMounted(() => {
   .article-detail {
     grid-template-columns: 180px 1fr;
   }
+
   .article-detail__toc {
     display: none;
   }
@@ -486,6 +532,7 @@ onMounted(() => {
   .article-detail {
     grid-template-columns: 1fr;
   }
+
   .article-detail__list,
   .article-detail__toc {
     display: none;
