@@ -8,8 +8,14 @@ importers:
 
   .:
     dependencies:
+      '@typescript/native-preview':
+        specifier: 7.0.0-dev.20260626.1
+        version: 7.0.0-dev.20260626.1
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       vue:
-        specifier: ^3.5.38
+        specifier: ^3.5.39
         version: 3.5.39(typescript@6.0.3)
       vue-router:
         specifier: ^5.1.0
@@ -34,13 +40,13 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2
       typescript:
-        specifier: ~6.0.0
+        specifier: ~6.0.3
         version: 6.0.3
       vite:
-        specifier: ^8.0.16
+        specifier: ^8.1.0
         version: 8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(yaml@2.9.0)
       vite-plugin-vue-devtools:
-        specifier: ^8.1.2
+        specifier: ^8.1.4
         version: 8.1.4(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))
       vue-tsc:
         specifier: ^3.3.5
@@ -735,6 +741,53 @@ packages:
   '@types/node@24.13.2':
     resolution: {integrity: sha512-fRa09kZTgu8o71KFcDjUFuc7F+dEbZYZmkI0mg5YBTRs0yMKjYHsq/c0urDKeDb+D5qVgXOdFcuu+DZPKOITwA==}
 
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-VDPHf8RZRzsBH6cgArK1u9sH8MODMNkvkNczEt1EXpOLfZeplIhcpKld5Zc9Da8/S9YB4768rjfBkdFokxBu+Q==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-bi7iQZe2A90cFJ3EQnigezEI7F0e5vX6E/QUGluQ1mKZmcbbQCdAwDMDQFV8Z6w3xNrk9AYyNQbvq0DtzJX46w==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-/iptuCYiucdY0HK0nE5ydRjIx0KOf3AY7fieRaQHA4X9/s4ey37rc/58aBX3dtx0x2EhlzpXT5f0ikYY65Zynw==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-ilB0Ew5GWLrqMklNVrMdCEyNePypoEMnd4l5aUopnDRebgtXmtu0RE2GDl9LOTZ1BwlbXsuYAkEHt18Ta25hxg==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm]
+    os: [linux]
+
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-4o80l1+RoJLkR1G4KOZjTYN1yOAGbq0K2CAP0zF35MPnD8O559Tw8OMuYA+XPpEFE0fkb7mmcxL8J9cxM/kAbw==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-xHxewRWY74zJnwt4bj+Kdf6Owfs6L0Fbggb37psSa6CvofqcvSI3AyuwiBNjC0T8Eb/d/BMMXttbPJ4XXqMpXQ==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-Iuf5nqTY4m5kxEvraDpieEf0XS6gDdjBBkw3g74pseznhpMeDFzgRvVCbSaf2pdjBNGugZbiBDVTEOclmD9cjA==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@typescript/native-preview@7.0.0-dev.20260626.1':
+    resolution: {integrity: sha512-2RC5omeJPqWKebi5zM3nkMSrTpKpq2zLB3SfceqmFZY3vMCXtIJSE6IpA/AszlKQmNcbT/kWscmgE/PXEvnguQ==}
+    engines: {node: '>=16.20.0'}
+    hasBin: true
+
   '@vitejs/plugin-vue@6.0.7':
     resolution: {integrity: sha512-km+p+XdSz9Sxm5rqUbqcSfZYaAniKxWBj1KURl+Jr7UaPvvX7BmaWMdP69I5rrFDeQGyxAG7NXdc57vz+snhWg==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -974,6 +1027,9 @@ packages:
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
+
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
@@ -2065,6 +2121,37 @@ snapshots:
     dependencies:
       undici-types: 7.18.2
 
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260626.1':
+    optional: true
+
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260626.1':
+    optional: true
+
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260626.1':
+    optional: true
+
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20260626.1':
+    optional: true
+
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20260626.1':
+    optional: true
+
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260626.1':
+    optional: true
+
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20260626.1':
+    optional: true
+
+  '@typescript/native-preview@7.0.0-dev.20260626.1':
+    optionalDependencies:
+      '@typescript/native-preview-darwin-arm64': 7.0.0-dev.20260626.1
+      '@typescript/native-preview-darwin-x64': 7.0.0-dev.20260626.1
+      '@typescript/native-preview-linux-arm': 7.0.0-dev.20260626.1
+      '@typescript/native-preview-linux-arm64': 7.0.0-dev.20260626.1
+      '@typescript/native-preview-linux-x64': 7.0.0-dev.20260626.1
+      '@typescript/native-preview-win32-arm64': 7.0.0-dev.20260626.1
+      '@typescript/native-preview-win32-x64': 7.0.0-dev.20260626.1
+
   '@vitejs/plugin-vue@6.0.7(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
@@ -2335,6 +2422,8 @@ snapshots:
     optional: true
 
   gensync@1.0.0-beta.2: {}
+
+  gsap@3.15.0: {}
 
   hookable@5.5.3: {}
 

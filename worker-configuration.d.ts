@@ -4,12 +4,12 @@
 interface __BaseEnv_Env {
 }
 declare namespace Cloudflare {
-	interface GlobalProps {
-		mainModule: typeof import("./server/index");
-	}
-	interface Env extends __BaseEnv_Env {}
+    interface GlobalProps {
+        mainModule: typeof import("./mfjip612-github-io/server/index");
+    }
+    interface Env extends __BaseEnv_Env { }
 }
-interface Env extends __BaseEnv_Env {}
+interface Env extends __BaseEnv_Env { }
 
 // Begin runtime types
 /*! *****************************************************************************
@@ -1682,7 +1682,7 @@ declare abstract class Body {
  */
 declare var Response: {
     prototype: Response;
-    new (body?: BodyInit | null, init?: ResponseInit): Response;
+    new(body?: BodyInit | null, init?: ResponseInit): Response;
     error(): Response;
     redirect(url: string, status?: number): Response;
     json(any: any, maybeInit?: (ResponseInit | Response)): Response;
@@ -2268,7 +2268,7 @@ interface ReadableStream<R = any> {
  */
 declare const ReadableStream: {
     prototype: ReadableStream;
-    new (underlyingSource: UnderlyingByteSource, strategy?: QueuingStrategy<Uint8Array>): ReadableStream<Uint8Array>;
+    new(underlyingSource: UnderlyingByteSource, strategy?: QueuingStrategy<Uint8Array>): ReadableStream<Uint8Array>;
     new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>;
 };
 /**
@@ -3119,7 +3119,7 @@ type WebSocketEventMap = {
  */
 declare var WebSocket: {
     prototype: WebSocket;
-    new (url: string, protocols?: (string[] | string)): WebSocket;
+    new(url: string, protocols?: (string[] | string)): WebSocket;
     readonly READY_STATE_CONNECTING: number;
     readonly CONNECTING: number;
     readonly READY_STATE_OPEN: number;
@@ -3192,7 +3192,7 @@ interface WebSocketAcceptOptions {
     allowHalfOpen?: boolean;
 }
 declare const WebSocketPair: {
-    new (): {
+    new(): {
         0: WebSocket;
         1: WebSocket;
     };
@@ -11520,19 +11520,19 @@ interface RequestInitCfPropertiesImageDraw extends BasicImageTransformations {
     /**
      * How to combine the foreground and backdrop pixels to create the result
      */
-    composite?: 
+    composite?:
     /** Foreground drawn on top of backdrop (default) */
     'over'
     /** Foreground shown only where backdrop is opaque */
-     | 'in'
+    | 'in'
     /** Foreground drawn on top, but clipped to the backdrop's shape */
-     | 'atop'
+    | 'atop'
     /** Foreground shown only where backdrop is transparent */
-     | 'out'
+    | 'out'
     /** Foreground and backdrop visible only where the other is not */
-     | 'xor'
+    | 'xor'
     /** Foreground and backdrop channels added (brightening) */
-     | 'lighter';
+    | 'lighter';
     /**
      * Position of the overlay image relative to a given edge. Each property is
      * an offset in pixels. 0 aligns exactly to the edge. For example, left: 10
@@ -12034,21 +12034,21 @@ interface IncomingRequestCfPropertiesTLSClientAuthPlaceholder {
     certChainRFC9440TooLarge: false;
 }
 /** Possible outcomes of TLS verification */
-declare type CertVerificationStatus = 
-/** Authentication succeeded */
-"SUCCESS"
-/** No certificate was presented */
- | "NONE"
-/** Failed because the certificate was self-signed */
- | "FAILED:self signed certificate"
-/** Failed because the certificate failed a trust chain check */
- | "FAILED:unable to verify the first certificate"
-/** Failed because the certificate not yet valid */
- | "FAILED:certificate is not yet valid"
-/** Failed because the certificate is expired */
- | "FAILED:certificate has expired"
-/** Failed for another unspecified reason */
- | "FAILED";
+declare type CertVerificationStatus =
+    /** Authentication succeeded */
+    "SUCCESS"
+    /** No certificate was presented */
+    | "NONE"
+    /** Failed because the certificate was self-signed */
+    | "FAILED:self signed certificate"
+    /** Failed because the certificate failed a trust chain check */
+    | "FAILED:unable to verify the first certificate"
+    /** Failed because the certificate not yet valid */
+    | "FAILED:certificate is not yet valid"
+    /** Failed because the certificate is expired */
+    | "FAILED:certificate has expired"
+    /** Failed for another unspecified reason */
+    | "FAILED";
 /**
  * An upstream endpoint's response to a TCP `keepalive` message from Cloudflare.
  */
@@ -12102,15 +12102,15 @@ interface D1ExecResult {
     count: number;
     duration: number;
 }
-type D1SessionConstraint = 
-// Indicates that the first query should go to the primary, and the rest queries
-// using the same D1DatabaseSession will go to any replica that is consistent with
-// the bookmark maintained by the session (returned by the first query).
-'first-primary'
-// Indicates that the first query can go anywhere (primary or replica), and the rest queries
-// using the same D1DatabaseSession will go to any replica that is consistent with
-// the bookmark maintained by the session (returned by the first query).
- | 'first-unconstrained';
+type D1SessionConstraint =
+    // Indicates that the first query should go to the primary, and the rest queries
+    // using the same D1DatabaseSession will go to any replica that is consistent with
+    // the bookmark maintained by the session (returned by the first query).
+    'first-primary'
+    // Indicates that the first query can go anywhere (primary or replica), and the rest queries
+    // using the same D1DatabaseSession will go to any replica that is consistent with
+    // the bookmark maintained by the session (returned by the first query).
+    | 'first-unconstrained';
 type D1SessionBookmark = string;
 declare abstract class D1Database {
     prepare(query: string): D1PreparedStatement;
@@ -12264,7 +12264,7 @@ declare type EmailExportedHandler<Env = unknown, Props = unknown> = (message: Fo
 declare module "cloudflare:email" {
     let _EmailMessage: {
         prototype: EmailMessage;
-        new (from: string, to: string, raw: ReadableStream | string): EmailMessage;
+        new(from: string, to: string, raw: ReadableStream | string): EmailMessage;
     };
     export { _EmailMessage as EmailMessage };
 }
@@ -12492,19 +12492,19 @@ type ImageDrawOptions = {
     bottom?: number;
     right?: number;
 };
-type ImageCompositeMode = 
-/** Foreground drawn on top of backdrop (default) */
-'over'
-/** Foreground shown only where backdrop is opaque */
- | 'in'
-/** Foreground drawn on top, but clipped to the backdrop's shape */
- | 'atop'
-/** Foreground shown only where backdrop is transparent */
- | 'out'
-/** Foreground and backdrop visible only where the other is not */
- | 'xor'
-/** Foreground and backdrop channels added (brightening) */
- | 'lighter';
+type ImageCompositeMode =
+    /** Foreground drawn on top of backdrop (default) */
+    'over'
+    /** Foreground shown only where backdrop is opaque */
+    | 'in'
+    /** Foreground drawn on top, but clipped to the backdrop's shape */
+    | 'atop'
+    /** Foreground shown only where backdrop is transparent */
+    | 'out'
+    /** Foreground and backdrop visible only where the other is not */
+    | 'xor'
+    /** Foreground and backdrop channels added (brightening) */
+    | 'lighter';
 type ImageInputOptions = {
     encoding?: 'base64';
 };
@@ -12927,17 +12927,17 @@ declare namespace Rpc {
     // The reason for using a generic type here is to build a serializable subset of structured
     //   cloneable composite types. This allows types defined with the "interface" keyword to pass the
     //   serializable check as well. Otherwise, only types defined with the "type" keyword would pass.
-    type Serializable<T> = 
-    // Structured cloneables
-    BaseType
-    // Structured cloneable composites
-     | Map<T extends Map<infer U, unknown> ? Serializable<U> : never, T extends Map<unknown, infer U> ? Serializable<U> : never> | Set<T extends Set<infer U> ? Serializable<U> : never> | ReadonlyArray<T extends ReadonlyArray<infer U> ? Serializable<U> : never> | {
-        [K in keyof T]: K extends number | string ? Serializable<T[K]> : never;
-    }
-    // Special types
-     | Stub<Stubable>
-    // Serialized as stubs, see `Stubify`
-     | Stubable;
+    type Serializable<T> =
+        // Structured cloneables
+        BaseType
+        // Structured cloneable composites
+        | Map<T extends Map<infer U, unknown> ? Serializable<U> : never, T extends Map<unknown, infer U> ? Serializable<U> : never> | Set<T extends Set<infer U> ? Serializable<U> : never> | ReadonlyArray<T extends ReadonlyArray<infer U> ? Serializable<U> : never> | {
+            [K in keyof T]: K extends number | string ? Serializable<T[K]> : never;
+        }
+        // Special types
+        | Stub<Stubable>
+        // Serialized as stubs, see `Stubify`
+        | Stubable;
     // Base type for all RPC stubs, including common memory management methods.
     // `T` is used as a marker type for unwrapping `Stub`s later.
     interface StubBase<T extends Stubable> extends Disposable {
@@ -12952,8 +12952,8 @@ declare namespace Rpc {
     type Stubify<T> = T extends Stubable ? Stub<T> : T extends Map<infer K, infer V> ? Map<Stubify<K>, Stubify<V>> : T extends Set<infer V> ? Set<Stubify<V>> : T extends Array<infer V> ? Array<Stubify<V>> : T extends ReadonlyArray<infer V> ? ReadonlyArray<Stubify<V>> : T extends BaseType ? T : T extends {
         [key: string | number]: any;
     } ? {
-        [K in keyof T]: Stubify<T[K]>;
-    } : T;
+            [K in keyof T]: Stubify<T[K]>;
+        } : T;
     // Recursively rewrite all `Stub<T>`s with the corresponding `T`s.
     // Note we use `StubBase` instead of `Stub` here to avoid circular dependencies:
     // `Stub` depends on `Provider`, which depends on `Unstubify`, which would depend on `Stub`.
@@ -12961,8 +12961,8 @@ declare namespace Rpc {
     type Unstubify<T> = T extends StubBase<infer V> ? V : T extends Map<infer K, infer V> ? Map<Unstubify<K>, Unstubify<V>> : T extends Set<infer V> ? Set<Unstubify<V>> : T extends Array<infer V> ? Array<Unstubify<V>> : T extends ReadonlyArray<infer V> ? ReadonlyArray<Unstubify<V>> : T extends BaseType ? T : T extends {
         [key: string | number]: unknown;
     } ? {
-        [K in keyof T]: Unstubify<T[K]>;
-    } : T;
+            [K in keyof T]: Unstubify<T[K]>;
+        } : T;
     type UnstubifyAll<A extends any[]> = {
         [I in keyof A]: Unstubify<A[I]>;
     };
@@ -13035,7 +13035,7 @@ declare namespace Cloudflare {
         [K in keyof MainModule]: LoopbackForExport<MainModule[K]>
         // If the export is listed in `durableNamespaces`, then it is also a
         // DurableObjectNamespace.
-         & (K extends GlobalProp<"durableNamespaces", never> ? MainModule[K] extends new (...args: any[]) => infer DoInstance ? DoInstance extends Rpc.DurableObjectBranded ? DurableObjectNamespace<DoInstance> : DurableObjectNamespace<undefined> : DurableObjectNamespace<undefined> : {});
+        & (K extends GlobalProp<"durableNamespaces", never> ? MainModule[K] extends new (...args: any[]) => infer DoInstance ? DoInstance extends Rpc.DurableObjectBranded ? DurableObjectNamespace<DoInstance> : DurableObjectNamespace<undefined> : DurableObjectNamespace<undefined> : {});
     };
 }
 declare namespace CloudflareWorkersModule {
@@ -14582,10 +14582,10 @@ interface WorkflowInstanceCreateOptions<PARAMS = unknown> {
 }
 type InstanceStatus = {
     status: 'queued' // means that instance is waiting to be started (see concurrency limits)
-     | 'running' | 'paused' | 'errored' | 'terminated' // user terminated the instance while it was running
-     | 'complete' | 'waiting' // instance is hibernating and waiting for sleep or event to finish
-     | 'waitingForPause' // instance is finishing the current work to pause
-     | 'unknown';
+    | 'running' | 'paused' | 'errored' | 'terminated' // user terminated the instance while it was running
+    | 'complete' | 'waiting' // instance is hibernating and waiting for sleep or event to finish
+    | 'waitingForPause' // instance is finishing the current work to pause
+    | 'unknown';
     error?: {
         name: string;
         message: string;
