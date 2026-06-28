@@ -1,35 +1,201 @@
 @import './base.css';
 
+/* ────────────────────────────────────────────────────────────
+   geek-blog design tokens (Bay Blue — dark default)
+   ──────────────────────────────────────────────────────────── */
+:root {
+  /* ── Fonts ── */
+  --geek-font-display: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+  --geek-font-body: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --geek-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', monospace;
+
+  /* ── Light Mode (湾区蓝 Bay Blue) ── */
+  --geek-background: #f0f4f8;
+  --geek-surface: #ffffff;
+  --geek-surface-elevated: #ffffff;
+  --geek-border: #d0d9e4;
+  --geek-border-subtle: #e2e8f0;
+
+  --geek-text-primary: #0d1b2a;
+  --geek-text-secondary: #3d5a73;
+  --geek-text-tertiary: #7a8fa0;
+
+  --geek-brand-50: #eff6ff;
+  --geek-brand-100: #dbeafe;
+  --geek-brand-200: #bfdbfe;
+  --geek-brand-300: #93c5fd;
+  --geek-brand-400: #60a5fa;
+  --geek-brand-500: #1e6fbf;
+  --geek-brand-600: #1a5ea0;
+  --geek-brand-700: #154d82;
+  --geek-brand-800: #0f3a63;
+  --geek-brand-900: #0a2744;
+
+  --geek-code-bg: #1e293b;
+  --geek-code-text: #e2e8f0;
+
+  --state-success: #059669;
+  --state-warning: #d97706;
+  --state-error: #dc2626;
+  --state-info: #0284c7;
+
+  /* ── Typography Scale ── */
+  --geek-text-xs: 0.75rem;
+  --geek-text-sm: 0.875rem;
+  --geek-text-base: 1rem;
+  --geek-text-lg: 1.125rem;
+  --geek-text-xl: 1.25rem;
+  --geek-text-2xl: 1.5rem;
+  --geek-text-3xl: 1.875rem;
+  --geek-text-4xl: 2.25rem;
+  --geek-text-5xl: 3rem;
+
+  --geek-leading-tight: 1.25;
+  --geek-leading-normal: 1.5;
+  --geek-leading-relaxed: 1.75;
+
+  --geek-tracking-tight: -0.025em;
+  --geek-tracking-normal: 0em;
+  --geek-tracking-wide: 0.025em;
+
+  --geek-weight-normal: 400;
+  --geek-weight-medium: 500;
+  --geek-weight-semibold: 600;
+  --geek-weight-bold: 700;
+
+  /* ── Radius ── */
+  --geek-radius-sm: 4px;
+  --geek-radius-md: 8px;
+  --geek-radius-lg: 12px;
+  --geek-radius-full: 9999px;
+
+  /* ── Spacing ── */
+  --geek-space-xs: 4px;
+  --geek-space-sm: 8px;
+  --geek-space-md: 16px;
+  --geek-space-lg: 24px;
+  --geek-space-xl: 32px;
+  --geek-space-2xl: 48px;
+  --geek-space-3xl: 64px;
+
+  /* ── Shadow ── */
+  --geek-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --geek-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04);
+  --geek-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Dark Mode (Default for geek blog) ── */
+:root,
+.dark {
+  --geek-background: #0a0f1a;
+  --geek-surface: #111827;
+  --geek-surface-elevated: #1a2332;
+  --geek-border: #1e2d3d;
+  --geek-border-subtle: #162032;
+
+  --geek-text-primary: #e8edf4;
+  --geek-text-secondary: #94a3b8;
+  --geek-text-tertiary: #5a6a7e;
+
+  --geek-brand-50: #0c1929;
+  --geek-brand-100: #0f2340;
+  --geek-brand-200: #132d52;
+  --geek-brand-300: #1a3d6e;
+  --geek-brand-400: #2563eb;
+  --geek-brand-500: #3b82f6;
+  --geek-brand-600: #60a5fa;
+  --geek-brand-700: #93c5fd;
+  --geek-brand-800: #bfdbfe;
+  --geek-brand-900: #dbeafe;
+
+  --geek-code-bg: #0d1117;
+  --geek-code-text: #c9d1d9;
+
+  --geek-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --geek-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+  --geek-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Typography classes ── */
+.geek-h1 {
+  font-family: var(--geek-font-display);
+  font-size: var(--geek-text-5xl);
+  font-weight: var(--geek-weight-bold);
+  line-height: var(--geek-leading-tight);
+  letter-spacing: var(--geek-tracking-tight);
+  color: var(--geek-text-primary);
+}
+.geek-h2 {
+  font-family: var(--geek-font-display);
+  font-size: var(--geek-text-3xl);
+  font-weight: var(--geek-weight-semibold);
+  line-height: var(--geek-leading-tight);
+  letter-spacing: var(--geek-tracking-tight);
+  color: var(--geek-text-primary);
+}
+.geek-h3 {
+  font-family: var(--geek-font-display);
+  font-size: var(--geek-text-xl);
+  font-weight: var(--geek-weight-semibold);
+  line-height: var(--geek-leading-normal);
+  color: var(--geek-text-primary);
+}
+.geek-body {
+  font-family: var(--geek-font-body);
+  font-size: var(--geek-text-base);
+  font-weight: var(--geek-weight-normal);
+  line-height: var(--geek-leading-relaxed);
+  color: var(--geek-text-secondary);
+}
+.geek-mono {
+  font-family: var(--geek-font-mono);
+  font-size: var(--geek-text-sm);
+  line-height: var(--geek-leading-normal);
+  color: var(--geek-text-primary);
+}
+.geek-caption {
+  font-family: var(--geek-font-body);
+  font-size: var(--geek-text-sm);
+  font-weight: var(--geek-weight-normal);
+  line-height: var(--geek-leading-normal);
+  color: var(--geek-text-tertiary);
+}
+
+/* ────────────────────────────────────────────────────────────
+   App shell — neutralise the Vue scaffold defaults so the
+   design tokens own the look.
+   ──────────────────────────────────────────────────────────── */
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   font-weight: normal;
+  text-align: left;
 }
 
-a,
-.green {
+html,
+body {
+  background: var(--geek-background);
+  color: var(--geek-text-primary);
+  font-family: var(--geek-font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+button {
+  font-family: inherit;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
