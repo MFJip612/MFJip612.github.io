@@ -25,12 +25,12 @@ interface TimelineEntry {
 const timeline: TimelineEntry[] = [
   {
     period: '2024 - 至今',
-    title: 'Web学习 @ TechCorp',
+    title: 'Web学习 @ Intermediate',
     description: '从前端到后端，深入学习掌握Web开发技术栈'
   },
   {
     period: '2023 - 2024',
-    title: '进一步学习 @ OpenSource',
+    title: '进一步学习 @ Greenhorn',
     description: '从Python到C++，深入理解系统编程'
   },
   {
