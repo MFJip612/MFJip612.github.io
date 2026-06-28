@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick, createApp } from 'vue'
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
+import { ref, computed, watch, nextTick, createApp, onBeforeUnmount, type App as VueApp } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import LayoutFooter from '@/components/LayoutFooter.vue'
@@ -48,6 +48,8 @@ interface TocItem {
 const toc = ref<TocItem[]>([])
 const activeHeading = ref('')
 let codeBlockIndex = 0
+let latestLoadToken = 0
+const mountedCodeBlockApps: VueApp[] = []
 
 // ── 配置 marked 的自定义 renderer ──────────────────────
 const renderer = new marked.Renderer()
@@ -76,29 +78,42 @@ function extractToc(htmlStr: string) {
 
 // ── 加载文章 Markdown ──────────────────────────────────
 async function loadArticle(id: string) {
+  const loadToken = ++latestLoadToken
   loading.value = true
+  unmountCodeBlocks()
+
   const matched = router.getRoutes().find((r) => r.meta?.articleId === id)
   if (!matched) {
-    loading.value = false
+    if (loadToken === latestLoadToken) loading.value = false
     return
   }
   const mdLoader = matched.meta?.mdLoader as (() => Promise<string>) | undefined
   if (!mdLoader) {
-    loading.value = false
+    if (loadToken === latestLoadToken) loading.value = false
     return
   }
   try {
     const raw = await mdLoader()
+    if (loadToken !== latestLoadToken) return
+
     codeBlockIndex = 0
     const rendered = marked.parse(raw) as string
     const { html: htmlWithIds, toc: tocItems } = extractToc(rendered)
     html.value = htmlWithIds
     toc.value = tocItems
+
+    // 先显示正文，再在下一帧挂载代码块，避免 loading 阶段找不到占位符
+    loading.value = false
     await nextTick()
+
+    if (loadToken !== latestLoadToken) return
+
     mountCodeBlocks()
     setupScrollSpy()
   } finally {
-    loading.value = false
+    if (loadToken === latestLoadToken) {
+      loading.value = false
+    }
   }
 }
 
@@ -136,7 +151,10 @@ function scrollToHeading(id: string) {
 
 // ── 挂载代码块组件 ──────────────────────────────────────
 function mountCodeBlocks() {
-  const placeholders = document.querySelectorAll('.code-block-placeholder')
+  const articleBody = document.querySelector('.article-detail__body')
+  if (!articleBody) return
+
+  const placeholders = articleBody.querySelectorAll('.code-block-placeholder')
   placeholders.forEach((placeholder) => {
     const code = decodeURIComponent((placeholder as HTMLElement).dataset.code || '')
     const lang = (placeholder as HTMLElement).dataset.lang || 'plaintext'
@@ -148,7 +166,13 @@ function mountCodeBlocks() {
     // 使用 createApp 挂载 CodeBlock 组件
     const app = createApp(CodeBlock, { code, lang })
     app.mount(container)
+    mountedCodeBlockApps.push(app)
   })
+}
+
+function unmountCodeBlocks() {
+  mountedCodeBlockApps.forEach((app) => app.unmount())
+  mountedCodeBlockApps.length = 0
 }
 
 // ── 路由变化时重新加载 ──────────────────────────────────
@@ -160,14 +184,9 @@ watch(
   { immediate: true }
 )
 
-onBeforeRouteUpdate((to) => {
-  if (to.meta?.articleId) {
-    loadArticle(to.meta.articleId as string)
-  }
-})
-
-onMounted(() => {
-  if (articleId.value) loadArticle(articleId.value)
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  unmountCodeBlocks()
 })
 </script>
 
