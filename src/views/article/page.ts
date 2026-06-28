@@ -1,8 +1,9 @@
-import { PageMeta } from '@/types'
+import type { PageMeta } from '@/types'
 
 const meta: PageMeta = {
-  title: '文章',
+  title: '文章列表',
   menuOrder: 2,
+  isSSG: true,
 }
 
 export default meta

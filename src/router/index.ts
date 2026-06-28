@@ -1,0 +1,50 @@
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import articleRoutes from './articles'
+import type { PageMeta } from '@/types'
+
+// 动态导入页面元数据
+const pages = import.meta.glob<{ default: PageMeta }>('../views/**/page.ts', {
+	eager: true,
+	import: 'default'
+});
+// 惰性加载视图组件：仅在路由跳转时按需加载对应页面
+const components = import.meta.glob('../views/**/index.vue');
+const componentsMap: Record<string, any> = Object.fromEntries(
+	Object.entries(components).map(([path, loader]) => {
+		const routePath = path.replace('../views', '').replace('/index.vue', '') || '/';
+		return [routePath || '/', loader];
+	})
+);
+
+const routes: RouteRecordRaw[] = Object.entries(pages).map(([path, meta]) => {
+	const routePath = path.replace('../views', '').replace('/page.ts', '') || '/';
+	const name = routePath === '/' ? 'index' : routePath.slice(1).split('/').join('-');
+	return {
+		path: routePath,
+		name,
+		component: componentsMap[routePath],
+		meta,
+	} as RouteRecordRaw;
+});
+
+// 添加文章列表路由（文章详情路由由 articles.ts 自动生成）
+const articleComponent = componentsMap['/article'];
+if (articleComponent) {
+	routes.push({
+		path: '/article',
+		name: 'article-list',
+		component: articleComponent,
+		meta: {
+			title: '文章列表',
+			menuOrder: 9998,
+			hidden: true
+		}
+	} as RouteRecordRaw);
+}
+
+const router = createRouter({
+	history: createWebHistory(),
+	routes: [...routes, ...articleRoutes],
+});
+
+export default router;

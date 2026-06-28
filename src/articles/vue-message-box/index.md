@@ -8,31 +8,37 @@
 
 ```vue
 <template>
-    <div class="modal">
-        <div class="box">
-            <div class="text">{{ msg }}</div>
-            <Button @click="emit('click')"></Button>
-        </div>
+  <div class="modal">
+    <div class="box">
+    	<div class="text">{{ msg }}</div>
+    	<Button @click="emit('click')"></Button>
     </div>
+  </div>
 </template>
 
 <script setup>
 import Button from "~/components/Button.vue";
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(["click"]);
 
 defineProps({
-    msg: {
-        type: String,
-        required: true
-    }
+  	msg: {
+    	type: String,
+    	required: true,
+  	},
 });
 </script>
 
 <style scoped>
-.modal { /* 样式代码 */ }
-.box { /* 样式代码 */ }
-.text { /* 样式代码 */ }
+.modal {
+  /* 样式代码 */
+}
+.box {
+  /* 样式代码 */
+}
+.text {
+  /* 样式代码 */
+}
 </style>
 ```
 
@@ -41,22 +47,22 @@ defineProps({
 ```vue
 <!-- App.vue -->
 <template>
-    <div>
-        <Button @click="clickHandler">显示弹窗</Button>
-        <MessageBox v-if="showMsg" :msg="msg" @click="clickHandler"></MessageBox>
-    </div>
+	<div>
+		<Button @click="clickHandler">显示弹窗</Button>
+		<MessageBox v-if="showMsg" :msg="msg" @click="clickHandler"></MessageBox>
+	</div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 import Button from "~/components/Button.vue";
 import MessageBox from "~/components/MessageBox.vue";
 
 const showMsg = ref(false);
-const msg = ref('提示消息');
+const msg = ref("提示消息");
 
 const clickHandler = () => {
-    showMsg.value = !showMsg.value;
+	showMsg.value = !showMsg.value;
 };
 </script>
 ```
@@ -75,10 +81,10 @@ import Button from "~/components/Button.vue";
 import showMsg from "~/commons/showMsg";
 
 const clickHandler = () => {
-    showMsg('欲显示的消息', (close) => {
-        console.log('点击了确定按钮');
-        close(); // 关闭弹窗
-    });
+	showMsg("欲显示的消息", (close) => {
+		console.log("点击了确定按钮");
+		close(); // 关闭弹窗
+	});
 };
 </script>
 ```
@@ -94,7 +100,7 @@ const clickHandler = () => {
 ```javascript
 // ~/commons/showMsg.js
 function showMsg(msg, clickHandler) {
-    // 实现弹窗逻辑
+  // 实现弹窗逻辑
 }
 
 export default showMsg;
@@ -106,29 +112,29 @@ export default showMsg;
 
 ```javascript
 // ~/commons/showMsg.js
-import { createApp } from 'vue';
+import { createApp } from "vue";
 import MessageBox from "~/components/MessageBox.vue";
 
 function showMsg(msg, clickHandler) {
-    // 创建容器元素
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    
-    // 创建Vue应用实例并挂载
-    const app = createApp(MessageBox, {
-        msg,
-        onClick() {
-            if (clickHandler) {
-                // 执行回调并传递关闭函数
-                clickHandler(() => {
-                    app.unmount();   // 卸载应用
-                    container.remove(); // 移除DOM元素
-                });
-            }
-        }
-    });
-    
-    app.mount(container);
+	// 创建容器元素
+	const container = document.createElement("div");
+	document.body.appendChild(container);
+
+	// 创建Vue应用实例并挂载
+	const app = createApp(MessageBox, {
+		msg,
+		onClick() {
+		if (clickHandler) {
+			// 执行回调并传递关闭函数
+			clickHandler(() => {
+			app.unmount(); // 卸载应用
+			container.remove(); // 移除DOM元素
+			});
+		}
+		},
+	});
+
+	app.mount(container);
 }
 
 export default showMsg;
@@ -140,47 +146,47 @@ export default showMsg;
 
 ```javascript
 // ~/commons/showMsg.js
-import { createApp } from 'vue';
+import { createApp } from "vue";
 import Button from "~/components/Button.vue";
 
 // 定义MessageBox组件
 const MessageBox = {
-    props: {
-        msg: {
-            type: String,
-            required: true,
-        },
-    },
-    render(ctx) {
-        const { $props, $emit } = ctx;
-        return (
-            <div class="modal">
-                <div class="box">
-                    <div class="text">{$props.msg}</div>
-                    <Button click={$emit('onClick')}></Button>
-                </div>
-            </div>
-        );
-    }
+	props: {
+		msg: {
+		type: String,
+		required: true,
+		},
+	},
+	render(ctx) {
+		const { $props, $emit } = ctx;
+		return (
+		<div class="modal">
+			<div class="box">
+			<div class="text">{$props.msg}</div>
+			<Button click={$emit("onClick")}></Button>
+			</div>
+		</div>
+		);
+	},
 };
 
 function showMsg(msg, clickHandler) {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    
-    const app = createApp(MessageBox, {
-        msg,
-        onClick() {
-            if (clickHandler) {
-                clickHandler(() => {
-                    app.unmount();
-                    container.remove();
-                });
-            }
-        }
-    });
-    
-    app.mount(container);
+	const container = document.createElement("div");
+	document.body.appendChild(container);
+
+	const app = createApp(MessageBox, {
+		msg,
+		onClick() {
+		if (clickHandler) {
+			clickHandler(() => {
+			app.unmount();
+			container.remove();
+			});
+		}
+		},
+	});
+
+	app.mount(container);
 }
 
 export default showMsg;
@@ -199,76 +205,76 @@ npm install @styils/vue
 
 ```javascript
 // ~/commons/showMsg.js
-import { createApp } from 'vue';
+import { createApp } from "vue";
 import { styled } from "@styils/vue";
 import Button from "~/components/Button.vue";
 
 // 使用styled组件定义样式
-const Modal = styled('div', {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+const Modal = styled("div", {
+	position: "fixed",
+	top: 0,
+	left: 0,
+	width: "100%",
+	height: "100%",
+	backgroundColor: "rgba(0, 0, 0, 0.5)",
+	display: "flex",
+	justifyContent: "center",
+	alignItems: "center",
 });
 
-const Box = styled('div', {
-    backgroundColor: 'white',
-    padding: '20px',
-    borderRadius: '8px',
-    minWidth: '300px',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+const Box = styled("div", {
+	backgroundColor: "white",
+	padding: "20px",
+	borderRadius: "8px",
+	minWidth: "300px",
+	boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
 });
 
-const Text = styled('div', {
-    marginBottom: '15px',
-    fontSize: '16px',
-    color: '#333'
+const Text = styled("div", {
+	marginBottom: "15px",
+	fontSize: "16px",
+	color: "#333",
 });
 
 // 定义MessageBox组件
 const MessageBox = {
-    props: {
-        msg: {
-            type: String,
-            required: true,
-        },
-    },
-    render(ctx) {
-        const { $props, $emit } = ctx;
-        return (
-            <Modal>
-                <Box>
-                    <Text>{$props.msg}</Text>
-                    <Button onClick={$emit('onClick')}>确定</Button>
-                </Box>
-            </Modal>
-        );
-    }
+	props: {
+		msg: {
+		type: String,
+		required: true,
+		},
+	},
+	render(ctx) {
+		const { $props, $emit } = ctx;
+		return (
+		<Modal>
+			<Box>
+			<Text>{$props.msg}</Text>
+			<Button onClick={$emit("onClick")}>确定</Button>
+			</Box>
+		</Modal>
+		);
+	},
 };
 
 // 导出showMsg函数
 function showMsg(msg, clickHandler) {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    
-    const app = createApp(MessageBox, {
-        msg,
-        onClick() {
-            if (clickHandler) {
-                clickHandler(() => {
-                    app.unmount();
-                    container.remove();
-                });
-            }
-        }
-    });
-    
-    app.mount(container);
+	const container = document.createElement("div");
+	document.body.appendChild(container);
+
+	const app = createApp(MessageBox, {
+		msg,
+		onClick() {
+		if (clickHandler) {
+			clickHandler(() => {
+			app.unmount();
+			container.remove();
+			});
+		}
+		},
+	});
+
+	app.mount(container);
 }
 
 export default showMsg;

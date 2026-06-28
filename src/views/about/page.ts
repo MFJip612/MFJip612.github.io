@@ -1,8 +1,8 @@
-import { PageMeta } from '@/types'
+import type { PageMeta } from '@/types'
 
 const meta: PageMeta = {
-  title: '关于',
-  menuOrder: 999,
+  title: '关于我',
+  menuOrder: 3
 }
 
 export default meta

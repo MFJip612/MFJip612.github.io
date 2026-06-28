@@ -4,7 +4,6 @@
 > ⚠️ **注意**：本文仅适用于开启 Google 语音唤醒功能，“圈定即搜”与“侧滑唤醒”请参考其他教程。  
 > ⚠️ **需要 Root 权限**。
 
-
 ## 1. 下载 Google 应用
 
 在 [Google Play Store](https://play.google.com/store) 下载并安装 **Google** 应用。
@@ -78,6 +77,7 @@
 如果你需要自己制作模块，可以参考以下内容：
 
 ### 安装脚本示例
+
 ```bash
 #!/system/bin/sh
 MODDIR=${0%/*}
@@ -94,6 +94,7 @@ rm -rf /data/system/package_cache/* 2>/dev/null
 ```
 
 ### 权限配置文件示例
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <!--
@@ -141,12 +142,13 @@ It allows additional grants on top of privapp-permissions-platform.xml
     <privapp-permissions package="com.android.hotwordenrollment.xgoogle">
         <permission name="android.permission.KEYPHRASE_ENROLLMENT_APPLICATION"/>
         <permission name="android.permission.INTERACT_ACROSS_USERS"/>
-    </privapp-permissions>	
+    </privapp-permissions>
 </permissions>
 
 ```
 
 ### 隐藏 API 白名单示例
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <config>
