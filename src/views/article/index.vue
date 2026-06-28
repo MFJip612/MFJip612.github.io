@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import LayoutFooter from '@/components/LayoutFooter.vue'
@@ -45,6 +45,8 @@ const categories = computed(() => {
 const activeCategory = ref('全部')
 const searchQuery = ref('')
 const backHovered = ref(false)
+const currentPage = ref(1)
+const PAGE_SIZE = 6
 
 const filteredArticles = computed(() => {
   let list = articles.value
@@ -63,8 +65,44 @@ const filteredArticles = computed(() => {
   return list
 })
 
+const totalPages = computed(() => {
+  return Math.max(1, Math.ceil(filteredArticles.value.length / PAGE_SIZE))
+})
+
+const pageNumbers = computed(() => {
+  return Array.from({ length: totalPages.value }, (_, index) => index + 1)
+})
+
+const paginatedArticles = computed(() => {
+  const start = (currentPage.value - 1) * PAGE_SIZE
+  return filteredArticles.value.slice(start, start + PAGE_SIZE)
+})
+
+watch(filteredArticles, () => {
+  currentPage.value = 1
+})
+
+watch(totalPages, (pages) => {
+  if (currentPage.value > pages) {
+    currentPage.value = pages
+  }
+})
+
 const setCategory = (c: string) => {
   activeCategory.value = c
+}
+
+const goToPage = (page: number) => {
+  const nextPage = Math.max(1, Math.min(page, totalPages.value))
+  currentPage.value = nextPage
+}
+
+const goPrevPage = () => {
+  goToPage(currentPage.value - 1)
+}
+
+const goNextPage = () => {
+  goToPage(currentPage.value + 1)
 }
 </script>
 
@@ -126,7 +164,7 @@ const setCategory = (c: string) => {
     <!-- Article grid -->
     <div v-if="filteredArticles.length" class="articles-grid">
       <RouterLink
-        v-for="article in filteredArticles"
+        v-for="article in paginatedArticles"
         :key="article.id"
         :to="article.path"
         class="article-card"
@@ -155,22 +193,29 @@ const setCategory = (c: string) => {
 
     <!-- Pagination -->
     <nav
+      v-if="filteredArticles.length > 0 && totalPages > 1"
       class="articles-pagination"
       aria-label="文章分页"
     >
       <button
         class="articles-page articles-page--edge"
         aria-label="上一页"
+        :disabled="currentPage === 1"
+        @click="goPrevPage"
       >&lt;</button>
       <button
-        class="articles-page articles-page--active"
-        aria-current="page"
-      >1</button>
-      <button class="articles-page">2</button>
-      <button class="articles-page">3</button>
+        v-for="page in pageNumbers"
+        :key="page"
+        class="articles-page"
+        :class="{ 'articles-page--active': currentPage === page }"
+        :aria-current="currentPage === page ? 'page' : undefined"
+        @click="goToPage(page)"
+      >{{ page }}</button>
       <button
         class="articles-page articles-page--edge"
         aria-label="下一页"
+        :disabled="currentPage === totalPages"
+        @click="goNextPage"
       >&gt;</button>
     </nav>
   </main>
@@ -445,6 +490,16 @@ const setCategory = (c: string) => {
 .articles-page:hover {
   border-color: var(--geek-brand-500);
   color: var(--geek-text-primary);
+}
+
+.articles-page:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.articles-page:disabled:hover {
+  border-color: var(--geek-border);
+  color: var(--geek-text-secondary);
 }
 
 .articles-page--active {
