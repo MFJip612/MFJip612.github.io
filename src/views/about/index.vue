@@ -46,7 +46,7 @@ const backHovered = ref(false)
 <template>
   <LayoutHeader />
 
-  <main class="about-main">
+  <main class="page-about">
     <!-- Page header -->
     <div class="about-header">
       <h2 class="geek-h2 about-header__title">关于我</h2>
@@ -136,7 +136,7 @@ const backHovered = ref(false)
 </template>
 
 <style scoped>
-.about-main {
+.page-about {
   max-width: 960px;
   margin: 0 auto;
   padding: var(--geek-space-2xl) 24px var(--geek-space-3xl);

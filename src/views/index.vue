@@ -69,30 +69,30 @@ const boxedAsciiArt = computed(() => {
 <template>
 	<LayoutHeader />
 
-	<main class="home-main">
+	<main class="page-home">
 		<!-- ═══════════════════════════════════════════════════
          HERO SECTION
          ═══════════════════════════════════════════════════ -->
-		<section class="home-hero">
-			<div class="home-hero__terminal">
-				<div class="home-hero__prompt">
-					<span class="home-hero__prompt-dolar">$</span>
-					<span class="home-hero__prompt-cmd">whoami</span>
+		<section class="hero-banner">
+			<div class="hero-panel">
+				<div class="terminal-prompt">
+					<span class="terminal-prompt__symbol">$</span>
+					<span class="terminal-prompt__command">whoami</span>
 				</div>
-				<div class="home-hero__response">
+				<div class="hero-content">
 					<h1 class="sr-only">MFJip612</h1>
-					<pre class="home-hero__ascii" aria-label="MFJip612">{{ boxedAsciiArt }}</pre>
-					<p class="geek-body home-hero__lead">
+					<pre class="hero-banner__ascii" aria-label="MFJip612">{{ boxedAsciiArt }}</pre>
+					<p class="geek-body hero-banner__lead">
 						探索技术的无限可能<br />
-						<span class="home-hero__lead-muted">Coder. Student.</span>
+						<span class="hero-banner__lead-muted">Coder. Student.</span>
 					</p>
 				</div>
-				<div class="home-hero__cta">
-					<span class="home-hero__cta-dolar">$</span>
-					<RouterLink to="/article" class="home-hero__cta-btn" data-dom-id="cta-articles">
-						开始阅读 <span class="home-hero__cta-arrow">&rarr;</span>
+				<div class="hero-actions">
+					<span class="terminal-prompt__symbol">$</span>
+					<RouterLink to="/article" class="contact-button" data-dom-id="cta-articles">
+						开始阅读 <span class="contact-button__arrow">&rarr;</span>
 					</RouterLink>
-					<span class="home-hero__cta-cursor" />
+					<span class="terminal-cursor" />
 				</div>
 			</div>
 		</section>
@@ -100,20 +100,20 @@ const boxedAsciiArt = computed(() => {
 		<!-- ═══════════════════════════════════════════════════
          FEATURED POSTS
          ═══════════════════════════════════════════════════ -->
-		<section class="home-section">
-			<h2 class="geek-h2 home-section__title">最新文章</h2>
-			<div class="home-grid">
-				<RouterLink v-for="post in posts" :key="post.id" :to="post.path" class="home-card"
+		<section class="content-section">
+			<h2 class="geek-h2 content-section__title">最新文章</h2>
+			<div class="post-grid">
+				<RouterLink v-for="post in posts" :key="post.id" :to="post.path" class="post-card"
 					:data-dom-id="`post-${post.id}`" :style="{
 						borderColor: hoveredCard === post.id ? 'var(--geek-brand-500)' : 'var(--geek-border)',
 						transform: hoveredCard === post.id ? 'translateY(-2px)' : 'translateY(0)'
 					}" @mouseenter="hoveredCard = post.id" @mouseleave="hoveredCard = null">
-					<h3 class="geek-h3 home-card__title">{{ post.title }}</h3>
-					<p class="geek-body home-card__excerpt">{{ post.excerpt }}</p>
-					<div class="home-card__meta">
-						<span class="home-card__date">{{ post.date }}</span>
-						<div class="home-card__tags">
-							<span v-for="tag in post.tags" :key="tag" class="home-card__tag home-card__tag--brand">{{
+					<h3 class="geek-h3 post-card__title">{{ post.title }}</h3>
+					<p class="geek-body post-card__excerpt">{{ post.excerpt }}</p>
+					<div class="post-card__meta">
+						<span class="post-card__date">{{ post.date }}</span>
+						<div class="post-card__tags">
+							<span v-for="tag in post.tags" :key="tag" class="post-tag post-tag--brand">{{
 								tag }}</span>
 						</div>
 					</div>
@@ -124,39 +124,39 @@ const boxedAsciiArt = computed(() => {
 		<!-- ═══════════════════════════════════════════════════
          TECH STACK
          ═══════════════════════════════════════════════════ -->
-		<section class="home-section">
-			<h2 class="geek-h2 home-section__title">技术栈</h2>
-			<div class="home-tech">
-				<span v-for="tech in techStack" :key="tech" class="home-tech__pill">{{ tech }}</span>
+		<section class="content-section">
+			<h2 class="geek-h2 content-section__title">技术栈</h2>
+			<div class="skill-list">
+				<span v-for="tech in techStack" :key="tech" class="skill-pill">{{ tech }}</span>
 			</div>
 		</section>
 
 		<!-- ═══════════════════════════════════════════════════
          FOOTER CTA
          ═══════════════════════════════════════════════════ -->
-		<section class="home-section home-cta">
-			<div class="home-cta__terminal">
-				<div class="home-cta__line">
-					<span class="home-cta__dolar">$</span>
-					<span class="geek-body home-cta__text">想和我交流？</span>
+		<section class="content-section contact-section">
+			<div class="contact-panel">
+				<div class="contact-panel__line">
+					<span class="terminal-prompt__symbol">$</span>
+					<span class="geek-body contact-panel__text">想和我交流？</span>
 				</div>
-				<div class="home-cta__line">
-					<span class="home-cta__dolar">$</span>
-					<span class="home-cta__cmd">echo</span>
-					<span class="home-cta__arg"><button class="my-custom-btn" commandFor="contact-dialog"
+				<div class="contact-panel__line">
+					<span class="terminal-prompt__symbol">$</span>
+					<span class="terminal-prompt__command">echo</span>
+					<span class="contact-panel__value"><button class="contact-button" commandFor="contact-dialog"
 							command="show-modal">contact@waterspo.top</button></span>
-					<span class="home-cta__cursor" />
+					<span class="terminal-cursor" />
 				</div>
 			</div>
 		</section>
 	</main>
 
-	<dialog id="contact-dialog" class="geek-dialog">
-		<div class="geek-dialog__content">
-			<div class="geek-dialog__header">
+	<dialog id="contact-dialog" class="contact-dialog">
+		<div class="contact-dialog__content">
+			<div class="contact-dialog__header">
 				<h3 class="geek-h3">联系我</h3>
-				<form method="dialog" class="geek-dialog__close-form">
-					<button type="submit" class="geek-dialog__close" aria-label="关闭联系窗口">×</button>
+				<form method="dialog" class="contact-dialog__close-form">
+					<button type="submit" class="contact-dialog__close-button" aria-label="关闭联系窗口">×</button>
 				</form>
 			</div>
 			<p class="geek-body">你可以通过以下方式联系我：</p>
@@ -173,7 +173,7 @@ const boxedAsciiArt = computed(() => {
 
 <style scoped>
 /* ── Page shell ──────────────────────────────────────── */
-.home-main {
+.page-home {
 	max-width: 960px;
 	margin: 0 auto;
 	padding: 0 24px;
@@ -181,49 +181,41 @@ const boxedAsciiArt = computed(() => {
 }
 
 /* ── HERO ────────────────────────────────────────────── */
-.home-hero {
+.hero-banner {
 	padding: var(--geek-space-3xl) 0;
 }
 
-.home-hero__terminal {
+.hero-panel {
 	background: var(--geek-code-bg);
 	border: 1px solid var(--geek-border);
 	border-radius: var(--geek-radius-md);
 	padding: var(--geek-space-xl);
 }
 
-.home-hero__prompt {
+.terminal-prompt {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 	margin-bottom: var(--geek-space-md);
 }
 
-.home-hero__prompt-dolar {
+.terminal-prompt__symbol {
 	color: var(--geek-text-tertiary);
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-sm);
 }
 
-.home-hero__prompt-cmd {
+.terminal-prompt__command {
 	color: var(--geek-brand-500);
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-sm);
 }
 
-.home-hero__response {
+.hero-content {
 	margin-bottom: var(--geek-space-lg);
 }
 
-.home-hero__title {
-	font-size: clamp(28px, 4vw, 48px);
-	text-wrap: balance;
-	word-break: keep-all;
-	overflow-wrap: break-word;
-	margin: 0 0 var(--geek-space-sm) 0;
-}
-
-.home-hero__ascii {
+.hero-banner__ascii {
 	margin: 0 0 var(--geek-space-sm) 0;
 	padding: 0;
 	overflow-x: auto;
@@ -246,30 +238,30 @@ const boxedAsciiArt = computed(() => {
 	border: 0;
 }
 
-.home-hero__lead {
+.hero-banner__lead {
 	font-size: var(--geek-text-lg);
 	max-width: 560px;
 	margin: 0;
 }
 
-.home-hero__lead-muted {
+.hero-banner__lead-muted {
 	color: var(--geek-text-tertiary);
 }
 
-.home-hero__cta {
+.hero-actions {
 	display: flex;
 	align-items: center;
 	gap: 12px;
 	flex-wrap: wrap;
 }
 
-.home-hero__cta-dolar {
+.hero-actions__symbol {
 	color: var(--geek-text-tertiary);
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-sm);
 }
 
-.home-hero__cta-btn {
+.contact-button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -288,16 +280,16 @@ const boxedAsciiArt = computed(() => {
 		border-color 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.home-hero__cta-btn:hover {
+.contact-button:hover {
 	background: var(--geek-brand-200);
 	border-color: var(--geek-brand-500);
 }
 
-.home-hero__cta-arrow {
+.contact-button__arrow {
 	margin-left: 4px;
 }
 
-.home-hero__cta-cursor {
+.terminal-cursor {
 	display: inline-block;
 	width: 8px;
 	height: 16px;
@@ -306,36 +298,36 @@ const boxedAsciiArt = computed(() => {
 }
 
 /* ── Section ─────────────────────────────────────────── */
-.home-section {
+.content-section {
 	padding: var(--geek-space-2xl) 0;
 }
 
-.home-section__title {
+.content-section__title {
 	margin: 0 0 var(--geek-space-lg) 0;
 	text-wrap: balance;
 	word-break: keep-all;
 }
 
 /* ── Card grid ──────────────────────────────────────── */
-.home-grid {
+.post-grid {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 24px;
 }
 
 @media (min-width: 768px) {
-	.home-grid {
+	.post-grid {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
 @media (min-width: 1024px) {
-	.home-grid {
+	.post-grid {
 		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
-.home-card {
+.post-card {
 	display: flex;
 	flex-direction: column;
 	background: var(--geek-surface);
@@ -349,18 +341,18 @@ const boxedAsciiArt = computed(() => {
 		transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.home-card:focus-visible {
+.post-card:focus-visible {
 	outline: 2px solid var(--geek-brand-500);
 	outline-offset: 2px;
 }
 
-.home-card__title {
+.post-card__title {
 	margin: 0 0 var(--geek-space-sm) 0;
 	text-wrap: balance;
 	word-break: keep-all;
 }
 
-.home-card__excerpt {
+.post-card__excerpt {
 	font-size: var(--geek-text-sm);
 	line-height: 1.6;
 	color: var(--geek-text-secondary);
@@ -373,7 +365,7 @@ const boxedAsciiArt = computed(() => {
 	overflow: hidden;
 }
 
-.home-card__meta {
+.post-card__meta {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -381,19 +373,19 @@ const boxedAsciiArt = computed(() => {
 	flex-wrap: wrap;
 }
 
-.home-card__date {
+.post-card__date {
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-xs);
 	color: var(--geek-text-tertiary);
 }
 
-.home-card__tags {
+.post-card__tags {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
 }
 
-.home-card__tag {
+.post-tag {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -404,25 +396,25 @@ const boxedAsciiArt = computed(() => {
 	padding: 2px 8px;
 }
 
-.home-card__tag--brand {
+.post-tag--brand {
 	color: var(--geek-brand-500);
 	background: var(--geek-brand-100);
 }
 
-.home-card__tag--subtle {
+.post-tag--subtle {
 	color: var(--geek-text-tertiary);
 	background: var(--geek-surface-elevated);
 	border: 1px solid var(--geek-border-subtle);
 }
 
 /* ── Tech stack ─────────────────────────────────────── */
-.home-tech {
+.skill-list {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 12px;
 }
 
-.home-tech__pill {
+.skill-pill {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -437,52 +429,52 @@ const boxedAsciiArt = computed(() => {
 }
 
 /* ── Footer CTA ─────────────────────────────────────── */
-.home-cta {
+.contact-section {
 	padding-top: var(--geek-space-2xl);
 	padding-bottom: var(--geek-space-xl);
 }
 
-.home-cta__terminal {
+.contact-panel {
 	background: var(--geek-code-bg);
 	border: 1px solid var(--geek-border);
 	border-radius: var(--geek-radius-md);
 	padding: var(--geek-space-xl);
 }
 
-.home-cta__line {
+.contact-panel__line {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 }
 
-.home-cta__line+.home-cta__line {
+.contact-panel__line + .contact-panel__line {
 	margin-top: var(--geek-space-sm);
 }
 
-.home-cta__dolar {
+.contact-panel__symbol {
 	color: var(--geek-text-tertiary);
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-sm);
 }
 
-.home-cta__text {
+.contact-panel__text {
 	font-size: var(--geek-text-base);
 	color: var(--geek-text-primary);
 }
 
-.home-cta__cmd {
+.contact-panel__command {
 	color: var(--geek-brand-500);
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-sm);
 }
 
-.home-cta__arg {
+.contact-panel__value {
 	color: var(--geek-text-secondary);
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-sm);
 }
 
-.home-cta__cursor {
+.contact-panel__cursor {
 	display: inline-block;
 	width: 8px;
 	height: 14px;
@@ -490,26 +482,7 @@ const boxedAsciiArt = computed(() => {
 	animation: geek-blink 1s step-end infinite;
 }
 
-.my-custom-btn {
-	background: var(--geek-brand-100);
-	border: 1px solid var(--geek-brand-400);
-	border-radius: var(--geek-radius-sm);
-	padding: 6px 12px;
-	font-family: var(--geek-font-mono);
-	font-size: var(--geek-text-sm);
-	color: var(--geek-brand-500);
-	cursor: pointer;
-	transition:
-		background 120ms cubic-bezier(0.2, 0.8, 0.2, 1),
-		border-color 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.my-custom-btn:hover {
-	background: var(--geek-brand-200);
-	border-color: var(--geek-brand-500);
-}
-
-.geek-dialog {
+.contact-dialog {
 	border: 1px solid var(--geek-border);
 	border-radius: var(--geek-radius-md);
 	background: var(--geek-code-bg);
@@ -520,23 +493,23 @@ const boxedAsciiArt = computed(() => {
 	padding: 0;
 }
 
-.geek-dialog::backdrop {
+.contact-dialog::backdrop {
 	background: color-mix(in srgb, var(--geek-text-primary) 38%, transparent);
 }
 
-.geek-dialog[open] {
+.contact-dialog[open] {
 	animation: geek-dialog-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.geek-dialog[open]::backdrop {
+.contact-dialog[open]::backdrop {
 	animation: geek-dialog-backdrop-in 180ms ease-out;
 }
 
-.geek-dialog__content {
+.contact-dialog__content {
 	padding: var(--geek-space-lg);
 }
 
-.geek-dialog__header {
+.contact-dialog__header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -544,15 +517,15 @@ const boxedAsciiArt = computed(() => {
 	margin-bottom: var(--geek-space-sm);
 }
 
-.geek-dialog__header h3 {
+.contact-dialog__header h3 {
 	margin: 0;
 }
 
-.geek-dialog__close-form {
+.contact-dialog__close-form {
 	margin: 0;
 }
 
-.geek-dialog__close {
+.contact-dialog__close-button {
 	width: 28px;
 	height: 28px;
 	border-radius: var(--geek-radius-sm);
@@ -569,23 +542,23 @@ const boxedAsciiArt = computed(() => {
 		background 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.geek-dialog__close:hover {
+.contact-dialog__close-button:hover {
 	color: var(--geek-brand-500);
 	border-color: var(--geek-brand-500);
 	background: var(--geek-brand-100);
 }
 
-.geek-dialog__close:focus-visible {
+.contact-dialog__close-button:focus-visible {
 	outline: 2px solid var(--geek-brand-500);
 	outline-offset: 2px;
 }
 
-.geek-dialog :deep(a) {
+.contact-dialog :deep(a) {
 	color: var(--geek-brand-500);
 	text-decoration: none;
 }
 
-.geek-dialog :deep(a:hover) {
+.contact-dialog :deep(a:hover) {
 	text-decoration: underline;
 }
 
@@ -626,14 +599,14 @@ const boxedAsciiArt = computed(() => {
 
 @media (prefers-reduced-motion: reduce) {
 
-	.home-hero__cta-cursor,
-	.home-cta__cursor {
+	.terminal-cursor,
+	.contact-panel__cursor {
 		animation: none;
 		opacity: 1;
 	}
 
-	.geek-dialog[open],
-	.geek-dialog[open]::backdrop {
+	.contact-dialog[open],
+	.contact-dialog[open]::backdrop {
 		animation: none;
 	}
 }

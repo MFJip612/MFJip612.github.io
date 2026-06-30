@@ -109,14 +109,14 @@ const goNextPage = () => {
 <template>
   <LayoutHeader />
 
-  <main class="articles-main">
+  <main class="article-index">
     <!-- Header / search -->
-    <section class="articles-header">
-      <div class="articles-header__row">
-        <h2 class="geek-h2 articles-header__title">文章列表</h2>
+    <section class="article-index__header">
+      <div class="article-index__header-row">
+        <h2 class="geek-h2 article-index__header-title">文章列表</h2>
         <RouterLink
           to="/"
-          class="articles-header__back"
+          class="article-index__back-link"
           :style="{ color: backHovered ? 'var(--geek-brand-500)' : 'var(--geek-text-tertiary)' }"
           data-dom-id="back-home"
           @mouseenter="backHovered = true"
@@ -129,31 +129,31 @@ const goNextPage = () => {
     </section>
 
     <!-- Terminal search bar -->
-    <div class="articles-search">
-      <span class="articles-search__dolar">$</span>
-      <span class="articles-search__cmd">grep -r</span>
+    <div class="article-index__search">
+      <span class="article-index__search-symbol">$</span>
+      <span class="article-index__search-command">grep -r</span>
       <input
         v-model="searchQuery"
         type="text"
         placeholder="search articles..."
-        class="articles-search__input"
+        class="article-index__search-input"
         aria-label="搜索文章"
       >
     </div>
 
     <!-- Category filter -->
     <div
-      class="articles-filters no-scrollbar"
+      class="article-index__filters no-scrollbar"
       role="tablist"
       aria-label="文章分类"
     >
       <button
         v-for="cat in categories"
         :key="cat"
-        class="articles-filter"
+        class="article-filter"
         :class="{
-          'articles-filter--active': activeCategory === cat,
-          'articles-filter--pill': cat === '全部'
+          'article-filter--active': activeCategory === cat,
+          'article-filter--pill': cat === '全部'
         }"
         :data-dom-id="`filter-${cat}`"
         :aria-pressed="activeCategory === cat"
@@ -162,43 +162,43 @@ const goNextPage = () => {
     </div>
 
     <!-- Article grid -->
-    <div v-if="filteredArticles.length" class="articles-grid">
+    <div v-if="filteredArticles.length" class="article-index__grid">
       <RouterLink
         v-for="article in paginatedArticles"
         :key="article.id"
         :to="article.path"
-        class="article-card"
+        class="article-preview"
         :data-dom-id="`article-${article.id}`"
       >
-        <h3 class="article-card__title">{{ article.title }}</h3>
-        <p class="article-card__excerpt">{{ article.excerpt }}</p>
-        <div class="article-card__meta">
-          <div class="article-card__info">
-            <span class="article-card__date">{{ article.date }}</span>
+        <h3 class="article-preview__title">{{ article.title }}</h3>
+        <p class="article-preview__excerpt">{{ article.excerpt }}</p>
+        <div class="article-preview__meta">
+          <div class="article-preview__info">
+            <span class="article-preview__date">{{ article.date }}</span>
           </div>
-          <div class="article-card__tags">
+          <div class="article-preview__tags">
             <span
               v-for="tag in article.tags"
               :key="tag"
-              class="article-card__tag"
+              class="article-tag"
             >{{ tag }}</span>
           </div>
         </div>
       </RouterLink>
     </div>
-    <div v-else class="articles-empty">
-      <span class="articles-empty__dolar">$</span>
-      <span class="articles-empty__msg">no results found.</span>
+    <div v-else class="article-index__empty">
+      <span class="article-index__empty-symbol">$</span>
+      <span class="article-index__empty-msg">no results found.</span>
     </div>
 
     <!-- Pagination -->
     <nav
       v-if="filteredArticles.length > 0 && totalPages > 1"
-      class="articles-pagination"
+      class="article-index__pagination"
       aria-label="文章分页"
     >
       <button
-        class="articles-page articles-page--edge"
+        class="article-pagination__button article-pagination__button--edge"
         aria-label="上一页"
         :disabled="currentPage === 1"
         @click="goPrevPage"
@@ -206,13 +206,13 @@ const goNextPage = () => {
       <button
         v-for="page in pageNumbers"
         :key="page"
-        class="articles-page"
-        :class="{ 'articles-page--active': currentPage === page }"
+        class="article-pagination__button"
+        :class="{ 'article-pagination__button--active': currentPage === page }"
         :aria-current="currentPage === page ? 'page' : undefined"
         @click="goToPage(page)"
       >{{ page }}</button>
       <button
-        class="articles-page articles-page--edge"
+        class="article-pagination__button article-pagination__button--edge"
         aria-label="下一页"
         :disabled="currentPage === totalPages"
         @click="goNextPage"
@@ -224,7 +224,7 @@ const goNextPage = () => {
 </template>
 
 <style scoped>
-.articles-main {
+.article-index {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 24px;
@@ -232,19 +232,19 @@ const goNextPage = () => {
 }
 
 /* ── Header ─────────────────────────────────────────── */
-.articles-header {
+.article-index__header {
   padding-top: 32px;
   padding-bottom: 24px;
 }
 
-.articles-header__row {
+.article-index__header-row {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
 }
 
-.articles-header__title {
+.article-index__header-title {
   font-family: var(--geek-font-mono);
   margin: 0;
   text-wrap: balance;
@@ -252,7 +252,7 @@ const goNextPage = () => {
   overflow-wrap: break-word;
 }
 
-.articles-header__back {
+.article-index__back-link {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -264,7 +264,7 @@ const goNextPage = () => {
 }
 
 /* ── Terminal search ────────────────────────────────── */
-.articles-search {
+.article-index__search {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -278,17 +278,17 @@ const goNextPage = () => {
   font-size: var(--geek-text-sm);
 }
 
-.articles-search__dolar {
+.article-index__search-symbol {
   color: var(--geek-brand-500);
   user-select: none;
 }
 
-.articles-search__cmd {
+.article-index__search-command {
   color: var(--geek-code-text);
   user-select: none;
 }
 
-.articles-search__input {
+.article-index__search-input {
   flex: 1;
   background: transparent;
   border: none;
@@ -300,12 +300,12 @@ const goNextPage = () => {
   min-width: 0;
 }
 
-.articles-search__input::placeholder {
+.article-index__search-input::placeholder {
   color: var(--geek-text-tertiary);
 }
 
 /* ── Filters ────────────────────────────────────────── */
-.articles-filters {
+.article-index__filters {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -314,7 +314,7 @@ const goNextPage = () => {
   padding-bottom: 24px;
 }
 
-.articles-filter {
+.article-filter {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -334,30 +334,30 @@ const goNextPage = () => {
     color 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.articles-filter--pill {
+.article-filter--pill {
   border-radius: var(--geek-radius-full);
 }
 
-.articles-filter:hover {
+.article-filter:hover {
   border-color: var(--geek-brand-500);
   color: var(--geek-text-primary);
 }
 
-.articles-filter--active {
+.article-filter--active {
   border-color: var(--geek-brand-500);
   background: var(--geek-brand-500);
   color: var(--geek-code-text);
   font-weight: var(--geek-weight-medium);
 }
 
-.articles-filter--active:hover {
+.article-filter--active:hover {
   background: var(--geek-brand-500);
   border-color: var(--geek-brand-500);
   color: var(--geek-code-text);
 }
 
 /* ── Grid ───────────────────────────────────────────── */
-.articles-grid {
+.article-index__grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
@@ -365,12 +365,12 @@ const goNextPage = () => {
 }
 
 @media (min-width: 768px) {
-  .articles-grid {
+  .article-index__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.article-card {
+.article-preview {
   display: block;
   background: var(--geek-surface);
   border: 1px solid var(--geek-border);
@@ -382,12 +382,12 @@ const goNextPage = () => {
     transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.article-card:hover {
+.article-preview:hover {
   border-color: var(--geek-brand-500);
   transform: translateY(-2px);
 }
 
-.article-card__title {
+.article-preview__title {
   font-family: var(--geek-font-mono);
   font-size: var(--geek-text-lg);
   font-weight: var(--geek-weight-semibold);
@@ -395,43 +395,45 @@ const goNextPage = () => {
   line-height: var(--geek-leading-normal);
   margin: 0 0 var(--geek-space-sm) 0;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.article-card__excerpt {
+.article-preview__excerpt {
   font-family: var(--geek-font-body);
   font-size: var(--geek-text-sm);
   color: var(--geek-text-secondary);
   line-height: var(--geek-leading-relaxed);
   margin: 0 0 var(--geek-space-md) 0;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.article-card__meta {
+.article-preview__meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.article-card__info {
+.article-preview__info {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.article-card__date,
-.article-card__read {
+.article-preview__date,
+.article-preview__read {
   font-family: var(--geek-font-mono);
   font-size: var(--geek-text-xs);
   color: var(--geek-text-tertiary);
 }
 
-.article-card__tag {
+.article-tag {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -445,7 +447,7 @@ const goNextPage = () => {
 }
 
 /* ── Empty state ────────────────────────────────────── */
-.articles-empty {
+.article-index__empty {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -455,12 +457,12 @@ const goNextPage = () => {
   color: var(--geek-text-tertiary);
 }
 
-.articles-empty__dolar {
+.article-index__empty-symbol {
   color: var(--geek-brand-500);
 }
 
 /* ── Pagination ─────────────────────────────────────── */
-.articles-pagination {
+.article-index__pagination {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -470,7 +472,7 @@ const goNextPage = () => {
   font-size: var(--geek-text-sm);
 }
 
-.articles-page {
+.article-pagination__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -487,22 +489,22 @@ const goNextPage = () => {
     color 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.articles-page:hover {
+.article-pagination__button:hover {
   border-color: var(--geek-brand-500);
   color: var(--geek-text-primary);
 }
 
-.articles-page:disabled {
+.article-pagination__button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.articles-page:disabled:hover {
+.article-pagination__button:disabled:hover {
   border-color: var(--geek-border);
   color: var(--geek-text-secondary);
 }
 
-.articles-page--active {
+.article-pagination__button--active {
   border-color: var(--geek-brand-500);
   background: var(--geek-brand-500);
   color: var(--geek-code-text);
@@ -510,11 +512,11 @@ const goNextPage = () => {
   cursor: default;
 }
 
-.articles-page--edge {
+.article-pagination__button--edge {
   color: var(--geek-text-tertiary);
 }
 
-.articles-page--edge:hover {
+.article-pagination__button--edge:hover {
   color: var(--geek-text-primary);
 }
 </style>

@@ -2,10 +2,14 @@
 import { ref, computed, watch, nextTick, createApp, onBeforeUnmount, type App as VueApp } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
+import 'katex/dist/katex.min.css'
+import { markedMath } from '@/lib/marked-math'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import LayoutFooter from '@/components/LayoutFooter.vue'
 import CodeBlock from '@/components/CodeBlock.vue'
 import type { ArticleMeta } from '@/types'
+
+marked.use(markedMath)
 
 const route = useRoute()
 const router = useRouter()
@@ -528,6 +532,22 @@ onBeforeUnmount(() => {
   width: 100%;
   border-collapse: collapse;
   margin: 1.2em 0;
+}
+
+.markdown-body :deep(.math-block) {
+  margin: 1.4em 0;
+  padding: 8px 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.markdown-body :deep(.math-block .katex-display) {
+  margin: 0;
+}
+
+.markdown-body :deep(.katex) {
+  font-size: 1.05em;
+  color: var(--geek-text-primary);
 }
 
 .markdown-body :deep(th),
