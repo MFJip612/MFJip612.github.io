@@ -89,14 +89,58 @@ $$
 
 ## 巩固练习
 
-**题目：** 已知数列 $\left \{a_{n} \right \}$ 的通项公式为 $a_{n}=\frac{1}{n(n+2)}$，求数列的前 $n$ 项和 $S_{n}$。
+**题目：** 
+已知等差数列 $\left \{a_{n} \right \}$ 满足 $a_{1} =1$，$a_{2}+a_{4}=10$。 
+
+（1）求 $a_{n}$ 的通项公式； 
+
+（2）设 $b_{n}= \frac{1}{a_{n}\cdot a_{n+1}}$，求数列 $b_{n}$ 的前 $n$ 项和 $T_{n}$。 
 
 <details>
 <summary>💡 点击查看提示</summary>
 
-**思路引导：**
-- 观察分母 $n(n+2)$，两项之差为 $(n+2) - n = 2$
-- 分子是 $1$，需要构造出 $2$ 才能使用母积子差公式
-- 考虑提取系数：$\frac{1}{n(n+2)} = \frac{1}{2} \cdot \frac{2}{n(n+2)}$
+**解：**
+
+（1）设等差数列 $\{a_{n}\}$ 的公差为 $d$。
+
+$\because a_{1} = 1，a_{2} + a_{4} = 10$
+
+$\therefore (a_{1} + d) + (a_{1} + 3d) = 10$
+
+即 $2a_{1} + 4d = 10$
+
+将 $a_{1} = 1$ 代入得：
+
+$2 \times 1 + 4d = 10$
+
+$4d = 8$
+
+解得 $d = 2$
+
+$\therefore$数列 $\{a_{n}\}$ 的通项公式为：
+
+$a_{n} = a_{1} + (n - 1)d = 1 + (n - 1) \times 2 = 2n - 1$
+
+（2）由（1）得 $a_{n} = 2n - 1$
+
+$\therefore a_{n+1} = 2(n+1) - 1 = 2n + 1$
+
+代入 $b_{n}$ 得：
+
+$b_{n} = \frac{1}{a_{n} \cdot a_{n+1}} = \frac{1}{(2n - 1)(2n + 1)}$
+
+$b_{n} = \frac{1}{2} \left( \frac{1}{2n - 1} - \frac{1}{2n + 1} \right)$
+
+$\therefore$ 数列 $\{b_{n}\}$ 的前 $n$ 项和 $T_{n}$ 为：
+
+$T_{n} = b_{1} + b_{2} + \cdots + b_{n}$
+
+$= \frac{1}{2} \left[ \left( \frac{1}{1} - \frac{1}{3} \right) + \left( \frac{1}{3} - \frac{1}{5} \right) + \cdots + \left( \frac{1}{2n - 1} - \frac{1}{2n + 1} \right) \right]$
+
+$= \frac{1}{2} \left( 1 - \frac{1}{2n + 1} \right)$ 
+
+$= \frac{1}{2} \cdot \frac{2n}{2n + 1}$
+
+$= \frac{n}{2n + 1}$
 
 </details>
