@@ -89,8 +89,8 @@ const boxedAsciiArt = computed(() => {
 				</div>
 				<div class="hero-actions">
 					<span class="terminal-prompt__symbol">$</span>
-					<RouterLink to="/article" class="contact-button" data-dom-id="cta-articles">
-						开始阅读 <span class="contact-button__arrow">&rarr;</span>
+					<RouterLink to="/article" class="cta-button" data-dom-id="cta-articles">
+						开始阅读 <span class="cta-button__arrow">&rarr;</span>
 					</RouterLink>
 					<span class="terminal-cursor" />
 				</div>
@@ -126,25 +126,25 @@ const boxedAsciiArt = computed(() => {
          ═══════════════════════════════════════════════════ -->
 		<section class="content-section">
 			<h2 class="geek-h2 content-section__title">技术栈</h2>
-			<div class="skill-list">
-				<span v-for="tech in techStack" :key="tech" class="skill-pill">{{ tech }}</span>
+			<div class="tech-stack-grid">
+				<span v-for="tech in techStack" :key="tech" class="tech-stack-badge">{{ tech }}</span>
 			</div>
 		</section>
 
 		<!-- ═══════════════════════════════════════════════════
          FOOTER CTA
          ═══════════════════════════════════════════════════ -->
-		<section class="content-section contact-section">
-			<div class="contact-panel">
-				<div class="contact-panel__line">
+		<section class="content-section cta-section">
+			<div class="cta-panel">
+				<div class="cta-panel__line">
 					<span class="terminal-prompt__symbol">$</span>
-					<span class="geek-body contact-panel__text">想和我交流？</span>
+					<span class="geek-body cta-panel__text">想和我交流？</span>
 				</div>
-				<div class="contact-panel__line">
+				<div class="cta-panel__line">
 					<span class="terminal-prompt__symbol">$</span>
 					<span class="terminal-prompt__command">echo</span>
-					<span class="contact-panel__value"><button class="contact-button" commandFor="contact-dialog"
-							command="show-modal">contact@waterspo.top</button></span>
+					<span class="cta-panel__value"><button class="cta-button" commandFor="contact-dialog"
+							command="show-modal">查看联系方式</button></span>
 					<span class="terminal-cursor" />
 				</div>
 			</div>
@@ -218,7 +218,7 @@ const boxedAsciiArt = computed(() => {
 .hero-banner__ascii {
 	margin: 0 0 var(--geek-space-sm) 0;
 	padding: 0;
-	overflow-x: auto;
+	/* overflow-x: auto; */
 	color: var(--geek-brand-500);
 	font-family: var(--geek-font-mono);
 	font-size: clamp(8px, 1vw, 12px);
@@ -255,13 +255,7 @@ const boxedAsciiArt = computed(() => {
 	flex-wrap: wrap;
 }
 
-.hero-actions__symbol {
-	color: var(--geek-text-tertiary);
-	font-family: var(--geek-font-mono);
-	font-size: var(--geek-text-sm);
-}
-
-.contact-button {
+.cta-button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -280,12 +274,12 @@ const boxedAsciiArt = computed(() => {
 		border-color 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.contact-button:hover {
+.cta-button:hover {
 	background: var(--geek-brand-200);
 	border-color: var(--geek-brand-500);
 }
 
-.contact-button__arrow {
+.cta-button__arrow {
 	margin-left: 4px;
 }
 
@@ -401,20 +395,14 @@ const boxedAsciiArt = computed(() => {
 	background: var(--geek-brand-100);
 }
 
-.post-tag--subtle {
-	color: var(--geek-text-tertiary);
-	background: var(--geek-surface-elevated);
-	border: 1px solid var(--geek-border-subtle);
-}
-
 /* ── Tech stack ─────────────────────────────────────── */
-.skill-list {
+.tech-stack-grid {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 12px;
 }
 
-.skill-pill {
+.tech-stack-badge {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -429,57 +417,37 @@ const boxedAsciiArt = computed(() => {
 }
 
 /* ── Footer CTA ─────────────────────────────────────── */
-.contact-section {
+.cta-section {
 	padding-top: var(--geek-space-2xl);
 	padding-bottom: var(--geek-space-xl);
 }
 
-.contact-panel {
+.cta-panel {
 	background: var(--geek-code-bg);
 	border: 1px solid var(--geek-border);
 	border-radius: var(--geek-radius-md);
 	padding: var(--geek-space-xl);
 }
 
-.contact-panel__line {
+.cta-panel__line {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 }
 
-.contact-panel__line + .contact-panel__line {
+.cta-panel__line + .cta-panel__line {
 	margin-top: var(--geek-space-sm);
 }
 
-.contact-panel__symbol {
-	color: var(--geek-text-tertiary);
-	font-family: var(--geek-font-mono);
-	font-size: var(--geek-text-sm);
-}
-
-.contact-panel__text {
+.cta-panel__text {
 	font-size: var(--geek-text-base);
 	color: var(--geek-text-primary);
 }
 
-.contact-panel__command {
-	color: var(--geek-brand-500);
-	font-family: var(--geek-font-mono);
-	font-size: var(--geek-text-sm);
-}
-
-.contact-panel__value {
+.cta-panel__value {
 	color: var(--geek-text-secondary);
 	font-family: var(--geek-font-mono);
 	font-size: var(--geek-text-sm);
-}
-
-.contact-panel__cursor {
-	display: inline-block;
-	width: 8px;
-	height: 14px;
-	background: var(--geek-brand-500);
-	animation: geek-blink 1s step-end infinite;
 }
 
 .contact-dialog {
@@ -599,8 +567,7 @@ const boxedAsciiArt = computed(() => {
 
 @media (prefers-reduced-motion: reduce) {
 
-	.terminal-cursor,
-	.contact-panel__cursor {
+	.terminal-cursor {
 		animation: none;
 		opacity: 1;
 	}

@@ -58,7 +58,7 @@ const backHovered = ref(false)
     <!-- Bio section -->
     <section class="about-section" aria-label="个人简介">
       <div class="about-prompt">
-        <span class="about-prompt__dolar">$</span>
+        <span class="about-prompt__dollar">$</span>
         <span class="about-prompt__cmd">cat about.md</span>
       </div>
       <div class="about-bio">
@@ -109,7 +109,7 @@ const backHovered = ref(false)
     <!-- Contact section -->
     <section class="about-section" aria-label="联系">
       <div class="about-prompt">
-        <span class="about-prompt__dolar">$</span>
+        <span class="about-prompt__dollar">$</span>
         <span class="about-prompt__cmd">echo contact</span>
       </div>
       <div class="about-contact">
@@ -189,7 +189,7 @@ const backHovered = ref(false)
   user-select: none;
 }
 
-.about-prompt__dolar {
+.about-prompt__dollar {
   color: var(--geek-text-tertiary);
 }
 
