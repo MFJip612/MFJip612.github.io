@@ -44,3 +44,8 @@ __screenshots__/
 !.dev.vars.example
 .env*
 !.env.example
+
+# Nuxt
+.nuxt
+.output
+.data

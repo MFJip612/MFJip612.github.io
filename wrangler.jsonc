@@ -6,9 +6,10 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "blog",
 	"compatibility_date": "2026-06-28",
-	"main": "server/index.ts",
+	"main": ".output/server/index.mjs",
 	"assets": {
-		"not_found_handling": "single-page-application"
+		"directory": ".output/public",
+		"binding": "ASSETS"
 	},
 	"observability": {
 		"enabled": true

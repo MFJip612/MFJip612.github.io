@@ -1,42 +1,67 @@
-# mfjip612-github-io
+# MFJip612 — Geek Blog
 
-This template should help get you started developing with Vue 3 in Vite.
+基于 **Nuxt 5**（compatibilityVersion 5）构建的极客风格个人博客，部署于 **Cloudflare Workers**。
 
-## Recommended IDE Setup
+## 技术栈
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Nuxt 4.4.8**（启用 Nuxt 5 兼容模式）+ **Vue 3.5** + **Vite 7**
+- **Nitro 2.13** — 服务端渲染 + 预渲染，`cloudflare-module` preset
+- **marked 18** + **KaTeX 0.17** — Markdown 渲染与数学公式
+- **Monaco Editor 0.55** — 代码块高亮
+- **Cloudflare Workers** — 部署目标
 
-## Recommended Browser Setup
+## 项目结构
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+```
+app/
+  app.vue              # 根组件
+  layouts/default.vue  # 默认布局
+  components/          # 自动导入组件
+  composables/         # 自动导入 composables
+    useArticles.ts     # 文章元数据与内容加载
+  pages/               # 文件路由
+    index.vue          # 首页
+    article/index.vue  # 文章列表
+    article/[id].vue   # 文章详情（动态路由）
+    about.vue          # 关于页
+  articles/            # 文章源文件（post.ts + index.md）
+  lib/marked-math.ts   # marked KaTeX 扩展
+  assets/css/          # 全局样式
+  types/index.ts       # 类型定义
+nuxt.config.ts         # Nuxt 配置
+wrangler.jsonc         # Cloudflare Workers 配置
+public/                # 静态资源
+```
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## 开发
 
 ```sh
 pnpm install
+pnpm dev          # 开发服务器（node-server preset）
 ```
 
-### Compile and Hot-Reload for Development
+## 构建
 
 ```sh
-pnpm dev
+pnpm build        # 生产构建（cloudflare-module preset）
+pnpm typecheck    # 类型检查
 ```
 
-### Type-Check, Compile and Minify for Production
+## 预览生产构建
 
 ```sh
-pnpm build
+npx wrangler dev .output/server/index.mjs --assets .output/public
 ```
+
+## 部署
+
+```sh
+npx wrangler deploy .output/server/index.mjs --assets .output/public
+```
+
+## 文章编写
+
+在 `app/articles/` 下创建目录，包含：
+
+- `post.ts` — 文章元数据（标题、日期、分类、摘要）
+- `index.md` — Markdown 内容（支持 KaTeX 数学公式）

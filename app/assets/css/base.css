@@ -1,0 +1,10 @@
+/* ────────────────────────────────────────────────────────────
+   base.css — base reset only.
+   All design tokens live in main.css.
+   ──────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
