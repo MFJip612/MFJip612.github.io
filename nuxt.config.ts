@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   // Nitro 服务端配置 — Cloudflare Workers 部署
   // 开发模式使用 node-server 避免 cloudflare preset 的 #imports 解析问题
   nitro: {
-    preset: process.env.NODE_ENV === 'production' ? 'cloudflare-module' : 'node-server',
+    preset: process.env.NODE_ENV === 'production' ? 'cloudflare' : 'node-server',
     prerender: {
       crawlLinks: true,
       routes: ['/', '/article'],
