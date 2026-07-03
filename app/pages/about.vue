@@ -40,6 +40,37 @@ const timeline: TimelineEntry[] = [
   }
 ]
 
+interface Certificate {
+  name: string
+  issuer: string
+  date: string
+  link?: string
+}
+
+const certificates: Certificate[] = [
+  {
+    name: '全国计算机等级WPS Office',
+    issuer: '教育部考试中心',
+    level: '一级',
+    date: '2024-03',
+    link: 'https://ncre.neea.edu.cn'
+  },
+  {
+    name: '人工智能训练师',
+    issuer: '深圳市人工智能协会',
+    level: '五级',
+    date: '2026-05',
+    link: 'https://szsrg-jndj-ks.zjyun.org'
+  },
+  {
+    name: '信息通信网络运行管理员',
+    issuer: '中华人民共和国人力资源和社会保障部',
+    level: '四级',
+    date: '2026-06',
+    link: 'https://www.gdskills.cn'
+  }
+]
+
 const backHovered = ref(false)
 </script>
 
@@ -48,13 +79,9 @@ const backHovered = ref(false)
     <!-- Page header -->
     <section class="about-header">
       <h2 class="geek-h2 about-header__title">关于我</h2>
-      <NuxtLink
-        to="/"
-        class="about-header__back"
+      <NuxtLink to="/" class="about-header__back"
         :style="{ color: backHovered ? 'var(--geek-brand-500)' : 'var(--geek-text-tertiary)' }"
-        @mouseenter="backHovered = true"
-        @mouseleave="backHovered = false"
-      >
+        @mouseenter="backHovered = true" @mouseleave="backHovered = false">
         <LucideIcon name="arrow-left" :size="14" />
         <span>Home</span>
       </NuxtLink>
@@ -82,6 +109,23 @@ const backHovered = ref(false)
             <span v-for="item in group.items" :key="item" class="skill-badge">{{ item }}</span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Certificates -->
+    <section class="about-certificates">
+      <h3 class="geek-h3 about-certificates__title">证书</h3>
+      <div class="scrollbox">
+        <div class="scroll_container">
+          <div v-for="certificate in certificates" :key="certificate.name" class="scroll_container_card">
+            <h4 class="scroll_container_card_title">{{ certificate.name }}</h4>
+            <p class="scroll_container_card_issuer">{{ certificate.issuer }}</p>
+            <p class="scroll_container_card_date">{{ certificate.date }}</p>
+            <a v-if="certificate.link" :href="certificate.link" target="_blank" rel="noopener noreferrer"
+              class="scroll_container_card_link">查看证书</a>
+          </div>
+        </div>
+        <!-- Add certificate items here -->
       </div>
     </section>
 
@@ -209,6 +253,30 @@ const backHovered = ref(false)
   font-family: var(--geek-font-mono);
   font-size: var(--geek-text-xs);
   color: var(--geek-text-secondary);
+}
+
+.scrollbox {
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+  overflow: hidden;
+}
+
+.scroll_container {
+  justify-content: start;
+  height: 100vh;
+  flex-shrink: 0;
+}
+
+.scroll_container_card {
+  position: relative;
+  width: 65rem;
+  height: 40rem;
+  background-color: #c3cbce;
+  border-radius: 5rem;
+  margin-left: 5rem;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .about-timeline__title {

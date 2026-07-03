@@ -468,6 +468,12 @@ useHead(() => ({
   overflow-x: auto;
 }
 
+.markdown-body :deep(img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 @media (max-width: 900px) {
   .article-detail {
     grid-template-columns: 1fr;
