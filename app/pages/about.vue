@@ -5,6 +5,26 @@ useHead({
   title: '关于我 — MFJip612',
 })
 
+// GSAP 水平滚动：证书区域垂直滚动时，内容轨道水平移动
+// 仅在客户端初始化，SSR 阶段不执行 DOM 操作
+const { isReady, error } = useHorizontalScroll({
+  containerSelector: '.about-certificates .scrollbox',
+  trackSelector: '.scroll_container',
+  // 当容器顶部到达视口 20% 处时开始动画
+  start: 'top 20%',
+  // scrub: 1 使动画与滚动进度平滑关联
+  // end 默认使用轨道可移动宽度，滚动距离越长动画“走得越慢”
+  scrub: 1,
+  // 固定容器，营造出“垂直滚动控制水平内容”的沉浸体验
+  pin: true,
+  // 减少 pin 切换时的画面抖动
+  anticipatePin: 1,
+  // 开发调试时可设为 true 查看触发边界
+  markers: false,
+  // 卡片进入视口时的微入场动画
+  enableCardReveal: true,
+})
+
 interface SkillGroup {
   title: string
   items: string[]
@@ -43,6 +63,7 @@ const timeline: TimelineEntry[] = [
 interface Certificate {
   name: string
   issuer: string
+  level?: string
   date: string
   link?: string
 }
@@ -118,11 +139,15 @@ const backHovered = ref(false)
       <div class="scrollbox">
         <div class="scroll_container">
           <div v-for="certificate in certificates" :key="certificate.name" class="scroll_container_card">
-            <h4 class="scroll_container_card_title">{{ certificate.name }}</h4>
-            <p class="scroll_container_card_issuer">{{ certificate.issuer }}</p>
-            <p class="scroll_container_card_date">{{ certificate.date }}</p>
+            <div>
+              <h4 class="scroll_container_card_title">{{ certificate.name }}</h4>
+              <p class="scroll_container_card_issuer">{{ certificate.issuer }}</p>
+              <p class="scroll_container_card_date">{{ certificate.date }}</p>
+            </div>
             <a v-if="certificate.link" :href="certificate.link" target="_blank" rel="noopener noreferrer"
-              class="scroll_container_card_link">查看证书</a>
+              class="scroll_container_card_link">
+              查看证书 →
+            </a>
           </div>
         </div>
         <!-- Add certificate items here -->
@@ -256,27 +281,113 @@ const backHovered = ref(false)
 }
 
 .scrollbox {
-  justify-content: start;
-  align-items: start;
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
+  min-height: 400px;
   overflow: hidden;
 }
 
 .scroll_container {
-  justify-content: start;
-  height: 100vh;
+  /* 水平排列卡片，作为 GSAP 动画的移动轨道 */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3rem;
+  height: 100%;
+  padding: 0 3rem;
   flex-shrink: 0;
+  will-change: transform;
 }
 
 .scroll_container_card {
   position: relative;
-  width: 65rem;
-  height: 40rem;
-  background-color: #c3cbce;
-  border-radius: 5rem;
-  margin-left: 5rem;
+  /* 响应式宽度：移动端 280px，桌面端最大 480px */
+  width: clamp(280px, 75vw, 480px);
+  /* 保持 16:10 的卡片比例 */
+  aspect-ratio: 16 / 10;
+  /* 使用设计令牌：深色表面 + 品牌色边框 */
+  background: var(--geek-surface);
+  border: 1px solid var(--geek-border);
+  border-radius: var(--geek-radius-lg);
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex-shrink: 0;
   overflow: hidden;
+  /* 装饰性顶部品牌色条 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--geek-brand-500), var(--geek-brand-400));
+    border-radius: var(--geek-radius-lg) var(--geek-radius-lg) 0 0;
+  }
+  /* 背景微光装饰 */
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--geek-brand-500) 0%, transparent 70%);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+}
+
+.scroll_container_card_title {
+  font-family: var(--geek-font-mono);
+  font-size: var(--geek-text-lg);
+  font-weight: var(--geek-weight-semibold);
+  color: var(--geek-text-primary);
+  margin: 0 0 0.75rem;
+  line-height: var(--geek-leading-tight);
+  position: relative;
+  z-index: 1;
+}
+
+.scroll_container_card_issuer {
+  font-family: var(--geek-font-body);
+  font-size: var(--geek-text-sm);
+  color: var(--geek-text-secondary);
+  margin: 0 0 0.5rem;
+  line-height: var(--geek-leading-normal);
+  position: relative;
+  z-index: 1;
+}
+
+.scroll_container_card_date {
+  font-family: var(--geek-font-mono);
+  font-size: var(--geek-text-xs);
+  color: var(--geek-text-tertiary);
+  margin: 0 0 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.scroll_container_card_link {
+  font-family: var(--geek-font-mono);
+  font-size: var(--geek-text-xs);
+  color: var(--geek-brand-500);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+  transition: color 150ms ease, gap 150ms ease;
+  &:hover {
+    color: var(--geek-brand-400);
+    gap: 6px;
+  }
 }
 
 .about-timeline__title {
