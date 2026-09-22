@@ -148,4 +148,3 @@ matching desktop viewport and a mobile viewport. The final review checks copy,
 navigation, first-viewport balance, palette, typography, border/container
 model, command treatment, article-row density, long-form readability, and
 responsive behavior.
-

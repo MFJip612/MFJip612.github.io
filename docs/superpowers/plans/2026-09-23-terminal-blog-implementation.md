@@ -35,12 +35,14 @@
 ### Task 1: Typed content domain and repository
 
 **Files:**
+
 - Create: `lib/content/types.ts`
 - Create: `lib/content/local-content.ts`
 - Create: `lib/content/repository.ts`
 - Create: `lib/content/repository.test.ts`
 
 **Interfaces:**
+
 - Produces: `SiteProfile`, `PostSummary`, `Post`, `FriendLink`, `getProfile(): Promise<SiteProfile>`, `listPosts(): Promise<PostSummary[]>`, `getPostBySlug(slug: string): Promise<Post | null>`, and `listLinks(): Promise<FriendLink[]>`.
 - `Post` uses structured renderable sections rather than raw HTML: paragraphs, headings, code blocks, lists, and quotes.
 
@@ -102,6 +104,7 @@ git commit -m "feat: add typed blog content repository"
 ### Task 2: Global design system and shared site shell
 
 **Files:**
+
 - Modify: `app/globals.css`
 - Modify: `app/layout.tsx`
 - Create: `components/site-shell.tsx`
@@ -110,6 +113,7 @@ git commit -m "feat: add typed blog content repository"
 - Create: `components/terminal-prompt.tsx`
 
 **Interfaces:**
+
 - Consumes: `getProfile()` from Task 1.
 - Produces: `SiteShell({ children })`, shared navigation, footer, terminal prompt ornament, CSS color/type/spacing tokens, and default metadata.
 
@@ -145,12 +149,14 @@ git commit -m "feat: add terminal editorial site shell"
 ### Task 3: Command palette interaction
 
 **Files:**
+
 - Create: `lib/terminal/commands.ts`
 - Create: `lib/terminal/commands.test.ts`
 - Create: `components/command-palette.tsx`
 - Modify: `components/site-shell.tsx`
 
 **Interfaces:**
+
 - Produces: `parseCommand(input: string): CommandResult`, where `CommandResult` is `{ type: "navigate"; href: string } | { type: "message"; message: string } | { type: "clear" }`.
 - Supported commands: `help`, `home`, `blog`, `about`, `links`, and `clear`.
 
@@ -192,6 +198,7 @@ git commit -m "feat: add terminal command navigation"
 ### Task 4: Homepage and reusable content components
 
 **Files:**
+
 - Modify: `app/page.tsx`
 - Create: `components/page-heading.tsx`
 - Create: `components/post-list.tsx`
@@ -199,6 +206,7 @@ git commit -m "feat: add terminal command navigation"
 - Create: `components/code-statement.tsx`
 
 **Interfaces:**
+
 - Consumes: `getProfile()` and `listPosts()` from Task 1.
 - Produces: reusable post-list primitives for `/` and `/blog` and the approved homepage composition.
 
@@ -234,6 +242,7 @@ git commit -m "feat: build terminal blog homepage"
 ### Task 5: Blog index, article detail, and not-found states
 
 **Files:**
+
 - Create: `app/blog/page.tsx`
 - Create: `app/blog/[slug]/page.tsx`
 - Create: `app/not-found.tsx`
@@ -241,6 +250,7 @@ git commit -m "feat: build terminal blog homepage"
 - Create: `components/article-navigation.tsx`
 
 **Interfaces:**
+
 - Consumes: `listPosts()` and `getPostBySlug()`.
 - Produces: `/blog`, statically enumerable article routes, post metadata, block rendering, and previous/next navigation.
 
@@ -280,11 +290,13 @@ git commit -m "feat: add blog index and article routes"
 ### Task 6: About and links pages
 
 **Files:**
+
 - Create: `app/about/page.tsx`
 - Create: `app/links/page.tsx`
 - Create: `components/link-group.tsx`
 
 **Interfaces:**
+
 - Consumes: `getProfile()` and `listLinks()`.
 - Produces: complete `/about` and `/links` routes with route metadata and empty collection behavior.
 
@@ -316,10 +328,12 @@ git commit -m "feat: add about and links pages"
 ### Task 7: Browser QA, accessibility, and fidelity pass
 
 **Files:**
+
 - Modify as needed: `app/**/*.tsx`, `components/**/*.tsx`, `app/globals.css`
 - Do not retain temporary screenshots or QA artifacts.
 
 **Interfaces:**
+
 - Consumes: all completed routes and the approved concept image at `/home/mingfai/.codex/generated_images/01a0c9aa-70dd-7471-a4d6-bca1f00a0eb8/exec-4fb1843f-88ee-4920-9260-90accee2920f.png`.
 - Produces: visually faithful, responsive, keyboard-accessible release candidate.
 
@@ -329,7 +343,7 @@ Start `bun run dev`. Verify `/`, `/blog`, all three `/blog/[slug]` routes, `/abo
 
 - [ ] **Step 2: Exercise command behavior in the browser**
 
-Submit `help`, every navigation command, `clear`, whitespace-only input, ` BLOG `, and `wat`. Confirm focus remains usable, live feedback is announced, navigation reaches real routes, and unknown input remains in context.
+Submit `help`, every navigation command, `clear`, whitespace-only input, `BLOG`, and `wat`. Confirm focus remains usable, live feedback is announced, navigation reaches real routes, and unknown input remains in context.
 
 - [ ] **Step 3: Check keyboard and responsive behavior**
 
@@ -367,6 +381,7 @@ git commit -m "fix: polish terminal blog experience"
 ### Task 8: Final review and handoff
 
 **Files:**
+
 - Review only unless a defect is found.
 
 - [ ] **Step 1: Review against the design specification**
@@ -391,4 +406,3 @@ Report implemented routes, repository extension point, supported commands,
 quality-gate results, browser viewports tested, concept comparison findings,
 and any intentional deviations. If there are no visual deviations, state that
 explicitly.
-
