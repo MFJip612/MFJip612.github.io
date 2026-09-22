@@ -11,9 +11,7 @@ export const profile: SiteProfile = {
   ],
   location: "Hong Kong",
   email: "hello@mfjip612.dev",
-  socialLinks: [
-    { label: "GitHub", url: "https://github.com/MFJip612" },
-  ],
+  socialLinks: [{ label: "GitHub", url: "https://github.com/MFJip612" }],
   principles: [
     "Make the boundary clearer before making the implementation clever.",
     "Prefer small, reversible decisions over speculative machinery.",
@@ -166,7 +164,8 @@ export const friendLinks: FriendLink[] = [
   },
   {
     name: "web.dev",
-    description: "Practical guidance for accessible, performant web experiences.",
+    description:
+      "Practical guidance for accessible, performant web experiences.",
     url: "https://web.dev",
     category: "Reading",
   },

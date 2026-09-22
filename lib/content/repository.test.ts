@@ -1,11 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import {
-  getPostBySlug,
-  getProfile,
-  listLinks,
-  listPosts,
-} from "./repository";
+import { getPostBySlug, getProfile, listLinks, listPosts } from "./repository";
 
 describe("content repository", () => {
   test("returns post summaries newest first without article blocks", async () => {
@@ -20,9 +15,7 @@ describe("content repository", () => {
   });
 
   test("resolves a known post and returns null for an unknown slug", async () => {
-    const post = await getPostBySlug(
-      "a-practical-guide-to-server-first-react",
-    );
+    const post = await getPostBySlug("a-practical-guide-to-server-first-react");
 
     expect(post?.title).toBe("A practical guide to server-first React");
     expect(post?.blocks.length).toBeGreaterThan(0);

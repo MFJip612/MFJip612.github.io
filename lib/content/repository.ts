@@ -11,32 +11,36 @@ function copyPost(post: Post): Post {
     ...post,
     tags: [...post.tags],
     blocks: post.blocks.map((block) =>
-      block.type === "list" ? { ...block, items: [...block.items] } : { ...block },
+      block.type === "list"
+        ? { ...block, items: [...block.items] }
+        : { ...block },
     ),
   };
 }
 
-export async function getProfile(): Promise<SiteProfile> {
-  return {
+export function getProfile(): Promise<SiteProfile> {
+  return Promise.resolve({
     ...profile,
     biography: [...profile.biography],
     socialLinks: profile.socialLinks.map((link) => ({ ...link })),
     principles: [...profile.principles],
     interests: [...profile.interests],
-  };
+  });
 }
 
-export async function listPosts(): Promise<PostSummary[]> {
-  return posts
-    .toSorted((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-    .map(copySummary);
+export function listPosts(): Promise<PostSummary[]> {
+  return Promise.resolve(
+    posts
+      .toSorted((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+      .map(copySummary),
+  );
 }
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+export function getPostBySlug(slug: string): Promise<Post | null> {
   const post = posts.find((candidate) => candidate.slug === slug);
-  return post ? copyPost(post) : null;
+  return Promise.resolve(post ? copyPost(post) : null);
 }
 
-export async function listLinks(): Promise<FriendLink[]> {
-  return friendLinks.map((link) => ({ ...link }));
+export function listLinks(): Promise<FriendLink[]> {
+  return Promise.resolve(friendLinks.map((link) => ({ ...link })));
 }
