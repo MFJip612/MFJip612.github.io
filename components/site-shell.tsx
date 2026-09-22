@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { getProfile } from "@/lib/content/repository";
 
+import { CommandPalette } from "./command-palette";
 import { Navigation } from "./navigation";
 import { SiteFooter } from "./site-footer";
 
@@ -33,6 +34,7 @@ export async function SiteShell({ children }: SiteShellProps) {
       <main id="main-content" className="flex-1 py-12 sm:py-16 lg:py-20">
         {children}
       </main>
+      <CommandPalette />
       <SiteFooter />
     </div>
   );
