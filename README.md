@@ -1,68 +1,36 @@
-# Waterspo Studio Portal
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-The bilingual corporate portal for Waterspo Studio (幄特斯普工作室), built with Next.js 16, React, TypeScript and Tailwind CSS.
+## Getting Started
 
-## Features
-
-- English routes at `/` and Chinese routes under `/zh`, with a statically prerendered fallback for hosts that do not run the proxy
-- Correct `lang` attribute on every document, including the redirect fallbacks
-- Signal-editorial design system: cream / slate / signal-red tokens, semantic CSS variables and a glyph-subsetted local font stack
-- `SignalField`, an SVG motion primitive with scroll-triggered line drawing, pointer parallax and a reduced-motion-safe static state
-- Product pages with responsive AVIF / WebP / JPEG screenshots
-- Light, dark and system color themes
-- Reusable editorial UI and site components
-- Services, about, contact and technology lab pages
-- Working SSR, ISR, SSG, Streaming, Node Function and Edge Function experiments
-
-## Development
+First, run the development server:
 
 ```bash
-pnpm install
+npm run dev
+# or
+yarn dev
+# or
 pnpm dev
+# or
+bun dev
 ```
 
-Open <http://localhost:3000>.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Verification
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-```bash
-pnpm lint          # biome check
-pnpm test          # node --test over src/lib
-pnpm build
-```
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-Against a running dev or production server:
+## Learn More
 
-```bash
-pnpm smoke http://127.0.0.1:3000     # HTTP route, language and metadata contract
-```
+To learn more about Next.js, take a look at the following resources:
 
-Real-browser pass (requires `CHROME_PATH`, e.g. a Playwright-managed Chromium):
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-```bash
-CHROME_PATH=$HOME/.cache/ms-playwright/chromium-*/chrome-linux64/chrome \
-  node scripts/qa-browser.mjs http://127.0.0.1:3000
-```
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-Set `QA_SKIP_SHOTS=1` to skip the full-page screenshots and run only the
-interaction checks.
+## Deploy on Vercel
 
-## Fonts and media
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Fonts and product screenshots are built from sources in this repository, not
-installed at request time.
-
-```bash
-node scripts/subset-fonts.mjs        # -> public/fonts
-node scripts/capture-product-screens.mjs   # re-capture the live product sites
-node scripts/build-product-media.mjs # -> public/product-media
-```
-
-`scripts/subset-fonts.mjs` needs `pyftsubset`:
-
-```bash
-uv tool install --index https://pypi.org/simple "fonttools[woff]"
-```
-
-Notices for the bundled typefaces live in `public/fonts/LICENSES.txt`; source
-attribution for the screenshots is in `public/product-media/README.md`.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
