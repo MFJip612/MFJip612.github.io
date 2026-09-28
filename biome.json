@@ -1,0 +1,29 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+	"files": {
+		"includes": [
+			"**",
+			"!**/.next",
+			"!**/out",
+			"!**/build",
+			"!**/next-env.d.ts",
+			"!**/public/**/*.svg"
+		]
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 4
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "recommended"
+		}
+	}
+}
