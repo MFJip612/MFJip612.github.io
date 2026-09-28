@@ -1,0 +1,122 @@
+// 业余无线电个人网站内容模型
+// 约定：Content 保存工作版本与发布版本指针；Revision 不可变；公开查询只读已发布指针。
+
+generator client {
+	provider = "prisma-client"
+	output   = "../generated/prisma"
+}
+
+datasource db {
+	provider = "postgresql"
+}
+
+enum ContentKind {
+	profile
+	page
+	note
+	equipment
+	settings
+}
+
+enum MediaVisibility {
+	staging
+	verified
+}
+
+enum MediaUsage {
+	inline
+	cover
+	avatar
+}
+
+enum AuditResult {
+	ok
+	rejected
+	failed
+}
+
+model Content {
+	id                  String      @id @default(cuid())
+	kind                ContentKind
+	stableKey           String?     @unique
+	publicSlug          String?     @unique
+	workingRevisionId   String?     @unique
+	publishedRevisionId String?     @unique
+	publishedAt         DateTime?
+	createdAt           DateTime    @default(now())
+	updatedAt           DateTime    @updatedAt
+	deletedAt           DateTime?
+	lockVersion         Int         @default(1)
+
+	workingRevision   Revision?  @relation("WorkingRevision", fields: [workingRevisionId], references: [id], onDelete: SetNull)
+	publishedRevision Revision?  @relation("PublishedRevision", fields: [publishedRevisionId], references: [id], onDelete: SetNull)
+	revisions         Revision[] @relation("ContentRevisions")
+	redirectsTo       Redirect[]
+
+	@@index([kind, deletedAt])
+	@@index([publishedAt])
+}
+
+model Revision {
+	id            String   @id @default(cuid())
+	contentId     String
+	schemaVersion Int      @default(1)
+	payload       Json
+	actorId       String?
+	createdAt     DateTime @default(now())
+
+	content  Content          @relation("ContentRevisions", fields: [contentId], references: [id], onDelete: Cascade)
+	asWorking   Content?       @relation("WorkingRevision")
+	asPublished Content?       @relation("PublishedRevision")
+	mediaRefs MediaReference[]
+
+	@@index([contentId, createdAt])
+}
+
+model Media {
+	id              String          @id @default(cuid())
+	privateObjectKey String
+	publicObjectKey  String?
+	mime             String
+	bytes            Int
+	width            Int
+	height           Int
+	alt              String?
+	visibility       MediaVisibility @default(staging)
+	createdAt        DateTime        @default(now())
+
+	references MediaReference[]
+}
+
+model MediaReference {
+	revisionId String
+	mediaId    String
+	usage      MediaUsage
+
+	revision Revision @relation(fields: [revisionId], references: [id], onDelete: Cascade)
+	media    Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+	@@id([revisionId, mediaId, usage])
+	@@index([mediaId])
+}
+
+model Redirect {
+	oldPath         String   @id
+	targetContentId String
+	createdAt       DateTime @default(now())
+
+	targetContent Content @relation(fields: [targetContentId], references: [id], onDelete: Cascade)
+}
+
+model AuditEvent {
+	id         String      @id @default(cuid())
+	actorId    String?
+	action     String
+	targetType String
+	targetId   String?
+	result     AuditResult
+	createdAt  DateTime    @default(now())
+
+	@@index([createdAt])
+	@@index([targetType, targetId])
+}
