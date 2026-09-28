@@ -1,26 +1,260 @@
 @import "tailwindcss";
 
-:root {
-	--background: #ffffff;
-	--foreground: #171717;
+/* ============================================================
+   设计令牌：午夜琥珀
+   暖中性底色承担全部阅读，琥珀色只出现在仪表语境
+   （刻度、链接、焦点、强调按钮），其余保持安静。
+   前台与后台各有一套主题作用域，互不干扰：next-themes 分别为
+   公开站写 data-theme、为后台写 data-admin-theme。
+   任何改动必须通过 test/design/palette.test.ts 的对比度校验。
+   ============================================================ */
+
+/* 默认浅色：公开站 */
+:root,
+[data-theme="light"] {
+	--bg: #f8f7f3;
+	--sidebar: #efede5;
+	--surface: #ffffff;
+	--fg: #2b2b27;
+	--fg-muted: #605e55;
+	--border: #d5d2c7;
+	--accent: #8c580b;
+	--accent-fg: #ffffff;
+	--focus: #a66d16;
+	--success: #25745c;
+	--warning: #8c580b;
+	--danger: #a8383f;
+}
+
+/* 公开站深色 */
+[data-theme="dark"] {
+	--bg: #191b1d;
+	--sidebar: #232629;
+	--surface: #2d3033;
+	--fg: #f5f3ee;
+	--fg-muted: #cbc9c2;
+	--border: #565a5c;
+	--accent: #e7b65d;
+	--accent-fg: #261d0b;
+	--focus: #f2cb82;
+	--success: #83cda7;
+	--warning: #e7b65d;
+	--danger: #f39b9d;
+}
+
+/* 后台浅色：底色与边框为长时间编辑调校，语义色与公开站完全同源，
+   避免站长在两个界面之间看到"另一套产品"的观感。 */
+[data-admin-theme="light"] {
+	--bg: #f7f7f4;
+	--sidebar: #ffffff;
+	--surface: #ffffff;
+	--fg: #26261f;
+	--fg-muted: #5c5b50;
+	--border: #dad7cb;
+	--accent: #8c580b;
+	--accent-fg: #ffffff;
+	--focus: #a66d16;
+	--success: #25745c;
+	--warning: #8c580b;
+	--danger: #a8383f;
+}
+
+/* 后台深色 */
+[data-admin-theme="dark"] {
+	--bg: #1a1c1e;
+	--sidebar: #15171a;
+	--surface: #26292c;
+	--fg: #f3f1ec;
+	--fg-muted: #c6c4bd;
+	--border: #4e5254;
+	--accent: #e7b65d;
+	--accent-fg: #261d0b;
+	--focus: #f2cb82;
+	--success: #83cda7;
+	--warning: #e7b65d;
+	--danger: #f39b9d;
 }
 
 @theme inline {
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
+	--color-bg: var(--bg);
+	--color-sidebar: var(--sidebar);
+	--color-surface: var(--surface);
+	--color-fg: var(--fg);
+	--color-fg-muted: var(--fg-muted);
+	--color-border-token: var(--border);
+	--color-accent: var(--accent);
+	--color-accent-fg: var(--accent-fg);
+	--color-focus: var(--focus);
+	--color-success: var(--success);
+	--color-warning: var(--warning);
+	--color-danger: var(--danger);
+
+	--font-sans:
+		var(--font-body), "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+		"Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+	--font-serif:
+		var(--font-display), "Songti SC", "Noto Serif CJK SC",
+		"Source Han Serif SC", "SimSun", serif;
+	--font-mono:
+		var(--font-mono-face), ui-monospace, "SFMono-Regular", monospace;
+
+	--radius-control: 8px;
+	--radius-card: 12px;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
+@layer base {
+	* {
+		border-color: var(--border);
+	}
+
+	html {
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		background: var(--bg);
+		color: var(--fg);
+		font-family: var(--font-sans);
+		font-size: 16px;
+		line-height: 1.75;
+		text-rendering: optimizeLegibility;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--focus);
+		outline-offset: 2px;
+		border-radius: 3px;
+	}
+
+	::selection {
+		background: var(--accent);
+		color: var(--accent-fg);
 	}
 }
 
-body {
-	background: var(--background);
-	color: var(--foreground);
-	font-family: Arial, Helvetica, sans-serif;
+@layer components {
+	/* 呼号、设备型号、频率等参数使用等宽，形成"仪表读数"的语气 */
+	.param {
+		font-family: var(--font-mono);
+		font-size: 0.9em;
+		letter-spacing: 0.02em;
+	}
+
+	/* 链接：琥珀色仅出现在交互语境 */
+	.link {
+		color: var(--accent);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-thickness: 1px;
+	}
+
+	.link:hover {
+		text-decoration-thickness: 2px;
+	}
+}
+
+/* 文章排版：自然段落流，不逐段套卡片 */
+.prose-notes {
+	max-width: 42rem;
+	line-height: 1.8;
+}
+
+.prose-notes > * + * {
+	margin-block-start: 1.15em;
+}
+
+.prose-notes h2 {
+	font-family: var(--font-serif);
+	font-size: 1.5rem;
+	line-height: 1.4;
+	margin-block-start: 2.2em;
+	padding-block-start: 0.6em;
+	border-block-start: 1px solid var(--border);
+}
+
+.prose-notes h3 {
+	font-family: var(--font-serif);
+	font-size: 1.2rem;
+	line-height: 1.5;
+	margin-block-start: 1.8em;
+}
+
+.prose-notes p,
+.prose-notes ul,
+.prose-notes ol,
+.prose-notes blockquote {
+	color: var(--fg);
+}
+
+.prose-notes ul,
+.prose-notes ol {
+	padding-inline-start: 1.4em;
+}
+
+.prose-notes ul {
+	list-style: disc;
+}
+
+.prose-notes ol {
+	list-style: decimal;
+}
+
+.prose-notes li + li {
+	margin-block-start: 0.4em;
+}
+
+.prose-notes blockquote {
+	border-inline-start: 2px solid var(--accent);
+	padding-inline-start: 1em;
+	color: var(--fg-muted);
+}
+
+.prose-notes code {
+	font-family: var(--font-mono);
+	font-size: 0.88em;
+	background: var(--sidebar);
+	padding: 0.15em 0.4em;
+	border-radius: 4px;
+}
+
+.prose-notes pre {
+	background: var(--sidebar);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-control);
+	padding: 1em;
+	overflow-x: auto;
+}
+
+.prose-notes pre code {
+	background: none;
+	padding: 0;
+}
+
+.prose-notes img {
+	border-radius: var(--radius-control);
+	max-width: 100%;
+	height: auto;
+}
+
+.prose-notes figure figcaption {
+	color: var(--fg-muted);
+	font-size: 0.875rem;
+	margin-block-start: 0.6em;
+}
+
+.prose-notes hr {
+	border: 0;
+	border-block-start: 1px solid var(--border);
+}
+
+.prose-notes table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.prose-notes th,
+.prose-notes td {
+	border: 1px solid var(--border);
+	padding: 0.5em 0.75em;
+	text-align: start;
 }

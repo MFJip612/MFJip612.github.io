@@ -1,9 +1,11 @@
 import { fileURLToPath } from "node:url";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
+	plugins: [react()],
 	resolve: {
 		alias: {
 			"@": root,
@@ -15,7 +17,7 @@ export default defineConfig({
 	},
 	test: {
 		environment: "node",
-		include: ["**/*.test.ts"],
+		include: ["**/*.test.ts", "**/*.test.tsx"],
 		exclude: ["node_modules/**", ".next/**", "generated/**"],
 		globalSetup: ["./test/setup/global.ts"],
 		fileParallelism: false,
