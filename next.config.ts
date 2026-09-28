@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-	// 正式域名来自部署环境变量；canonical、RSS 与 sitemap 由此派生，
-	// 站长不能在后台改写，避免误填破坏链接。
+	// 全站统一使用尾斜杠策略：/about/ 才是正式地址，/about 会 308 到它。
+	// 这让 canonical、sitemap 与旧链接跳转的目标保持一致。
+	trailingSlash: true,
 	images: {
 		remotePatterns: [
 			{

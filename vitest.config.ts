@@ -18,11 +18,12 @@ export default defineConfig({
 	test: {
 		environment: "node",
 		include: ["**/*.test.ts", "**/*.test.tsx"],
+		// HTTP 用例要独占端口并启动生产服务器
 		exclude: ["node_modules/**", ".next/**", "generated/**"],
 		globalSetup: ["./test/setup/global.ts"],
 		fileParallelism: false,
 		testTimeout: 30_000,
-		hookTimeout: 120_000,
+		hookTimeout: 900_000,
 		pool: "forks",
 	},
 });

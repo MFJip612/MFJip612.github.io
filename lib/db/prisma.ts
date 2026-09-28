@@ -19,3 +19,15 @@ export function getDb(): PrismaClient {
 	}
 	return client;
 }
+
+/**
+ * 丢弃缓存的客户端。
+ *
+ * 用途仅限于测试：测试进程会切换 DATABASE_URL，而内容层通过本模块的单例访问数据库，
+ * 必须重置才能指向新库。生产代码不应调用。
+ */
+export async function resetAppDb(): Promise<void> {
+	const previous = client;
+	client = undefined;
+	await previous?.$disconnect();
+}
