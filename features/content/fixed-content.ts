@@ -6,7 +6,6 @@ import { ContentError } from "./errors";
 import {
 	type EquipmentPayload,
 	equipmentPayloadSchema,
-	notePayloadSchema,
 	PAYLOAD_SCHEMA_VERSION,
 	type PageKey,
 	type PagePayload,
@@ -114,7 +113,18 @@ export function getFixedDefinition(
 			kind: "settings",
 			stableKey: "settings",
 			label: "站点设置",
-			empty: { siteName: "" },
+			empty: {
+				siteName: "",
+				defaultDescription: "",
+				defaultSocialImageMediaId: null,
+				contactEmail: "",
+				footerText: "",
+				socialLinks: [],
+				navStation: true,
+				navNotes: true,
+				navContact: true,
+				showRss: true,
+			},
 			parse: (value) => settingsPayloadSchema.parse(value),
 		},
 	};
@@ -171,6 +181,27 @@ export type SaveFixedInput = {
 	actorId: string;
 };
 
+function referencesFor(definition: FixedDefinition, payload: unknown) {
+	if (definition.kind === "profile") {
+		const id = (payload as ProfilePayload).avatarMediaId;
+		return id ? [{ mediaId: id, usage: "avatar" as const }] : [];
+	}
+	if (definition.kind === "settings") {
+		const id = (payload as SettingsPayload).defaultSocialImageMediaId;
+		return id ? [{ mediaId: id, usage: "cover" as const }] : [];
+	}
+	if (definition.kind === "equipment") {
+		return [
+			...new Set(
+				(payload as EquipmentPayload).items.flatMap(
+					(item) => item.mediaIds,
+				),
+			),
+		].map((mediaId) => ({ mediaId, usage: "inline" as const }));
+	}
+	return [];
+}
+
 /**
  * 保存固定内容的草稿。
  * 与笔记一致：只更新工作版本指针，已发布内容继续对外提供原发布版本。
@@ -183,10 +214,10 @@ export async function saveFixedDraft(input: SaveFixedInput): Promise<{
 	const payload = input.definition.parse(
 		input.payload,
 	) as Prisma.InputJsonValue;
+	const mediaRefs = referencesFor(input.definition, payload);
 
 	return db.$transaction(async (tx) => {
 		const contentId = input.contentId;
-		const lockVersion = input.lockVersion;
 
 		if (!contentId) {
 			const created = await tx.content.create({
@@ -201,6 +232,7 @@ export async function saveFixedDraft(input: SaveFixedInput): Promise<{
 					schemaVersion: PAYLOAD_SCHEMA_VERSION,
 					payload,
 					actorId: input.actorId,
+					mediaRefs: { create: mediaRefs },
 				},
 			});
 			await tx.content.update({
@@ -225,7 +257,10 @@ export async function saveFixedDraft(input: SaveFixedInput): Promise<{
 		if (current.deletedAt) {
 			throw new ContentError("NOT_FOUND", "内容已在回收站中");
 		}
-		if (current.kind !== input.definition.kind) {
+		if (
+			current.kind !== input.definition.kind ||
+			current.stableKey !== input.definition.stableKey
+		) {
 			throw new ContentError("NOT_FOUND", "内容类型不匹配");
 		}
 
@@ -235,6 +270,7 @@ export async function saveFixedDraft(input: SaveFixedInput): Promise<{
 				schemaVersion: PAYLOAD_SCHEMA_VERSION,
 				payload,
 				actorId: input.actorId,
+				mediaRefs: { create: mediaRefs },
 			},
 		});
 		const updated = await tx.content.updateMany({
@@ -281,7 +317,10 @@ export async function publishFixed(input: {
 		if (current.deletedAt) {
 			throw new ContentError("NOT_FOUND", "内容已在回收站中");
 		}
-		if (current.kind !== input.definition.kind) {
+		if (
+			current.kind !== input.definition.kind ||
+			current.stableKey !== input.definition.stableKey
+		) {
 			throw new ContentError("NOT_FOUND", "内容类型不匹配");
 		}
 		if (!current.workingRevisionId) {
@@ -289,6 +328,23 @@ export async function publishFixed(input: {
 				markdown: "请先填写内容并保存",
 			});
 		}
+		const refs = await tx.mediaReference.findMany({
+			where: { revisionId: current.workingRevisionId },
+			include: {
+				media: { select: { visibility: true, publicObjectKey: true } },
+			},
+		});
+		if (
+			refs.some(
+				(ref) =>
+					ref.media.visibility !== "verified" ||
+					!ref.media.publicObjectKey,
+			)
+		)
+			throw new ContentError(
+				"MEDIA_NOT_READY",
+				"引用了尚未批准公开的私有图片，请移除后发布",
+			);
 
 		const now = new Date();
 		const updated = await tx.content.updateMany({

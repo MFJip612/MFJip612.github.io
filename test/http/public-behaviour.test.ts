@@ -98,7 +98,7 @@ async function responseHeaders(path: string): Promise<{
 				.trim();
 		}
 	}
-	return { status, location: headers["location"] ?? null, headers };
+	return { status, location: headers.location ?? null, headers };
 }
 
 beforeAll(async () => {
@@ -166,6 +166,43 @@ describe("未知地址返回真实 404", () => {
 });
 
 describe("后台访问控制", () => {
+	it("未授权的导出、上传及私有媒体读取被拒绝", async () => {
+		expect(await status("/api/admin/export/")).toBe(401);
+		expect(await status("/api/admin/media/unknown/")).toBe(401);
+		const response = await fetch(
+			`http://127.0.0.1:${PORT}/api/admin/media/`,
+			{ method: "POST" },
+		);
+		expect(response.status).toBe(401);
+		const approval = await fetch(
+			`http://127.0.0.1:${PORT}/api/admin/media/unknown/approve/`,
+			{ method: "POST" },
+		);
+		expect(approval.status).toBe(401);
+	});
+
+	it("未授权的媒体删除被拒绝", async () => {
+		const response = await fetch(
+			`${BASE}/api/admin/media/unknown/delete/`,
+			{ method: "DELETE" },
+		);
+		expect(response.status).toBe(401);
+	});
+
+	it("后台其它管理入口同样拒绝匿名访问", async () => {
+		for (const path of [
+			"/admin/profile/",
+			"/admin/pages/",
+			"/admin/station/",
+			"/admin/media/",
+			"/admin/settings/",
+			"/admin/trash/",
+			"/admin/activity/",
+			"/admin/preview/note/unknown/",
+		]) {
+			expect(await status(path)).not.toBe(200);
+		}
+	});
 	it("未登录访问工作台被拒绝", async () => {
 		const code = await status("/admin/");
 		expect(code).not.toBe(200);

@@ -6,6 +6,8 @@ import {
 	loadEquipment,
 	visibleEquipmentItems,
 } from "@/features/content/site-data";
+import { publicMediaUrl } from "@/features/media/public-url";
+import { getDb } from "@/lib/db/prisma";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,24 @@ export default async function StationPage() {
 
 	// 没有真实设备资料时整个栏目不出现，而不是显示一个空页面
 	if (items.length === 0) notFound();
+	const mediaIds = [...new Set(items.flatMap((item) => item.mediaIds))];
+	const media = mediaIds.length
+		? await getDb().media.findMany({
+				where: {
+					id: { in: mediaIds },
+					visibility: "verified",
+					publicObjectKey: { not: null },
+				},
+				select: {
+					id: true,
+					alt: true,
+					publicObjectKey: true,
+					width: true,
+					height: true,
+				},
+			})
+		: [];
+	const byId = new Map(media.map((entry) => [entry.id, entry]));
 
 	return (
 		<div className="max-w-[52rem]">
@@ -33,7 +53,7 @@ export default async function StationPage() {
 				我的电台
 			</h1>
 			<p className="mt-4 max-w-[38rem] text-[1.0625rem] leading-[1.8] text-fg-muted">
-				下面是目前架设在台面上的设备，以及我用下来的一些心得。
+				这里记录已确认的设备资料、使用状态与相关心得。
 			</p>
 
 			<DialRule className="mt-8 max-w-[20rem]" />
@@ -62,6 +82,23 @@ export default async function StationPage() {
 								{item.description}
 							</p>
 						) : null}
+						{item.mediaIds.map((id) => {
+							const entry = byId.get(id);
+							const url = publicMediaUrl(entry?.publicObjectKey);
+							return url && entry ? (
+								<figure key={id} className="mt-4">
+									{/* biome-ignore lint/performance/noImgElement: S3-compatible host is configured at runtime. */}
+									<img
+										src={url}
+										alt={entry.alt || item.name}
+										width={entry.width}
+										height={entry.height}
+										loading="lazy"
+										className="h-auto max-h-[32rem] max-w-full rounded-card object-contain"
+									/>
+								</figure>
+							) : null;
+						})}
 					</li>
 				))}
 			</ul>

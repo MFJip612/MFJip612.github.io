@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import {
 	publishNoteAction,
@@ -19,6 +20,7 @@ type Props = {
 	status: NoteStatus;
 	publishedSlug: string | null;
 	hasUnpublishedChanges: boolean;
+	mediaChoices?: { id: string; label: string; approved: boolean }[];
 };
 
 type Draft = NotePayload;
@@ -36,6 +38,7 @@ export function NoteEditor({
 	status,
 	publishedSlug,
 	hasUnpublishedChanges,
+	mediaChoices = [],
 }: Props) {
 	const [draft, setDraft] = useState<Draft>(initial);
 	const [tab, setTab] = useState<"write" | "preview">("write");
@@ -83,6 +86,13 @@ export function NoteEditor({
 					fields={editor.fields}
 				/>
 				<div className="flex flex-wrap items-center gap-2">
+					<Link
+						href={`/admin/preview/note/${contentId}/`}
+						data-allow-leave="true"
+						className="inline-flex min-h-11 items-center rounded-control border border-border-token px-4 text-sm hover:bg-sidebar"
+					>
+						预览已保存草稿
+					</Link>
 					<button
 						type="button"
 						onClick={() => void editor.save()}
@@ -276,6 +286,27 @@ export function NoteEditor({
 							/>
 						</label>
 
+						<label className="flex flex-col gap-1 text-sm text-fg-muted">
+							<span>封面图片（先在媒体库批准公开）</span>
+							<select
+								value={draft.coverMediaId ?? ""}
+								onChange={(event) =>
+									update(
+										"coverMediaId",
+										event.target.value || null,
+									)
+								}
+								className="min-h-11 rounded-control border border-border-token bg-surface px-3 text-fg"
+							>
+								<option value="">不使用封面</option>
+								{mediaChoices.map((media) => (
+									<option key={media.id} value={media.id}>
+										{media.label} ·{" "}
+										{media.approved ? "已批准" : "仅私有"}
+									</option>
+								))}
+							</select>
+						</label>
 						<label className="flex flex-col gap-1 text-sm text-fg-muted">
 							<span>封面图替代文字</span>
 							<input

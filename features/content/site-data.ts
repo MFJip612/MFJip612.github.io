@@ -63,9 +63,9 @@ export async function loadSiteShellData(): Promise<SiteShellData> {
 		siteName: resolvedSettings.siteName,
 		settings: resolvedSettings,
 		nav: buildPublicNav({
-			hasStation: Boolean(
-				(station as EquipmentPayload | null)?.items.length,
-			),
+			hasStation:
+				visibleEquipmentItems(station as EquipmentPayload | null)
+					.length > 0,
 			hasNotes: noteCount > 0,
 			hasContact,
 			navStation: resolvedSettings.navStation,

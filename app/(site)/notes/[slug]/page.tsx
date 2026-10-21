@@ -11,6 +11,8 @@ import {
 	listPublishedNotes,
 } from "@/features/content/public-queries";
 import { resolveNoteSlug } from "@/features/content/resolve-slug";
+import { publicMediaUrl } from "@/features/media/public-url";
+import { getDb } from "@/lib/db/prisma";
 import { formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -58,6 +60,16 @@ export default async function NoteDetailPage({
 
 	const note = await getPublishedNoteBySlug(resolved.slug);
 	if (!note) notFound();
+	const cover = note.coverMediaId
+		? await getDb().media.findUnique({
+				where: { id: note.coverMediaId },
+				select: { visibility: true, publicObjectKey: true },
+			})
+		: null;
+	const coverUrl =
+		cover?.visibility === "verified"
+			? publicMediaUrl(cover.publicObjectKey)
+			: null;
 
 	const headings = extractHeadings(note.markdown);
 	const showToc =
@@ -100,6 +112,18 @@ export default async function NoteDetailPage({
 						) : null}
 					</p>
 				</header>
+				{coverUrl ? (
+					<figure className="mt-8">
+						{/* biome-ignore lint/performance/noImgElement: S3-compatible provider is configured at runtime; dimensions reserve layout space. */}
+						<img
+							src={coverUrl}
+							alt={note.coverAlt || "文章封面"}
+							width={1200}
+							height={800}
+							className="h-auto w-full rounded-card object-contain"
+						/>
+					</figure>
+				) : null}
 
 				<div className="prose-notes mt-10">
 					<Markdown>{note.markdown}</Markdown>

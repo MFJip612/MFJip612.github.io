@@ -14,7 +14,8 @@ const server = new PGLiteSocketServer({
 	db,
 	port,
 	host: "127.0.0.1",
-	maxConnections: 8,
+	// Prisma 的默认连接池最多使用 10 个连接；给页面并发查询留出余量。
+	maxConnections: 24,
 });
 await server.start();
 

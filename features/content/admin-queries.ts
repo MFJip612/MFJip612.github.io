@@ -83,6 +83,7 @@ export type AdminNoteQuery = {
 	search?: string;
 	status?: NoteStatus | "all";
 	includeDeleted?: boolean;
+	deletedOnly?: boolean;
 };
 
 export const ADMIN_NOTES_PAGE_SIZE = 20;
@@ -111,7 +112,11 @@ export async function listAdminNotes(query: AdminNoteQuery): Promise<{
 
 	const where: Prisma.ContentWhereInput = {
 		kind: "note",
-		...(query.includeDeleted ? {} : { deletedAt: null }),
+		...(query.deletedOnly
+			? { deletedAt: { not: null } }
+			: query.includeDeleted
+				? {}
+				: { deletedAt: null }),
 		...(search
 			? {
 					OR: [
@@ -186,7 +191,7 @@ export async function readAdminNote(
 		where: { id: contentId },
 		include: { workingRevision: true, publishedRevision: true },
 	});
-	if (!content || content.kind !== "note") return null;
+	if (content?.kind !== "note") return null;
 
 	const source = content.workingRevision ?? content.publishedRevision;
 	return {

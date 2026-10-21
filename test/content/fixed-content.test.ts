@@ -48,6 +48,40 @@ async function saveProfile(payload: unknown) {
 }
 
 describe("固定内容草稿与发布", () => {
+	it("空设置表单包含所有复合字段", async () => {
+		const settings = await readFixedWorking<{
+			socialLinks: unknown[];
+			navStation: boolean;
+		}>(getFixedDefinition("settings"));
+		expect(settings.payload.socialLinks).toEqual([]);
+		expect(settings.payload.navStation).toBe(true);
+	});
+	it("固定页面不能用另一页面的 contentId 覆盖草稿或发布", async () => {
+		const home = await saveFixedDraft({
+			definition: getFixedDefinition("page", "home"),
+			contentId: null,
+			lockVersion: 0,
+			payload: { title: "首页" },
+			actorId: ACTOR,
+		});
+		await expect(
+			saveFixedDraft({
+				definition: getFixedDefinition("page", "about"),
+				contentId: home.contentId,
+				lockVersion: home.lockVersion,
+				payload: { title: "关于" },
+				actorId: ACTOR,
+			}),
+		).rejects.toMatchObject({ code: "NOT_FOUND" });
+		await expect(
+			publishFixed({
+				definition: getFixedDefinition("page", "about"),
+				contentId: home.contentId,
+				lockVersion: home.lockVersion,
+				actorId: ACTOR,
+			}),
+		).rejects.toMatchObject({ code: "NOT_FOUND" });
+	});
 	it("没有内容时返回空态而不是报错", async () => {
 		const row = await readFixedWorking<{ displayName: string }>(
 			getFixedDefinition("profile"),
@@ -189,6 +223,28 @@ describe("固定页面内容列表", () => {
 });
 
 describe("设备内容", () => {
+	it("只有隐藏设备时不显示公开电台导航", async () => {
+		const draft = await saveFixedDraft({
+			definition: getFixedDefinition("equipment"),
+			contentId: null,
+			lockVersion: 0,
+			payload: {
+				items: [{ id: "hidden", name: "未展示设备", visible: false }],
+			},
+			actorId: ACTOR,
+		});
+		await publishFixed({
+			definition: getFixedDefinition("equipment"),
+			contentId: draft.contentId,
+			lockVersion: draft.lockVersion,
+			actorId: ACTOR,
+		});
+		expect(
+			(await loadSiteShellData()).nav.some(
+				(item) => item.href === "/station/",
+			),
+		).toBe(false);
+	});
 	it("只有 visible 的条目会进入公开页", async () => {
 		const definition = getFixedDefinition("equipment");
 		const saved = await saveFixedDraft({

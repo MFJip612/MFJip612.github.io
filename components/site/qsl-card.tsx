@@ -7,7 +7,13 @@ import { DialRule } from "./dial-rule";
  * 只呈现真实资料——姓名、可选呼号、真实照片、已填写的兴趣标签。
  * 没有呼号就不显示呼号位，不使用任何占位或伪造信息。
  */
-export function QslCard({ profile }: { profile: ProfilePayload }) {
+export function QslCard({
+	profile,
+	avatarUrl,
+}: {
+	profile: ProfilePayload;
+	avatarUrl?: string | null;
+}) {
 	return (
 		<figure className="relative overflow-hidden rounded-card border border-border-token bg-surface">
 			{/* 卡片内框，模仿 QSL 卡的印刷边线 */}
@@ -17,15 +23,14 @@ export function QslCard({ profile }: { profile: ProfilePayload }) {
 			/>
 			<div className="relative flex flex-col gap-5 p-6 sm:p-7">
 				<div className="flex items-start gap-4">
-					{profile.avatarMediaId ? (
-						<span
-							aria-hidden="true"
-							className="block h-16 w-16 shrink-0 rounded-[6px] bg-sidebar"
-							style={{
-								backgroundImage: `url(${profile.avatarMediaId})`,
-								backgroundSize: "cover",
-								backgroundPosition: "center",
-							}}
+					{avatarUrl ? (
+						/* biome-ignore lint/performance/noImgElement: S3-compatible image host is configured at runtime. */
+						<img
+							src={avatarUrl}
+							alt=""
+							width={64}
+							height={64}
+							className="h-16 w-16 shrink-0 rounded-[6px] object-cover"
 						/>
 					) : null}
 					<div className="min-w-0 flex-1">

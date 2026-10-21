@@ -11,6 +11,8 @@ import {
 	loadSiteShellData,
 	visibleEquipmentItems,
 } from "@/features/content/site-data";
+import { publicMediaUrl } from "@/features/media/public-url";
+import { getDb } from "@/lib/db/prisma";
 import { formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -47,6 +49,16 @@ export default async function HomePage() {
 		// 没有真实个人资料时不显示首页，也不编造姓名与呼号
 		notFound();
 	}
+	const avatar = profile.avatarMediaId
+		? await getDb().media.findUnique({
+				where: { id: profile.avatarMediaId },
+				select: { visibility: true, publicObjectKey: true },
+			})
+		: null;
+	const avatarUrl =
+		avatar?.visibility === "verified"
+			? publicMediaUrl(avatar.publicObjectKey)
+			: null;
 
 	const items = visibleEquipmentItems(equipment);
 	const intro = page?.heroIntro || profile.intro;
@@ -87,7 +99,7 @@ export default async function HomePage() {
 					<DialRule className="mt-10 max-w-[24rem]" />
 				</div>
 
-				<QslCard profile={profile} />
+				<QslCard profile={profile} avatarUrl={avatarUrl} />
 			</section>
 
 			{hasNotes ? <RecentNotes notes={recent} /> : null}

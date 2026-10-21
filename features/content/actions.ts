@@ -7,6 +7,7 @@ import {
 	saveFixedDraft,
 } from "./fixed-content";
 import { type ActionResult, guardedAction } from "./guards";
+import { restoreRevision } from "./history";
 import {
 	type EquipmentPayload,
 	equipmentPayloadSchema,
@@ -26,6 +27,7 @@ import {
 	saveDraft,
 	unpublishContent,
 } from "./service";
+import { deleteNote, restoreNote } from "./trash";
 
 /**
  * 后台 Server Actions。
@@ -177,5 +179,39 @@ export async function unpublishNoteAction(input: {
 		});
 		revalidatePath("/admin", "layout");
 		return { contentId: result.contentId, lockVersion: result.lockVersion };
+	});
+}
+
+export async function deleteNoteAction(input: {
+	contentId: string;
+	lockVersion: number;
+}): Promise<ActionResult<{ contentId: string; lockVersion: number }>> {
+	return guardedAction(async (sub) => {
+		const result = await deleteNote({ ...input, actorId: sub });
+		revalidatePath("/admin", "layout");
+		return result;
+	});
+}
+
+export async function restoreNoteAction(input: {
+	contentId: string;
+	lockVersion: number;
+}): Promise<ActionResult<{ contentId: string; lockVersion: number }>> {
+	return guardedAction(async (sub) => {
+		const result = await restoreNote({ ...input, actorId: sub });
+		revalidatePath("/admin", "layout");
+		return result;
+	});
+}
+
+export async function restoreRevisionAction(input: {
+	contentId: string;
+	revisionId: string;
+	lockVersion: number;
+}): Promise<ActionResult<{ contentId: string; lockVersion: number }>> {
+	return guardedAction(async (sub) => {
+		const result = await restoreRevision({ ...input, actorId: sub });
+		revalidatePath("/admin", "layout");
+		return result;
 	});
 }

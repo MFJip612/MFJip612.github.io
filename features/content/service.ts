@@ -64,7 +64,7 @@ async function assertMediaReady(mediaId: string | null): Promise<void> {
 	if (!mediaId) return;
 	const media = await getDb().media.findUnique({
 		where: { id: mediaId },
-		select: { visibility: true },
+		select: { visibility: true, publicObjectKey: true },
 	});
 	if (!media) {
 		throw new ContentError(
@@ -79,6 +79,12 @@ async function assertMediaReady(mediaId: string | null): Promise<void> {
 			{ coverMediaId: "图片尚未就绪" },
 		);
 	}
+	if (!media.publicObjectKey)
+		throw new ContentError(
+			"MEDIA_NOT_READY",
+			"封面仍是私有图片，尚未生成可公开使用的派生图",
+			{ coverMediaId: "请移除封面后发布，或等待公开媒体流程完成" },
+		);
 }
 
 export async function createNote(
@@ -142,6 +148,16 @@ export async function saveDraft(input: {
 				schemaVersion: PAYLOAD_SCHEMA_VERSION,
 				payload: payload as unknown as Prisma.InputJsonValue,
 				actorId: input.actorId,
+				...(payload.coverMediaId
+					? {
+							mediaRefs: {
+								create: {
+									mediaId: payload.coverMediaId,
+									usage: "cover",
+								},
+							},
+						}
+					: {}),
 			},
 		});
 
@@ -198,6 +214,10 @@ export async function publishContent(input: {
 			slug: "请填写链接名，例如 my-first-note",
 		});
 	}
+	if (payload.coverMediaId && !payload.coverAlt.trim())
+		throw new ContentError("VALIDATION_FAILED", "封面需要替代文字", {
+			coverAlt: "请描述图片内容",
+		});
 	await assertMediaReady(payload.coverMediaId);
 
 	const slugOwner = await db.content.findFirst({

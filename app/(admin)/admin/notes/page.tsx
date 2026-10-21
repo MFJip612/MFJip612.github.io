@@ -4,11 +4,7 @@ import { AdminFrame } from "@/components/admin/admin-frame";
 import { NewNoteButton } from "@/components/admin/new-note-button";
 import { NoteStatusBadge } from "@/components/admin/note-status-badge";
 import { listAdminNotes } from "@/features/content/admin-queries";
-import {
-	isNoteStatus,
-	NOTE_STATUS_LABELS,
-	type NoteStatus,
-} from "@/features/content/note-status";
+import { isNoteStatus, type NoteStatus } from "@/features/content/note-status";
 import { requireAdmin } from "@/lib/auth/admin";
 
 export const dynamic = "force-dynamic";
