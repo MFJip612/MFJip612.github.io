@@ -5,20 +5,17 @@ import { createPrismaClient } from "./client";
 let clientPromise: Promise<PrismaClient> | undefined;
 
 function resolveConnectionString(): string {
-	const url =
-		runtime.hyperdriveConnectionString() ?? runtime.env("DATABASE_URL");
+	const url = runtime.env("DATABASE_URL");
 	if (!url) {
-		throw new Error(
-			"缺少 DATABASE_URL 或 HYPERDRIVE binding，无法连接内容数据库",
-		);
+		throw new Error("缺少 DATABASE_URL，无法连接内容数据库");
 	}
 	return url;
 }
 
 /**
  * 惰性创建 Prisma 客户端。
- * Workers 的 Hyperdrive binding 只能异步读取，因此这里返回 Promise；
- * 同一 isolate 内缓存同一个连接池。
+ * EdgeOne Cloud Functions 通过 DATABASE_URL 直连 PostgreSQL（TCP）；
+ * 同一函数实例内缓存同一个连接池。
  */
 export function getDb(): Promise<PrismaClient> {
 	if (!clientPromise) {

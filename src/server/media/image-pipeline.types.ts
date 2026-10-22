@@ -1,6 +1,7 @@
 /** 图片管线在两个运行目标之间共享的类型契约。 */
 
-export const MAX_IMAGE_BYTES = 10_000_000;
+/** EdgeOne Cloud Functions 请求体上限为 6MB，上传上限与之对齐。 */
+export const MAX_IMAGE_BYTES = 6_000_000;
 export const MAX_IMAGE_PIXELS = 40_000_000;
 
 export type AllowedImageMime = "image/jpeg" | "image/png" | "image/webp";

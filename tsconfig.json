@@ -29,5 +29,5 @@
 		"vitest.config.ts",
 		"prisma.config.ts"
 	],
-	"exclude": ["node_modules", ".output", ".tanstack", ".wrangler", "app"]
+	"exclude": ["node_modules", ".output", ".tanstack", ".edgeone", "app"]
 }

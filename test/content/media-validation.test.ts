@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import { expect, it } from "vitest";
 import { validateImage } from "@/features/media/validation";
+import { MAX_IMAGE_BYTES } from "@/server/media/image-pipeline.types";
 
 it("accepts a real PNG and strips metadata from a re-encoded image", async () => {
 	const input = await sharp({
@@ -16,6 +17,7 @@ it("accepts a real PNG and strips metadata from a re-encoded image", async () =>
 });
 
 it("rejects fake image bytes, forbidden extensions and oversize files", async () => {
+	expect(MAX_IMAGE_BYTES).toBe(6_000_000);
 	await expect(
 		validateImage(Buffer.from("<svg></svg>"), "a.png", "image/png"),
 	).rejects.toThrow();
@@ -23,6 +25,6 @@ it("rejects fake image bytes, forbidden extensions and oversize files", async ()
 		validateImage(Buffer.from("<svg></svg>"), "a.svg", "image/svg+xml"),
 	).rejects.toThrow();
 	await expect(
-		validateImage(Buffer.alloc(10_000_001), "a.png", "image/png"),
+		validateImage(Buffer.alloc(MAX_IMAGE_BYTES + 1), "a.png", "image/png"),
 	).rejects.toThrow();
 });

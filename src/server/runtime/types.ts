@@ -1,7 +1,5 @@
-/** 运行目标无关的环境与绑定访问接口。 */
+/** 运行目标无关的环境变量访问接口。 */
 export type Runtime = {
-	/** 读取普通环境变量或 Workers binding。 */
+	/** 读取环境变量；EdgeOne Cloud Functions 通过 process.env 注入。 */
 	env(key: string): string | undefined;
-	/** Cloudflare Hyperdrive 连接串；Node 环境返回 undefined。 */
-	hyperdriveConnectionString(): string | undefined;
 };

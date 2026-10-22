@@ -3,6 +3,7 @@ import { validateImage } from "@/features/media/validation";
 import { AdminAuthError, authorizeAdminForWrite } from "@/server/auth/admin";
 import { sameOrigin } from "@/server/auth/origin";
 import { getDb } from "@/server/db/prisma";
+import { MAX_IMAGE_BYTES } from "@/server/media/image-pipeline.types";
 import {
 	putPrivateImage,
 	removePrivateImage,
@@ -20,13 +21,16 @@ export const Route = createFileRoute("/api/admin/media/")({
 					const length = Number(
 						request.headers.get("content-length"),
 					);
-					if (length > 12_000_000) {
+					if (length > MAX_IMAGE_BYTES) {
 						return new Response("文件过大", { status: 413 });
 					}
 					const form = await request.formData();
 					const file = form.get("file");
-					if (!(file instanceof File) || file.size > 10_000_000) {
-						return new Response("请选择不超过 10MB 的图片", {
+					if (
+						!(file instanceof File) ||
+						file.size > MAX_IMAGE_BYTES
+					) {
+						return new Response("请选择不超过 6MB 的图片", {
 							status: 400,
 						});
 					}

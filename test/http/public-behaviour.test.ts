@@ -1,154 +1,18 @@
-import { type ChildProcess, execFile, spawn } from "node:child_process";
-import { promisify } from "node:util";
-import type { Prisma } from "@generated/prisma/client";
+import { type ChildProcess, spawn } from "node:child_process";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { PAYLOAD_SCHEMA_VERSION } from "@/features/content/schemas";
 import { createPrismaClient } from "@/server/db/client";
+import { resetContent, seedPublicContent } from "../setup/content-fixtures";
 import { TEST_DATABASE_URL } from "../setup/test-db";
 
-const run = promisify(execFile);
 const PORT = 43123;
 const BASE = `http://127.0.0.1:${PORT}`;
 
 const prisma = createPrismaClient(TEST_DATABASE_URL);
 let server: ChildProcess | undefined;
 
-async function putFixed(
-	kind: "profile" | "page" | "settings",
-	stableKey: string,
-	payload: Prisma.InputJsonValue,
-) {
-	const existing = await prisma.content.findFirst({
-		where: { stableKey },
-	});
-	const content =
-		existing ??
-		(await prisma.content.create({ data: { kind, stableKey } }));
-	const revision = await prisma.revision.create({
-		data: {
-			contentId: content.id,
-			schemaVersion: PAYLOAD_SCHEMA_VERSION,
-			payload,
-			actorId: "test",
-		},
-	});
-	await prisma.content.update({
-		where: { id: content.id },
-		data: {
-			workingRevisionId: revision.id,
-			publishedRevisionId: revision.id,
-			publishedAt: new Date(),
-			deletedAt: null,
-		},
-	});
-}
-
-async function putNote(input: {
-	slug: string;
-	title: string;
-	published: boolean;
-	publishedAt: Date;
-}) {
-	const content = await prisma.content.create({
-		data: {
-			kind: "note",
-			publicSlug: input.slug,
-			publishedAt: input.published ? input.publishedAt : null,
-		},
-	});
-	const revision = await prisma.revision.create({
-		data: {
-			contentId: content.id,
-			schemaVersion: PAYLOAD_SCHEMA_VERSION,
-			payload: {
-				title: input.title,
-				slug: input.slug,
-				description: `${input.title} description`,
-				markdown: "## Section\n\nBody copy for the note.",
-				tags: ["design"],
-				coverMediaId: null,
-				coverAlt: "",
-			},
-			actorId: "test",
-		},
-	});
-	await prisma.content.update({
-		where: { id: content.id },
-		data: {
-			workingRevisionId: revision.id,
-			publishedRevisionId: input.published ? revision.id : null,
-		},
-	});
-}
-
 beforeAll(async () => {
-	await prisma.$executeRawUnsafe(
-		'TRUNCATE TABLE "MediaReference", "Redirect", "AuditEvent", "Revision", "Content", "Media" CASCADE',
-	);
-
-	await putFixed("profile", "profile", {
-		displayName: "MFJip612",
-		role: "Developer, systems thinker, and careful interface builder.",
-		intro: "I build thoughtful software and write about the systems behind it.",
-		location: "Hong Kong",
-		email: "hello@mfjip612.dev",
-		status: "System online",
-		avatarMediaId: null,
-		interests: ["Frontend architecture", "Interface design"],
-	});
-	await putFixed("settings", "settings", {
-		siteName: "MFJip612",
-		defaultDescription: "Software for a calmer, more open web.",
-		defaultSocialImageMediaId: null,
-		contactEmail: "hello@mfjip612.dev",
-		footerText: "Software for a calmer, more open web.",
-		socialLinks: [{ label: "GitHub", href: "https://github.com/MFJip612" }],
-		navBlog: true,
-		navAbout: true,
-		navLinks: true,
-		showRss: true,
-	});
-	await putFixed("page", "home", {
-		lead: "I build thoughtful software and write about the systems behind it.",
-		primaryLabel: "EMAIL ME",
-		secondaryLabel: "ABOUT ME",
-		principles: ["Make the boundary clearer before the implementation."],
-	});
-	await putFixed("page", "about", {
-		title: "About",
-		lead: "Developer, systems thinker, and careful interface builder.",
-		storyMarkdown: "I turn complicated systems into calm tools.",
-	});
-	await putFixed("page", "blog", {
-		title: "Writing",
-		lead: "Field notes on frontend architecture.",
-		subscribeTitle: "Get new notes by email.",
-		subscribeBody: "One thoughtful note. No noise.",
-	});
-	await putFixed("page", "links", {
-		title: "Links",
-		lead: "A small maintained list.",
-		groups: [],
-	});
-
-	await putNote({
-		slug: "published-note",
-		title: "Published note",
-		published: true,
-		publishedAt: new Date("2026-09-02T09:00:00Z"),
-	});
-	await putNote({
-		slug: "draft-note",
-		title: "Secret draft",
-		published: false,
-		publishedAt: new Date("2026-10-01T09:00:00Z"),
-	});
-
-	await run("./node_modules/.bin/vite", ["build"], {
-		cwd: process.cwd(),
-		env: { ...process.env, DEPLOY_TARGET: "node" },
-		maxBuffer: 20_000_000,
-	});
+	await resetContent(prisma);
+	await seedPublicContent(prisma);
 
 	server = spawn("node", ["server.mjs"], {
 		cwd: process.cwd(),

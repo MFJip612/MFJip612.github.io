@@ -37,7 +37,7 @@ export function MediaUploader() {
 			className="flex max-w-lg flex-col gap-3 rounded-card border border-border-token bg-surface p-4"
 		>
 			<label className="flex flex-col gap-1 text-sm">
-				选择图片（JPEG、PNG、WebP，不超过 10MB）
+				选择图片（JPEG、PNG、WebP，不超过 6MB）
 				<input
 					name="file"
 					type="file"

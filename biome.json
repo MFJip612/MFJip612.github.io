@@ -6,12 +6,13 @@
 			"!**/.next",
 			"!**/.output",
 			"!**/.tanstack",
-			"!**/.wrangler",
+			"!**/.edgeone",
 			"!**/dist",
 			"!**/build",
 			"!**/next-env.d.ts",
 			"!generated",
 			"!src/routeTree.gen.ts",
+			"!.github/instructions",
 			"!**/public/**/*.svg"
 		]
 	},

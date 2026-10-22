@@ -20,7 +20,7 @@ export const inspectImage: InspectImage = async (
 ) => {
 	const bytes = Buffer.from(input);
 	if (!bytes.length || bytes.length > MAX_IMAGE_BYTES) {
-		throw new Error("图片大小须在 10MB 以内");
+		throw new Error("图片大小须在 6MB 以内");
 	}
 	const extension = filename.toLowerCase().split(".").pop();
 	if (!extension || !["jpg", "jpeg", "png", "webp"].includes(extension)) {
@@ -60,7 +60,7 @@ export const inspectImage: InspectImage = async (
 				? await rotated.png().toBuffer()
 				: await rotated.webp({ quality: 85 }).toBuffer();
 	if (normalized.length > MAX_IMAGE_BYTES) {
-		throw new Error("图片处理后超过 10MB");
+		throw new Error("图片处理后超过 6MB");
 	}
 	const cleaned = await sharp(normalized).metadata();
 	return {

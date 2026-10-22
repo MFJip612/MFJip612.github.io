@@ -5,9 +5,10 @@
 	"type": "module",
 	"scripts": {
 		"dev": " vite dev",
-		"build": "vite build",
+		"build": "node scripts/clean.mjs && vite build",
 		"start": "node server.mjs",
-		"deploy": "bun run build && wrangler deploy",
+		"deploy": "bun run build && bunx edgeone makers deploy ./.edgeone",
+		"preview:edgeone": "node scripts/serve-edgeone.mjs",
 		"lint": "biome check .",
 		"format": "biome format --write .",
 		"typecheck": "tsc --noEmit",
@@ -42,7 +43,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.6.2",
-		"@cloudflare/vite-plugin": "^1.64.0",
+		"@edgeone/tanstack-start": "^1.1.0",
+		"@edgeone/vite-core": "^1.1.0",
 		"@electric-sql/pglite": "^0.5.11",
 		"@electric-sql/pglite-socket": "^0.2.14",
 		"@tailwindcss/vite": "^4.3.3",
@@ -57,7 +59,6 @@
 		"tailwindcss": "^4.3.3",
 		"typescript": "^7.0.2",
 		"vite": "^8.3.5",
-		"vitest": "^5.0.5",
-		"wrangler": "^4.151.3"
+		"vitest": "^5.0.5"
 	}
 }

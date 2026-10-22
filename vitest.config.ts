@@ -30,7 +30,7 @@ export default defineConfig({
 			"node_modules/**",
 			".output/**",
 			".tanstack/**",
-			".wrangler/**",
+			".edgeone/**",
 			"generated/**",
 			"app/**",
 			"src/**",

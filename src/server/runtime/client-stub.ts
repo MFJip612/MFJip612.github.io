@@ -7,5 +7,4 @@ function unavailable(): never {
 /** 客户端构建占位：任何误用都会立即失败，而不是把 secrets 带进浏览器。 */
 export const runtime: Runtime = {
 	env: unavailable,
-	hyperdriveConnectionString: unavailable,
 };
