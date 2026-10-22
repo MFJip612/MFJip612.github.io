@@ -2,24 +2,40 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
-const root = fileURLToPath(new URL(".", import.meta.url));
+const src = fileURLToPath(new URL("./src", import.meta.url));
 
 export default defineConfig({
 	plugins: [react()],
 	resolve: {
 		alias: {
-			"@": root,
-			// 测试环境没有 RSC 条件导出，server-only 降级为空模块
-			"server-only": fileURLToPath(
-				new URL("./test/stubs/server-only.ts", import.meta.url),
+			"@": src,
+			"@generated": fileURLToPath(
+				new URL("./generated", import.meta.url),
+			),
+			"#runtime": fileURLToPath(
+				new URL("./src/server/runtime/node.ts", import.meta.url),
+			),
+			"#image-pipeline": fileURLToPath(
+				new URL(
+					"./src/server/media/image-pipeline.node.ts",
+					import.meta.url,
+				),
 			),
 		},
 	},
 	test: {
 		environment: "node",
-		include: ["**/*.test.ts", "**/*.test.tsx"],
-		// HTTP 用例要独占端口并启动生产服务器
-		exclude: ["node_modules/**", ".next/**", "generated/**"],
+		include: ["test/**/*.test.ts", "test/**/*.test.tsx"],
+		exclude: [
+			"node_modules/**",
+			".output/**",
+			".tanstack/**",
+			".wrangler/**",
+			"generated/**",
+			"app/**",
+			"src/**",
+			"dist/**",
+		],
 		globalSetup: ["./test/setup/global.ts"],
 		fileParallelism: false,
 		testTimeout: 30_000,

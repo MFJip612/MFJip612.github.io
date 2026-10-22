@@ -19,7 +19,7 @@ export async function setup(): Promise<void> {
 		await prisma.$disconnect();
 	}
 
-	await run("bunx", ["prisma", "migrate", "deploy"], {
+	await run("./node_modules/.bin/prisma", ["migrate", "deploy"], {
 		env: { ...process.env, DATABASE_URL: TEST_DATABASE_URL },
 	});
 }

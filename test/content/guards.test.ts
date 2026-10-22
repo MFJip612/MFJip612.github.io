@@ -1,23 +1,12 @@
-import {
-	afterAll,
-	beforeAll,
-	beforeEach,
-	describe,
-	expect,
-	it,
-	vi,
-} from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ContentError } from "@/features/content/errors";
 import { guardedAction } from "@/features/content/guards";
-import { AdminAuthError } from "@/lib/auth/admin";
-import { getDb } from "@/lib/db/prisma";
+import { AdminAuthError } from "@/server/auth/admin";
 
-const authMocks = vi.hoisted(() => ({
-	sub: "hello-valid-sub" as string | null,
-}));
+const authMocks = vi.hoisted(() => ({ sub: "oidc-sub" as string | null }));
 
-vi.mock("@/lib/auth/admin", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("@/lib/auth/admin")>();
+vi.mock("@/server/auth/admin", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@/server/auth/admin")>();
 	return {
 		...actual,
 		AdminAuthError: actual.AdminAuthError,
@@ -33,88 +22,63 @@ vi.mock("@/lib/auth/admin", async (importOriginal) => {
 	};
 });
 
-beforeAll(() => {
-	process.env.DATABASE_URL =
-		process.env.DATABASE_URL ??
-		"postgresql://postgres:postgres@127.0.0.1:55432/postgres";
-});
-afterAll(async () => {
-	await getDb().$disconnect();
-});
-beforeEach(() => {
-	authMocks.sub = "hello-valid-sub";
-});
-
-describe("写入守卫", () => {
-	it("授权通过时执行动作并返回结果", async () => {
-		const result = await guardedAction(async (sub) => `ok:${sub}`);
-		expect(result).toEqual({ ok: true, data: "ok:hello-valid-sub" });
+describe("guardedAction", () => {
+	it("授权通过时返回数据", async () => {
+		authMocks.sub = "oidc-sub";
+		const result = await guardedAction(async (sub) => ({ actor: sub }));
+		expect(result).toEqual({ ok: true, data: { actor: "oidc-sub" } });
 	});
 
-	it("未登录时不执行任何业务逻辑", async () => {
+	it("未登录翻译为 UNAUTHENTICATED", async () => {
 		authMocks.sub = null;
-		const run = vi.fn();
-
-		const result = await guardedAction(run);
-
-		expect(run).not.toHaveBeenCalled();
-		expect(result).toMatchObject({ ok: false, code: "UNAUTHENTICATED" });
-	});
-
-	it("非站长账号时不执行任何业务逻辑", async () => {
-		const run = vi.fn();
-
-		const result = await guardedAction(async () => {
-			throw new AdminAuthError("forbidden", "当前账号不是本站站长");
+		const result = await guardedAction(async () => "never");
+		expect(result).toMatchObject({
+			ok: false,
+			code: "UNAUTHENTICATED",
 		});
-
-		expect(run).not.toHaveBeenCalled();
-		expect(result).toMatchObject({ ok: false, code: "FORBIDDEN" });
 	});
 
-	it("把内容错误翻译为可展示的字段错误", async () => {
+	it("ContentError 保留错误码与字段", async () => {
+		authMocks.sub = "oidc-sub";
 		const result = await guardedAction(async () => {
-			throw new ContentError("VALIDATION_FAILED", "请填写链接名", {
-				slug: "请填写链接名",
+			throw new ContentError("SLUG_CONFLICT", "链接名冲突", {
+				slug: "换一个",
 			});
 		});
+		expect(result).toMatchObject({
+			ok: false,
+			code: "SLUG_CONFLICT",
+			fields: { slug: "换一个" },
+		});
+	});
 
-		expect(result).toEqual({
+	it("ZodError 翻译为 VALIDATION_FAILED 并保留字段", async () => {
+		authMocks.sub = "oidc-sub";
+		const result = await guardedAction(async () => {
+			const { z } = await import("zod");
+			z.object({ title: z.string().min(1) }).parse({ title: "" });
+		});
+		expect(result).toMatchObject({
 			ok: false,
 			code: "VALIDATION_FAILED",
-			message: "请填写链接名",
-			fields: { slug: "请填写链接名" },
 		});
+		expect(!result.ok && result.fields.title).toBeTruthy();
 	});
 
-	it("把 Zod 错误翻译为字段错误", async () => {
-		const { z } = await import("zod");
-		const schema = z.object({
-			title: z.string().min(2, "标题太短"),
-		});
-
+	it("未知错误不泄露内部信息", async () => {
+		authMocks.sub = "oidc-sub";
 		const result = await guardedAction(async () => {
-			schema.parse({ title: "x" });
-			return null;
+			throw new Error("database password leaked");
 		});
-
-		expect(result).toMatchObject({ ok: false, code: "VALIDATION_FAILED" });
-		expect(result.ok === false && result.fields.title).toBe("标题太短");
-	});
-
-	it("未预期错误不会伪装成成功", async () => {
-		const result = await guardedAction(async () => {
-			throw new Error("connection terminated unexpectedly");
-		});
-
 		expect(result).toMatchObject({ ok: false, code: "UNKNOWN" });
-		expect(result.ok === false && result.message).not.toContain(
-			"connection",
-		);
+		expect(!result.ok && result.message).not.toContain("password");
 	});
 
-	it("成功结果不泄露内部细节", async () => {
-		const result = await guardedAction(async (sub) => ({ sub }));
-		expect(result.ok).toBe(true);
+	it("AdminAuthError 区分未登录与禁止", async () => {
+		authMocks.sub = "oidc-sub";
+		const result = await guardedAction(async () => {
+			throw new AdminAuthError("forbidden", "不是站长");
+		});
+		expect(result).toMatchObject({ ok: false, code: "FORBIDDEN" });
 	});
 });

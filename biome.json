@@ -4,10 +4,14 @@
 		"includes": [
 			"**",
 			"!**/.next",
-			"!**/out",
+			"!**/.output",
+			"!**/.tanstack",
+			"!**/.wrangler",
+			"!**/dist",
 			"!**/build",
 			"!**/next-env.d.ts",
 			"!generated",
+			"!src/routeTree.gen.ts",
 			"!**/public/**/*.svg"
 		]
 	},
