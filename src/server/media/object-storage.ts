@@ -106,9 +106,6 @@ function publicStore(): Store {
 	const bucket = readEnv("S3_PUBLIC_BUCKET");
 	const base = import.meta.env.VITE_MEDIA_BASE_URL;
 	if (!base) throw new Error("需要配置 VITE_MEDIA_BASE_URL");
-	if (bucket === store.bucket) {
-		throw new Error("公开图片桶必须与私有桶不同");
-	}
 	if (new URL(base).protocol !== "https:") {
 		throw new Error("公开图片必须使用 HTTPS");
 	}
