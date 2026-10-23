@@ -11,6 +11,7 @@ next-env.d.ts
 # production
 build/
 dist/
+/.worktrees/
 
 # env files
 .env

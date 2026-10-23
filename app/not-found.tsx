@@ -1,21 +1,35 @@
 import Link from "next/link";
 
+import { TerminalPrompt } from "@/components/terminal-prompt";
+
 export default function NotFound() {
-	return (
-		<div className="flex min-h-dvh flex-col items-center justify-center bg-bg px-6 text-center">
-			<p className="param text-sm text-fg-muted">404</p>
-			<h1 className="mt-4 font-serif text-2xl text-fg sm:text-3xl">
-				这里没有内容
-			</h1>
-			<p className="mt-3 max-w-[30rem] leading-[1.8] text-fg-muted">
-				这个地址可能已经改过，或者对应的内容还没有发布。
-			</p>
-			<Link
-				href="/"
-				className="mt-8 inline-flex min-h-11 items-center rounded-control bg-accent px-5 text-accent-fg transition-opacity hover:opacity-90"
-			>
-				回到首页
-			</Link>
-		</div>
-	);
+  return (
+    <section className="mx-auto max-w-3xl py-12 text-center sm:py-20">
+      <TerminalPrompt path="~/404" />
+      <p className="mt-8 font-mono text-7xl font-semibold tracking-[-0.06em] text-accent sm:text-9xl">
+        404
+      </p>
+      <h1 className="mt-6 text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">
+        Command target not found.
+      </h1>
+      <p className="mx-auto mt-5 max-w-xl text-base leading-8 text-muted">
+        The requested path does not exist or has moved. Choose a known route to
+        return to the system.
+      </p>
+      <div className="mt-9 flex flex-wrap justify-center gap-4 font-mono text-sm">
+        <Link
+          href="/"
+          className="border border-accent px-5 py-3 text-accent transition-colors hover:bg-accent hover:text-background"
+        >
+          &gt; Home
+        </Link>
+        <Link
+          href="/blog"
+          className="border border-line px-5 py-3 text-muted transition-colors hover:border-foreground hover:text-foreground"
+        >
+          Browse the blog
+        </Link>
+      </div>
+    </section>
+  );
 }
