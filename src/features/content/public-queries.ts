@@ -9,6 +9,8 @@ export type PublishedNoteListItem = {
 	description: string;
 	tags: string[];
 	publishedAt: Date;
+	/** 当前发布版本的创建时间，供 sitemap lastmod 与 RSS lastBuildDate 使用。 */
+	updatedAt: Date;
 	readingTime: number;
 };
 
@@ -17,6 +19,8 @@ export type PublishedNote = PublishedNoteListItem & {
 	coverMediaId: string | null;
 	coverAlt: string;
 	coverUrl: string | null;
+	coverWidth: number | null;
+	coverHeight: number | null;
 };
 
 const MAX_NOTES = 100;
@@ -40,9 +44,26 @@ export type NoteListFilter = {
 export async function listPublishedNotes(
 	filter: NoteListFilter = {},
 ): Promise<PublishedNoteListItem[]> {
-	const db = await getDb();
 	const limit = Math.min(MAX_NOTES, Math.max(1, filter.limit ?? MAX_NOTES));
+	return mapRows(await queryPublishedNoteRows(filter, limit));
+}
 
+/**
+ * 供 RSS / sitemap 使用：全部已发布笔记，不受列表分页上限影响。
+ * 站内列表仍按 MAX_NOTES 截断，避免首屏一次渲染过多条目。
+ */
+export async function listAllPublishedNotes(): Promise<
+	PublishedNoteListItem[]
+> {
+	return mapRows(await queryPublishedNoteRows({}));
+}
+
+type PublishedNoteRow = Awaited<
+	ReturnType<typeof queryPublishedNoteRows>
+>[number];
+
+async function queryPublishedNoteRows(filter: NoteListFilter, take?: number) {
+	const db = await getDb();
 	const where = publishedWhere({
 		kind: "note",
 		publishedAt: { not: null },
@@ -60,32 +81,35 @@ export async function listPublishedNotes(
 			: {}),
 	});
 
-	const rows = await db.content.findMany({
+	return db.content.findMany({
 		where,
 		include: { publishedRevision: true },
 		orderBy: [{ publishedAt: "desc" }, { id: "desc" }],
-		take: limit,
+		...(take === undefined ? {} : { take }),
 	});
+}
 
-	const items: PublishedNoteListItem[] = [];
-	for (const row of rows) {
+function mapRows(rows: PublishedNoteRow[]): PublishedNoteListItem[] {
+	return rows.flatMap((row) => {
 		if (!row.publishedRevision || !row.publicSlug || !row.publishedAt) {
-			continue;
+			return [];
 		}
 		const payload: NotePayload = parsePayload(
 			"note",
 			row.publishedRevision.payload,
 		);
-		items.push({
-			slug: row.publicSlug,
-			title: payload.title,
-			description: payload.description,
-			tags: payload.tags,
-			publishedAt: row.publishedAt,
-			readingTime: readingTimeOf(payload.markdown),
-		});
-	}
-	return items;
+		return [
+			{
+				slug: row.publicSlug,
+				title: payload.title,
+				description: payload.description,
+				tags: payload.tags,
+				publishedAt: row.publishedAt,
+				updatedAt: row.publishedRevision.createdAt,
+				readingTime: readingTimeOf(payload.markdown),
+			},
+		];
+	});
 }
 
 export async function getPublishedNoteBySlug(
@@ -107,7 +131,7 @@ export async function getPublishedNoteBySlug(
 	const cover = payload.coverMediaId
 		? await db.media.findUnique({
 				where: { id: payload.coverMediaId },
-				select: { publicObjectKey: true },
+				select: { publicObjectKey: true, width: true, height: true },
 			})
 		: null;
 	return {
@@ -116,11 +140,14 @@ export async function getPublishedNoteBySlug(
 		description: payload.description,
 		tags: payload.tags,
 		publishedAt: row.publishedAt,
+		updatedAt: row.publishedRevision.createdAt,
 		readingTime: readingTimeOf(payload.markdown),
 		markdown: payload.markdown,
 		coverMediaId: payload.coverMediaId,
 		coverAlt: payload.coverAlt,
 		coverUrl: publicMediaUrl(cover?.publicObjectKey),
+		coverWidth: cover?.width ?? null,
+		coverHeight: cover?.height ?? null,
 	};
 }
 
@@ -161,11 +188,4 @@ export async function getRecentPublishedNotes(
 	limit: number,
 ): Promise<PublishedNoteListItem[]> {
 	return listPublishedNotes({ limit });
-}
-
-/** 供 RSS / sitemap 使用：全部已发布笔记。 */
-export async function listAllPublishedNotes(): Promise<
-	PublishedNoteListItem[]
-> {
-	return listPublishedNotes({ limit: MAX_NOTES });
 }

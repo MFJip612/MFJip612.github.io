@@ -1,7 +1,7 @@
 import { createFileRoute, getRouteApi, notFound } from "@tanstack/react-router";
 import { PageIntro } from "@/components/site/page-intro";
 import { SiteCta } from "@/components/site/site-cta";
-import { pageHead } from "@/lib/seo";
+import { pageHead, socialImageFromMatches } from "@/lib/seo";
 import { getLinksFn } from "@/server-fns/public.functions";
 
 const siteRoute = getRouteApi("/_site");
@@ -12,13 +12,14 @@ export const Route = createFileRoute("/_site/links")({
 		if (!data.page) throw notFound();
 		return data;
 	},
-	head: ({ loaderData }) =>
+	head: ({ loaderData, matches }) =>
 		pageHead({
 			title: loaderData?.page?.title ?? "Links",
 			description:
 				loaderData?.page?.lead ||
 				"A small, maintained list of places worth visiting.",
 			path: "/links/",
+			image: socialImageFromMatches(matches),
 		}),
 	component: LinksPage,
 });

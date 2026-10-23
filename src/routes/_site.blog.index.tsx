@@ -3,7 +3,7 @@ import { FilterPills } from "@/components/site/filter-pills";
 import { NoteRow } from "@/components/site/note-row";
 import { PageIntro } from "@/components/site/page-intro";
 import { SubscribePanel } from "@/components/site/subscribe-panel";
-import { pageHead } from "@/lib/seo";
+import { pageHead, socialImageFromMatches } from "@/lib/seo";
 import { getBlogIndexFn } from "@/server-fns/public.functions";
 
 const siteRoute = getRouteApi("/_site");
@@ -23,13 +23,14 @@ export const Route = createFileRoute("/_site/blog/")({
 		if (!data.page || data.unknownTag) throw notFound();
 		return data;
 	},
-	head: ({ loaderData }) =>
+	head: ({ loaderData, matches }) =>
 		pageHead({
 			title: loaderData?.page?.title ?? "Writing",
 			description:
 				loaderData?.page?.lead ||
 				"Field notes on frontend architecture, server-first systems, developer tools, and interfaces that respect attention.",
 			path: "/blog/",
+			image: socialImageFromMatches(matches),
 		}),
 	component: BlogIndexPage,
 });

@@ -41,7 +41,9 @@ describe("EdgeOne 构建产物", () => {
 		).toBe(true);
 		expect(
 			config.routes.some(
-				(route) => route.src === "/.*" && route.handle === undefined,
+				(route) =>
+					route.src === "/.*" &&
+					route.handle === undefined,
 			),
 		).toBe(true);
 	});
@@ -59,9 +61,7 @@ describe("EdgeOne 构建产物", () => {
 
 	it("不再复制 Cloudflare 本地 secrets 与 wrangler 配置", () => {
 		expect(existsSync(path.join(FUNCTION_ROOT, ".dev.vars"))).toBe(false);
-		expect(existsSync(path.join(FUNCTION_ROOT, "wrangler.json"))).toBe(
-			false,
-		);
+		expect(existsSync(path.join(FUNCTION_ROOT, "wrangler.json"))).toBe(false);
 	});
 
 	it("函数目录不超过 128MB 平台上限", async () => {

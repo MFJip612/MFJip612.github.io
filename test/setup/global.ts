@@ -32,7 +32,8 @@ export async function setup(): Promise<void> {
 		env: {
 			...process.env,
 			NODE_ENV: "production",
-			VITE_SITE_URL: process.env.VITE_SITE_URL ?? "http://localhost:3000",
+			VITE_SITE_URL:
+				process.env.VITE_SITE_URL ?? "http://localhost:3000",
 		},
 		maxBuffer: 20_000_000,
 	});

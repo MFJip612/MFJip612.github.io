@@ -1,4 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { type FormEvent, useState } from "react";
+import { authClient } from "@/lib/auth/neon-client";
 import { safeInternalRedirect } from "@/lib/auth/redirect";
 import { getAdminIdentityFn } from "@/server-fns/admin.functions";
 
@@ -34,6 +36,23 @@ export const Route = createFileRoute("/admin/login")({
 function LoginPage() {
 	const { identity, next } = Route.useLoaderData();
 	const denied = Boolean((Route.useSearch() as LoginSearch).denied);
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState<string | null>(null);
+	const [pending, setPending] = useState(false);
+
+	async function signIn(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		setPending(true);
+		setError(null);
+		const result = await authClient.signIn.email({ email, password });
+		if (result.error) {
+			setError(result.error.message ?? "登录失败，请检查账号和密码");
+			setPending(false);
+			return;
+		}
+		window.location.assign(next);
+	}
 
 	return (
 		<main className="mx-auto flex min-h-dvh w-full max-w-[520px] flex-col justify-center px-6 py-16">
@@ -44,8 +63,8 @@ function LoginPage() {
 				站长登录
 			</h1>
 			<p className="mt-3 text-sm leading-[24px] text-muted">
-				使用配置好的 OpenID Connect 身份提供方登录。只有白名单中的
-				subject 可以进入后台。
+				使用 Neon Better Auth 登录。只有白名单中的 Neon user id
+				可以进入后台。
 			</p>
 
 			{denied || identity.status === "denied" ? (
@@ -58,12 +77,40 @@ function LoginPage() {
 				</p>
 			) : null}
 
-			<a
-				href={`/api/auth/login/?next=${encodeURIComponent(next)}`}
-				className="mt-7 inline-flex w-fit items-center rounded-full bg-accent px-5 py-2.5 font-mono text-[12px] uppercase tracking-[1.5px] text-black transition-colors duration-200 hover:bg-accent/90"
-			>
-				Sign in with OIDC ↗
-			</a>
+			<form onSubmit={signIn} className="mt-7 flex flex-col gap-4">
+				<label className="flex flex-col gap-2 text-sm">
+					Email
+					<input
+						type="email"
+						required
+						value={email}
+						onChange={(event) => setEmail(event.target.value)}
+						className="rounded-control border border-line bg-surface px-3 py-2"
+					/>
+				</label>
+				<label className="flex flex-col gap-2 text-sm">
+					Password
+					<input
+						type="password"
+						required
+						value={password}
+						onChange={(event) => setPassword(event.target.value)}
+						className="rounded-control border border-line bg-surface px-3 py-2"
+					/>
+				</label>
+				{error ? (
+					<p role="alert" className="text-sm text-danger">
+						{error}
+					</p>
+				) : null}
+				<button
+					type="submit"
+					disabled={pending}
+					className="inline-flex w-fit items-center rounded-full bg-accent px-5 py-2.5 font-mono text-[12px] uppercase tracking-[1.5px] text-black transition-colors duration-200 hover:bg-accent/90 disabled:opacity-60"
+				>
+					{pending ? "Signing in..." : "Sign in"}
+				</button>
+			</form>
 
 			<a
 				href="/"

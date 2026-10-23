@@ -3,7 +3,7 @@ import { CopyEmail } from "@/components/site/copy-email";
 import { PageIntro } from "@/components/site/page-intro";
 import { Prose } from "@/components/site/prose";
 import { SiteCta } from "@/components/site/site-cta";
-import { pageHead } from "@/lib/seo";
+import { pageHead, personJsonLd, socialImageFromMatches } from "@/lib/seo";
 import { getAboutFn } from "@/server-fns/public.functions";
 
 const siteRoute = getRouteApi("/_site");
@@ -14,13 +14,17 @@ export const Route = createFileRoute("/_site/about")({
 		if (!data.profile || !data.page) throw notFound();
 		return data;
 	},
-	head: ({ loaderData }) =>
+	head: ({ loaderData, matches }) =>
 		pageHead({
 			title: loaderData?.page?.title ?? "About",
 			description:
 				loaderData?.page?.lead ||
 				"Developer, systems thinker, and careful interface builder.",
 			path: "/about/",
+			image: socialImageFromMatches(matches),
+			jsonLd: loaderData?.profile
+				? personJsonLd(loaderData.profile)
+				: undefined,
 		}),
 	component: AboutPage,
 });

@@ -12,15 +12,15 @@
 
 ## 2. Cloudflare → EdgeOne 对照
 
-| 原 Cloudflare 实现                           | 迁移后                                        |
-| -------------------------------------------- | --------------------------------------------- |
-| `@cloudflare/vite-plugin` + `wrangler.jsonc` | `edgeone.json` + EdgeOne Vite 适配器          |
-| `cloudflare:workers` 的 `env` binding        | Node.js `process.env`                         |
-| `HYPERDRIVE` binding                         | `DATABASE_URL`                                |
-| Cloudflare Images binding                    | sharp 原生模块                                |
-| `.dev.vars`                                  | EdgeOne 控制台环境变量；本地使用 `.env`       |
-| `wrangler deploy`                            | Git 集成或 `edgeone makers deploy ./.edgeone` |
-| `DEPLOY_TARGET=cloudflare/node` 分支         | 单一 Node 运行时                              |
+| 原 Cloudflare 实现 | 迁移后 |
+| --- | --- |
+| `@cloudflare/vite-plugin` + `wrangler.jsonc` | `edgeone.json` + EdgeOne Vite 适配器 |
+| `cloudflare:workers` 的 `env` binding | Node.js `process.env` |
+| `HYPERDRIVE` binding | `DATABASE_URL` |
+| Cloudflare Images binding | sharp 原生模块 |
+| `.dev.vars` | EdgeOne 控制台环境变量；本地使用 `.env` |
+| `wrangler deploy` | Git 集成或 `edgeone makers deploy ./.edgeone` |
+| `DEPLOY_TARGET=cloudflare/node` 分支 | 单一 Node 运行时 |
 
 ## 3. 运行模型
 
@@ -121,6 +121,7 @@ PORT=3001 bun run preview:edgeone
 ## 6. 原生依赖处理
 
 EdgeOne 适配器使用 esbuild + NFT 打包服务端代码。项目在 `vite.config.ts` 中做了三处处理：
+
 1. `beforeBundle` 注入自定义 esbuild 插件，在 NFT 解析器之前把 `sharp`、`@img/*`、`pg` 及其依赖标记为 external。
    - sharp 依赖动态加载的 `.node` 与 libvips `.so`，打包后路径会失效。
    - pg 带 `import` / `require` 双入口，打包后会出现 CJS default interop 错误。
@@ -131,13 +132,13 @@ EdgeOne 适配器使用 esbuild + NFT 打包服务端代码。项目在 `vite.co
 
 ## 7. 平台限制
 
-| 项目           | 限制                      | 本项目的处理                         |
-| -------------- | ------------------------- | ------------------------------------ |
-| 请求/响应 body | 6MB                       | 上传上限调整为 6MB；超大请求返回 413 |
-| 函数代码包     | 128MB                     | 当前函数目录约 30MB                  |
-| 最大执行时长   | 120s（默认 30s）          | 图片处理与页面渲染远低于上限         |
-| Node.js 运行时 | v20.x                     | 已在 Node 20.20.1 下验证 handler     |
-| 构建 Node 版本 | 预装 22.21.1 / 24.18.0 等 | `edgeone.json` 使用 22.21.1          |
+| 项目 | 限制 | 本项目的处理 |
+| --- | --- | --- |
+| 请求/响应 body | 6MB | 上传上限调整为 6MB；超大请求返回 413 |
+| 函数代码包 | 128MB | 当前函数目录约 30MB |
+| 最大执行时长 | 120s（默认 30s） | 图片处理与页面渲染远低于上限 |
+| Node.js 运行时 | v20.x | 已在 Node 20.20.1 下验证 handler |
+| 构建 Node 版本 | 预装 22.21.1 / 24.18.0 等 | `edgeone.json` 使用 22.21.1 |
 
 已知边界：后台导出接口会一次性返回全部内容与历史版本。若 JSON 增长到 6MB 以上，会触及平台响应体上限；本轮未改为分页或对象存储导出。
 
@@ -153,6 +154,7 @@ EdgeOne 适配器使用 esbuild + NFT 打包服务端代码。项目在 `vite.co
 ```
 
 EdgeOne 相关用例：
+
 - `test/edgeone/no-cloudflare.test.ts`：无 Cloudflare 文件、依赖或运行时引用。
 - `test/edgeone/build-artifact.test.ts`：`.edgeone` 结构、v3 路由、原生依赖、128MB 上限。
 - `test/edgeone/sharp-native.test.ts`：从产物目录加载 sharp 并完成 WebP 编码。
@@ -170,6 +172,7 @@ PORT=43202 npx -y node@20.20.1 scripts/serve-edgeone.mjs
 handler 可加载，首页返回 200。
 
 未验证：
+
 - 真实 EdgeOne Makers 云端部署（本轮按约定只做本地产物 + 模拟运行时）。
 - EdgeOne 控制台中 `bun install` 的 postinstall 行为与平台环境变量注入。
 - 数据增长到 6MB 以上的导出接口行为。

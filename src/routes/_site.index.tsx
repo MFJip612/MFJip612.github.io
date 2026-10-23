@@ -9,7 +9,13 @@ import { NoteCard } from "@/components/site/note-card";
 import { SiteCta } from "@/components/site/site-cta";
 import { TerminalCard } from "@/components/site/terminal-card";
 import { TerminalPrompt } from "@/components/site/terminal-prompt";
-import { pageHead } from "@/lib/seo";
+import {
+	graphJsonLd,
+	pageHead,
+	personJsonLd,
+	socialImageFromMatches,
+	websiteJsonLd,
+} from "@/lib/seo";
 import { getHomeFn } from "@/server-fns/public.functions";
 
 const siteRoute = getRouteApi("/_site");
@@ -20,14 +26,21 @@ export const Route = createFileRoute("/_site/")({
 		if (!data.profile || !data.page) throw notFound();
 		return data;
 	},
-	head: ({ loaderData }) =>
-		pageHead({
+	head: ({ loaderData, matches }) => {
+		const description =
+			loaderData?.profile?.intro ??
+			"Software for a calmer, more open web.";
+		return pageHead({
 			title: `${loaderData?.profile?.displayName ?? "MFJip612"} — Developer`,
-			description:
-				loaderData?.profile?.intro ||
-				"Software for a calmer, more open web.",
+			description,
 			path: "/",
-		}),
+			image: socialImageFromMatches(matches),
+			jsonLd: graphJsonLd(
+				websiteJsonLd(description),
+				loaderData?.profile ? personJsonLd(loaderData.profile) : null,
+			),
+		});
+	},
 	component: HomePage,
 });
 

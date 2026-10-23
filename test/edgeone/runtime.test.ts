@@ -65,7 +65,9 @@ describe("EdgeOne Node 运行时行为", () => {
 
 		const published = await get("/blog/published-note/");
 		expect(published.status).toBe(200);
-		expect(await published.text()).toContain("Published note description");
+		expect(await published.text()).toContain(
+			"Published note description",
+		);
 
 		const draft = await get("/blog/draft-note/");
 		expect(draft.status).toBe(404);

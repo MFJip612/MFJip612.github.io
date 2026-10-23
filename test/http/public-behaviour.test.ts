@@ -121,14 +121,41 @@ describe("公开站 HTTP 行为", () => {
 	it("Feed、sitemap、robots 可访问", async () => {
 		const rss = await get("/rss.xml/");
 		expect(rss.status).toBe(200);
-		expect(await rss.text()).toContain("<rss");
+		const rssText = await rss.text();
+		expect(rssText).toContain("<rss");
+		expect(rssText).toContain("<lastBuildDate>");
+		expect(rssText).toContain('rel="self"');
 
 		const sitemap = await get("/sitemap.xml/");
 		expect(sitemap.status).toBe(200);
-		expect(await sitemap.text()).toContain("/blog/published-note/");
+		const sitemapText = await sitemap.text();
+		expect(sitemapText).toContain("/blog/published-note/");
+		expect(sitemapText).toContain("<lastmod>");
 
 		const robots = await get("/robots.txt/");
 		expect(robots.status).toBe(200);
 		expect(await robots.text()).toContain("Disallow: /admin/");
+	});
+
+	it("SEO：canonical、分享图与结构化数据", async () => {
+		const note = await get("/blog/published-note/");
+		const noteHtml = await note.text();
+		expect(noteHtml).toMatch(
+			/<link rel="canonical" href="[^"]+\/blog\/published-note\/"/,
+		);
+		expect(noteHtml).toContain('property="og:image"');
+		expect(noteHtml).toContain('name="twitter:image"');
+		expect(noteHtml).toContain('property="article:published_time"');
+		expect(noteHtml).toContain('property="article:modified_time"');
+		expect(noteHtml).toContain('type="application/ld+json"');
+		expect(noteHtml).toContain('"@type":"BlogPosting"');
+
+		const home = await get("/");
+		const homeHtml = await home.text();
+		expect(homeHtml).toMatch(/<link rel="canonical" href="[^"]+\/"/);
+		expect(homeHtml).toContain('"@type":"WebSite"');
+		expect(homeHtml).toContain('"@type":"Person"');
+		expect(homeHtml).toContain('rel="alternate"');
+		expect(homeHtml).toContain('rel="manifest"');
 	});
 });

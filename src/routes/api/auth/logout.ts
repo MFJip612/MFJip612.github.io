@@ -1,17 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { clearSessionCookie, isSecureRequest } from "@/server/auth/session";
+import { getNeonAuthServer } from "@/server/auth/neon";
 
 export const Route = createFileRoute("/api/auth/logout")({
 	server: {
 		handlers: {
-			POST: async ({ request }) => {
+			POST: async () => {
+				await getNeonAuthServer().signOut();
 				return new Response(null, {
 					status: 303,
 					headers: {
 						Location: "/",
-						"Set-Cookie": clearSessionCookie(
-							isSecureRequest(request),
-						),
 						"Cache-Control": "no-store",
 					},
 				});

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SITE_URL } from "@/config/site";
+import { absoluteUrl, SITE_URL } from "@/config/site";
 import { listAllPublishedNotes } from "@/features/content/public-queries";
 import { loadSiteShellData } from "@/features/content/site-data";
 
@@ -20,25 +20,31 @@ export const Route = createFileRoute("/rss.xml")({
 					loadSiteShellData(),
 					listAllPublishedNotes(),
 				]);
+				const lastBuildDate = notes[0]?.updatedAt ?? new Date();
 				const items = notes
 					.map(
 						(note) => `    <item>
       <title>${escapeXml(note.title)}</title>
-      <link>${SITE_URL}/blog/${note.slug}/</link>
-      <guid>${SITE_URL}/blog/${note.slug}/</guid>
+      <link>${absoluteUrl(`/blog/${note.slug}/`)}</link>
+      <guid isPermaLink="true">${absoluteUrl(`/blog/${note.slug}/`)}</guid>
       <description>${escapeXml(note.description)}</description>
       <pubDate>${note.publishedAt.toUTCString()}</pubDate>
+${note.tags
+	.map((tag) => `      <category>${escapeXml(tag)}</category>`)
+	.join("\n")}
     </item>`,
 					)
 					.join("\n");
 
 				const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${escapeXml(shell.siteName)}</title>
     <link>${SITE_URL}/</link>
     <description>${escapeXml(shell.settings.defaultDescription || "Software for a calmer, more open web.")}</description>
     <language>en</language>
+    <lastBuildDate>${lastBuildDate.toUTCString()}</lastBuildDate>
+    <atom:link href="${SITE_URL}/rss.xml/" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;

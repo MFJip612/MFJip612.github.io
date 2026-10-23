@@ -33,8 +33,9 @@
 
 - `VITE_SITE_URL`、`VITE_MEDIA_BASE_URL` 在构建期写入客户端，不要放密钥；`VITE_SITE_URL` 必须是线上精确 origin。
 - 本地使用 `.env`；EdgeOne 控制台需配置同名运行期变量。数据库通过 `DATABASE_URL` 连接，不使用平台绑定。
-- 登录使用通用 OIDC + PKCE：`AUTH_ISSUER`、`AUTH_CLIENT_ID`、`AUTH_CLIENT_SECRET`、`AUTH_REDIRECT_URI`（必须以 `/api/auth/callback/` 结尾）、`AUTH_COOKIE_SECRET`（≥32 字符）。
-- `ADMIN_OIDC_SUBJECTS` 是逗号分隔的 subject 白名单；留空时任何账号都不能进入后台。
+- 数据库使用 Neon Postgres；`DATABASE_URL` 填 Neon 控制台提供的 pooled connection string，迁移命令使用同一个数据库。
+- 登录使用 Neon Managed Better Auth：`NEON_AUTH_BASE_URL` 填 Neon 控制台的 Auth URL，`NEON_AUTH_COOKIE_SECRET` 至少 32 字符。
+- `ADMIN_NEON_USER_IDS` 是逗号分隔的 Neon user id 白名单；留空时任何账号都不能进入后台。
 - 图片：私有桶 `S3_BUCKET` 绝不可公开；公开派生图写入独立的 `S3_PUBLIC_BUCKET`，访问域名由 `VITE_MEDIA_BASE_URL` 提供。
 
 ## 内容管理

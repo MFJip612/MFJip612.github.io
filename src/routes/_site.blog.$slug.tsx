@@ -8,8 +8,9 @@ import {
 import { AuthorCard } from "@/components/site/author-card";
 import { Prose } from "@/components/site/prose";
 import { TagPill } from "@/components/site/tag-pill";
+import { absoluteUrl, DEFAULT_SOCIAL_IMAGE } from "@/config/site";
 import { formatDisplayDate, formatIsoDate } from "@/lib/format";
-import { pageHead } from "@/lib/seo";
+import { blogPostingJsonLd, pageHead, socialImageFromMatches } from "@/lib/seo";
 import { getNoteFn } from "@/server-fns/public.functions";
 
 const siteRoute = getRouteApi("/_site");
@@ -27,13 +28,33 @@ export const Route = createFileRoute("/_site/blog/$slug")({
 		if (result.kind === "missing") throw notFound();
 		return result;
 	},
-	head: ({ loaderData }) => {
+	head: ({ loaderData, matches }) => {
 		if (loaderData?.kind !== "note") return {};
+		const { note, profile } = loaderData;
+		const path = `/blog/${note.slug}/`;
+		const authorUrl = absoluteUrl("/about/");
+		const image = note.coverUrl ?? socialImageFromMatches(matches);
 		return pageHead({
-			title: loaderData.note.title,
-			description: loaderData.note.description,
-			path: `/blog/${loaderData.note.slug}/`,
+			title: note.title,
+			description: note.description,
+			path,
 			type: "article",
+			image,
+			imageAlt: note.coverAlt || note.title,
+			publishedTime: note.publishedAt,
+			modifiedTime: note.updatedAt,
+			authorUrl,
+			jsonLd: blogPostingJsonLd({
+				title: note.title,
+				description: note.description,
+				url: absoluteUrl(path),
+				image: image ?? DEFAULT_SOCIAL_IMAGE,
+				publishedAt: note.publishedAt,
+				updatedAt: note.updatedAt,
+				tags: note.tags,
+				authorName: profile.displayName,
+				authorUrl,
+			}),
 		});
 	},
 	component: NotePage,
@@ -81,6 +102,8 @@ function NotePage() {
 				<img
 					src={note.coverUrl}
 					alt={note.coverAlt}
+					width={note.coverWidth ?? undefined}
+					height={note.coverHeight ?? undefined}
 					className="mt-10 aspect-[16/7] w-full rounded-card border border-border-token object-cover"
 				/>
 			) : (

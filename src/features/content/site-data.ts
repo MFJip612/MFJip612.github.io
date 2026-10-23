@@ -1,3 +1,4 @@
+import { publicMediaUrl } from "@/features/media/public-url";
 import { getDb } from "@/server/db/prisma";
 import { buildPublicNav } from "./navigation";
 import { publishedWhere } from "./public-where";
@@ -39,6 +40,8 @@ export type SiteShellData = {
 	siteName: string;
 	settings: SettingsPayload;
 	nav: ReturnType<typeof buildPublicNav>;
+	/** 后台配置的默认社交分享图；未配置或未公开时为 null。 */
+	socialImageUrl: string | null;
 };
 
 /** 公开站外壳所需的全部数据：全部来自已发布版本。 */
@@ -48,6 +51,14 @@ export async function loadSiteShellData(): Promise<SiteShellData> {
 		? settingsPayloadSchema.parse(row.publishedRevision.payload)
 		: EMPTY_SETTINGS;
 
+	const db = await getDb();
+	const socialMedia = settings.defaultSocialImageMediaId
+		? await db.media.findUnique({
+				where: { id: settings.defaultSocialImageMediaId },
+				select: { publicObjectKey: true },
+			})
+		: null;
+
 	return {
 		siteName: settings.siteName,
 		settings,
@@ -56,6 +67,7 @@ export async function loadSiteShellData(): Promise<SiteShellData> {
 			navAbout: settings.navAbout,
 			navLinks: settings.navLinks,
 		}),
+		socialImageUrl: publicMediaUrl(socialMedia?.publicObjectKey),
 	};
 }
 

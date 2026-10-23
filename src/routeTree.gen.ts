@@ -36,6 +36,7 @@ import { Route as AdminNotesIdRouteImport } from './routes/admin.notes.$id'
 import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
 import { Route as AdminPagesKeyRouteImport } from './routes/admin.pages.$key'
 import { Route as ApiAdminExportRouteImport } from './routes/api/admin/export'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiAuthCallbackRouteImport } from './routes/api/auth/callback'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
@@ -179,6 +180,11 @@ const ApiAdminExportRoute = ApiAdminExportRouteImport.update({
   path: '/api/admin/export',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthCallbackRoute = ApiAuthCallbackRouteImport.update({
   id: '/api/auth/callback',
   path: '/api/auth/callback',
@@ -244,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/admin/notes/$id': typeof AdminNotesIdRoute
   '/admin/pages/$key': typeof AdminPagesKeyRoute
   '/api/admin/export': typeof ApiAdminExportRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -280,6 +287,7 @@ export interface FileRoutesByTo {
   '/admin/notes/$id': typeof AdminNotesIdRoute
   '/admin/pages/$key': typeof AdminPagesKeyRoute
   '/api/admin/export': typeof ApiAdminExportRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -318,6 +326,7 @@ export interface FileRoutesById {
   '/admin/notes/$id': typeof AdminNotesIdRoute
   '/admin/pages/$key': typeof AdminPagesKeyRoute
   '/api/admin/export': typeof ApiAdminExportRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -356,6 +365,7 @@ export interface FileRouteTypes {
     | '/admin/notes/$id'
     | '/admin/pages/$key'
     | '/api/admin/export'
+    | '/api/auth/$'
     | '/api/auth/callback'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -392,6 +402,7 @@ export interface FileRouteTypes {
     | '/admin/notes/$id'
     | '/admin/pages/$key'
     | '/api/admin/export'
+    | '/api/auth/$'
     | '/api/auth/callback'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -429,6 +440,7 @@ export interface FileRouteTypes {
     | '/admin/notes/$id'
     | '/admin/pages/$key'
     | '/api/admin/export'
+    | '/api/auth/$'
     | '/api/auth/callback'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -463,6 +475,7 @@ export interface RootRouteChildren {
   AdminNotesIdRoute: typeof AdminNotesIdRoute
   AdminPagesKeyRoute: typeof AdminPagesKeyRoute
   ApiAdminExportRoute: typeof ApiAdminExportRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
@@ -666,6 +679,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminExportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/callback': {
       id: '/api/auth/callback'
       path: '/api/auth/callback'
@@ -764,6 +784,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminNotesIdRoute: AdminNotesIdRoute,
   AdminPagesKeyRoute: AdminPagesKeyRoute,
   ApiAdminExportRoute: ApiAdminExportRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiAuthCallbackRoute: ApiAuthCallbackRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,

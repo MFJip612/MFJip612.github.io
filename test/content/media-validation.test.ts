@@ -25,6 +25,10 @@ it("rejects fake image bytes, forbidden extensions and oversize files", async ()
 		validateImage(Buffer.from("<svg></svg>"), "a.svg", "image/svg+xml"),
 	).rejects.toThrow();
 	await expect(
-		validateImage(Buffer.alloc(MAX_IMAGE_BYTES + 1), "a.png", "image/png"),
+		validateImage(
+			Buffer.alloc(MAX_IMAGE_BYTES + 1),
+			"a.png",
+			"image/png",
+		),
 	).rejects.toThrow();
 });

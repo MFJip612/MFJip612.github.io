@@ -81,7 +81,9 @@ export async function resetContent(prisma: PrismaClient): Promise<void> {
 }
 
 /** 写入公开站测试所需的固定内容与一条已发布、一条草稿笔记。 */
-export async function seedPublicContent(prisma: PrismaClient): Promise<void> {
+export async function seedPublicContent(
+	prisma: PrismaClient,
+): Promise<void> {
 	await putFixed(prisma, "profile", "profile", {
 		displayName: "MFJip612",
 		role: "Developer, systems thinker, and careful interface builder.",

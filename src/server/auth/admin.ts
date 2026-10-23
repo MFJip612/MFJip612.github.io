@@ -1,12 +1,7 @@
 import { redirect } from "@tanstack/react-router";
-import { getCookie } from "@tanstack/react-start/server";
 import { runtime } from "#runtime";
-import {
-	type AdminSession,
-	authorizeAdmin,
-	type VerifiedIdentity,
-} from "@/lib/auth/authorize";
-import { readSessionToken, SESSION_COOKIE } from "./session";
+import { type AdminSession, authorizeAdmin } from "@/lib/auth/authorize";
+import { readNeonIdentity } from "./neon";
 
 export type { AdminSession } from "@/server/auth/session";
 
@@ -17,17 +12,14 @@ export const LOGIN_PATH = "/admin/login/";
  * 支持逗号分隔多个 sub；留空表示未配置，任何账号都会被拒绝。
  */
 export function adminAllowlist(): string[] {
-	return (runtime.env("ADMIN_OIDC_SUBJECTS") ?? "")
+	return (
+		runtime.env("ADMIN_NEON_USER_IDS") ??
+		runtime.env("ADMIN_OIDC_SUBJECTS") ??
+		""
+	)
 		.split(",")
 		.map((value) => value.trim())
 		.filter((value) => value.length > 0);
-}
-
-async function readOidcIdentity(): Promise<VerifiedIdentity | null> {
-	const token = getCookie(SESSION_COOKIE);
-	const session = await readSessionToken(token);
-	if (!session) return null;
-	return { isLoggedIn: true, sub: session.sub };
 }
 
 /**
@@ -39,7 +31,7 @@ export async function requireAdminPage(
 	nextPath: string,
 ): Promise<AdminSession> {
 	return authorizeAdmin({
-		readAuth: readOidcIdentity,
+		readAuth: readNeonIdentity,
 		allowlist: adminAllowlist(),
 		onUnauthenticated: () => {
 			throw redirect({
@@ -59,7 +51,7 @@ export async function requireAdminPage(
 /** 写入与接口场景：拒绝时不跳转，直接抛出可识别的错误。 */
 export async function authorizeAdminForWrite(): Promise<AdminSession> {
 	return authorizeAdmin({
-		readAuth: readOidcIdentity,
+		readAuth: readNeonIdentity,
 		allowlist: adminAllowlist(),
 		onUnauthenticated: () => {
 			throw new AdminAuthError(
