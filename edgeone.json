@@ -24,7 +24,8 @@
 			"xtend",
 			"pgpass",
 			"split2",
-			"pg-cloudflare"
+			"pg-cloudflare",
+			"tslib"
 		]
 	}
 }

@@ -39,9 +39,10 @@ const TANSTACK_START_PACKAGES = [
 
 /**
  * EdgeOne 适配器用 esbuild 把服务端代码打进单个 handler.js。
- * 两类依赖必须保持外部并由构建钩子原样复制：
+ * 外部依赖必须保持外部并由构建钩子原样复制：
  * - sharp：动态加载 `.node` 与 libvips `.so`，打包后路径会失效；
  * - pg：CJS 包带 import/require 双入口，打包后会出现 default interop 错误。
+ * - tslib：Neon Auth 依赖其 CJS/ESM 互操作，打包后模块可能被 tree-shake 为空。
  */
 const EDGEONE_EXTERNAL_PACKAGES = [
 	"sharp",
@@ -64,10 +65,11 @@ const EDGEONE_EXTERNAL_PACKAGES = [
 	"pgpass",
 	"split2",
 	"pg-cloudflare",
+	"tslib",
 ];
 
 const EDGEONE_EXTERNAL_FILTER =
-	/^(?:sharp|pg|pg-connection-string|pg-pool|pg-protocol|pg-types|pg-int8|postgres-array|postgres-bytea|postgres-date|postgres-interval|xtend|pgpass|split2|pg-cloudflare|@img\/.*)$/;
+	/^(?:sharp|pg|pg-connection-string|pg-pool|pg-protocol|pg-types|pg-int8|postgres-array|postgres-bytea|postgres-date|postgres-interval|xtend|pgpass|split2|pg-cloudflare|tslib|@img\/.*)$/;
 
 /**
  * 适配器的 NFT 解析插件会先把 bare import 解析成绝对路径，
