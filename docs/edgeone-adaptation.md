@@ -92,7 +92,7 @@ bun run build
 
 1. 将仓库推送到 GitHub / GitLab。
 2. 在 EdgeOne Makers 控制台导入项目。
-3. 构建命令 `bun run build`，输出目录 `.edgeone`，Node 版本 22.21.1（与 `edgeone.json` 一致）。
+3. 构建命令 `bun run build`，输出目录 `.edgeone`，Node 版本 22.21.1（与 `edgeone.json` 一致）。项目锁定 Bun 1.3.14，以匹配 EdgeOne 构建环境。
 4. 配置第 4 节环境变量后部署。
 
 ### 5.3 CLI
@@ -128,7 +128,7 @@ EdgeOne 适配器使用 esbuild + NFT 打包服务端代码。项目在 `vite.co
 2. 覆盖 esbuild banner，用别名导入 `createRequire`，避免与被依赖代码中的同名导入冲突。
 3. `afterBundle` 把上述包复制到 `.edgeone/cloud-functions/ssr-node/node_modules`，保证本地模拟与云端函数包一致。
 
-`edgeone.json` 同时声明 `cloudFunctions.nodejs.externalNodeModules`，作为平台侧提示。
+`edgeone.json` 同时声明 `cloudFunctions.externalNodeModules`，作为平台侧提示。
 
 ## 7. 平台限制
 

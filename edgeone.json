@@ -4,29 +4,27 @@
 	"outputDirectory": ".edgeone",
 	"nodeVersion": "22.21.1",
 	"cloudFunctions": {
-		"nodejs": {
-			"externalNodeModules": [
-				"sharp",
-				"@img/colour",
-				"detect-libc",
-				"semver",
-				"@img/sharp-linux-x64",
-				"@img/sharp-libvips-linux-x64",
-				"pg",
-				"pg-connection-string",
-				"pg-pool",
-				"pg-protocol",
-				"pg-types",
-				"pg-int8",
-				"postgres-array",
-				"postgres-bytea",
-				"postgres-date",
-				"postgres-interval",
-				"xtend",
-				"pgpass",
-				"split2",
-				"pg-cloudflare"
-			]
-		}
+		"externalNodeModules": [
+			"sharp",
+			"@img/colour",
+			"detect-libc",
+			"semver",
+			"@img/sharp-linux-x64",
+			"@img/sharp-libvips-linux-x64",
+			"pg",
+			"pg-connection-string",
+			"pg-pool",
+			"pg-protocol",
+			"pg-types",
+			"pg-int8",
+			"postgres-array",
+			"postgres-bytea",
+			"postgres-date",
+			"postgres-interval",
+			"xtend",
+			"pgpass",
+			"split2",
+			"pg-cloudflare"
+		]
 	}
 }
