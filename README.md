@@ -35,6 +35,7 @@
 - 本地使用 `.env`；EdgeOne 控制台需配置同名运行期变量。数据库通过 `DATABASE_URL` 连接，不使用平台绑定。
 - 数据库使用 Neon Postgres；`DATABASE_URL` 填 Neon 控制台提供的 pooled connection string，迁移命令使用同一个数据库。
 - 登录使用 Neon Managed Better Auth：`NEON_AUTH_BASE_URL` 填 Neon 控制台的 Auth URL，`NEON_AUTH_COOKIE_SECRET` 至少 32 字符。
+- 后台登录支持 Email magic link 与邮箱密码两种方式；magic link 需要在 Neon Auth 中配置可用的邮件发送服务。
 - `ADMIN_NEON_USER_IDS` 是逗号分隔的 Neon user id 白名单；留空时任何账号都不能进入后台。
 - 图片：私有桶 `S3_BUCKET` 绝不可公开；公开派生图写入独立的 `S3_PUBLIC_BUCKET`，访问域名由 `VITE_MEDIA_BASE_URL` 提供。
 
