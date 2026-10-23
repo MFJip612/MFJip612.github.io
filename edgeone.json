@@ -2,7 +2,7 @@
 	"installCommand": "bun install",
 	"buildCommand": "bun run build",
 	"outputDirectory": ".edgeone",
-	"nodeVersion": "22.21.1",
+	"nodeVersion": "24.18.0",
 	"cloudFunctions": {
 		"externalNodeModules": [
 			"sharp",
