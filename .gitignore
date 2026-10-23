@@ -3,9 +3,11 @@ node_modules/
 .pnp
 .pnp.js
 
-# next.js
+# build output
 .next/
 out/
+.output/
+.tanstack/
 next-env.d.ts
 
 # production
@@ -29,6 +31,13 @@ dist/
 .DS_Store
 *.pem
 *.tsbuildinfo
+
+# AI agent tooling local caches
+.agents/
+.claude/
+.trae/
+.windsurf/
+skills-lock.json
 
 # debug
 npm-debug.log*

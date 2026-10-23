@@ -1,34 +1,33 @@
 {
 	"compilerOptions": {
-		"target": "ES2017",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": true,
-		"skipLibCheck": true,
+		"target": "ES2022",
+		"lib": ["DOM", "DOM.Iterable", "ES2022"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"jsx": "react-jsx",
 		"strict": true,
 		"noEmit": true,
+		"skipLibCheck": true,
 		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "bundler",
+		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"jsx": "react-jsx",
-		"incremental": true,
-		"plugins": [
-			{
-				"name": "next"
-			}
-		],
+		"verbatimModuleSyntax": true,
+		"types": ["vite/client", "node"],
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": ["./src/*"],
+			"@generated/*": ["./generated/*"],
+			"#runtime": ["./src/server/runtime/node.ts"],
+			"#image-pipeline": ["./src/server/media/image-pipeline.node.ts"]
 		}
 	},
 	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		".next/dev/types/**/*.ts",
-		"**/*.mts"
+		"src",
+		"generated",
+		"test",
+		"vite.config.ts",
+		"vitest.config.ts",
+		"prisma.config.ts"
 	],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", ".output", ".tanstack", ".edgeone", "app"]
 }

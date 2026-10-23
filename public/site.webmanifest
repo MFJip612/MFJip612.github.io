@@ -1,0 +1,22 @@
+{
+	"name": "MFJip612",
+	"short_name": "MFJip612",
+	"description": "Software for a calmer, more open web. Field notes on frontend architecture, server-first systems, and interface design.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#121212",
+	"theme_color": "#121212",
+	"icons": [
+		{
+			"src": "/icon-192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/icon-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	]
+}

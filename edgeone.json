@@ -1,0 +1,30 @@
+{
+	"installCommand": "bun install",
+	"buildCommand": "bun run build",
+	"outputDirectory": ".edgeone",
+	"nodeVersion": "24.18.0",
+	"cloudFunctions": {
+		"externalNodeModules": [
+			"sharp",
+			"@img/colour",
+			"detect-libc",
+			"semver",
+			"@img/sharp-linux-x64",
+			"@img/sharp-libvips-linux-x64",
+			"pg",
+			"pg-connection-string",
+			"pg-pool",
+			"pg-protocol",
+			"pg-types",
+			"pg-int8",
+			"postgres-array",
+			"postgres-bytea",
+			"postgres-date",
+			"postgres-interval",
+			"xtend",
+			"pgpass",
+			"split2",
+			"pg-cloudflare"
+		]
+	}
+}
