@@ -12,6 +12,13 @@ const securityHeaders = createMiddleware().server(
 	async ({ next, pathname }) => {
 		const result = await next();
 		const headers = new Headers(result.response.headers);
+		const setCookies = result.response.headers.getSetCookie?.() ?? [];
+		if (setCookies.length > 0) {
+			headers.delete("Set-Cookie");
+			for (const setCookie of setCookies) {
+				headers.append("Set-Cookie", setCookie);
+			}
+		}
 		headers.set("X-Content-Type-Options", "nosniff");
 		headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
