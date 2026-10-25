@@ -146,25 +146,12 @@ async function verifyMagicLink(
 }
 
 async function requestMagicLink(request: Request): Promise<Response> {
-	let body: Parameters<
-		ReturnType<typeof getNeonAuthServer>["signIn"]["magicLink"]
-	>[0];
-	try {
-		body = await request.json();
-	} catch (error) {
-		console.error("Magic-link request body parsing failed", error);
-		return Response.json(
-			{ error: { message: "登录请求格式无效" } },
-			{ status: 400 },
-		);
-	}
-
-	const result = await getNeonAuthServer().signIn.magicLink(body);
-	if (result.error) {
-		return Response.json(
-			{ error: result.error },
-			{ status: result.error.status ?? 400 },
-		);
-	}
-	return Response.json(result.data);
+	const config = getNeonAuthConfig();
+	return handleAuthProxyRequest({
+		request,
+		path: "sign-in/magic-link",
+		baseUrl: config.baseUrl,
+		cookieSecret: config.cookieSecret,
+		sameSite: "lax",
+	});
 }
