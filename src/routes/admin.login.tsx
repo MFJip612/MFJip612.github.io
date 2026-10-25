@@ -12,7 +12,8 @@ export const Route = createFileRoute("/admin/login")({
 			typeof search.next === "string"
 				? safeInternalRedirect(search.next)
 				: undefined,
-		denied: search.denied === "1" ? "1" : undefined,
+		denied:
+			search.denied === "1" || search.denied === '"1"' ? "1" : undefined,
 	}),
 	loader: async ({ location }) => {
 		const identity = await getAdminIdentityFn();
@@ -55,7 +56,7 @@ function LoginPage() {
 			if (method === "magic-link") {
 				const result = await authClient.signIn.magicLink({
 					email,
-					callbackURL: next,
+					callbackURL: `${window.location.origin}${next}`,
 				});
 				if (result.error) {
 					setError(
@@ -151,7 +152,9 @@ function LoginPage() {
 							type="password"
 							required
 							value={password}
-							onChange={(event) => setPassword(event.target.value)}
+							onChange={(event) =>
+								setPassword(event.target.value)
+							}
 							className="rounded-control border border-line bg-surface px-3 py-2"
 						/>
 					</label>

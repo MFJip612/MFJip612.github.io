@@ -1,6 +1,7 @@
 import {
 	createAuthServer,
 	handleAuthProxyRequest,
+	handleAuthResponse,
 	type RequestContext,
 } from "@neondatabase/auth/server";
 import {
@@ -78,6 +79,9 @@ export async function proxyNeonAuthRequest(
 	if (request.method === "POST" && path === "sign-in/magic-link") {
 		return requestMagicLink(request);
 	}
+	if (path === "magic-link/verify") {
+		return verifyMagicLink(request, config);
+	}
 	const response = await handleAuthProxyRequest({
 		request,
 		path,
@@ -87,6 +91,58 @@ export async function proxyNeonAuthRequest(
 	});
 
 	return response;
+}
+
+async function verifyMagicLink(
+	request: Request,
+	config: NeonAuthConfig,
+): Promise<Response> {
+	const origin = new URL(request.url).origin;
+	const upstreamUrl = new URL(`${config.baseUrl}/magic-link/verify`);
+	upstreamUrl.search = new URL(request.url).search;
+
+	const headers = new Headers();
+	for (const header of [
+		"user-agent",
+		"authorization",
+		"referer",
+		"content-type",
+		"x-neon-client-info",
+		"cookie",
+	]) {
+		const value = request.headers.get(header);
+		if (value) headers.set(header, value);
+	}
+	headers.set("Origin", request.headers.get("origin") ?? origin);
+
+	let upstreamResponse: Response;
+	try {
+		upstreamResponse = await fetch(upstreamUrl.toString(), {
+			method: "GET",
+			headers,
+			redirect: "manual",
+		});
+	} catch (error) {
+		console.error("Magic-link verification upstream fetch failed", error);
+		return Response.json(
+			{ error: { message: "登录服务暂不可用，请稍后重试" } },
+			{ status: 502 },
+		);
+	}
+
+	const location = upstreamResponse.headers.get("Location");
+	const rewritten = await handleAuthResponse(
+		upstreamResponse,
+		config.baseUrl,
+		{
+			secret: config.cookieSecret,
+			sameSite: "lax",
+		},
+	);
+	if (location) {
+		rewritten.headers.set("Location", location);
+	}
+	return rewritten;
 }
 
 async function requestMagicLink(request: Request): Promise<Response> {

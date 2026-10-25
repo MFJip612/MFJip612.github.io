@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getCookie } from "@tanstack/react-start/server";
 import { z } from "zod";
 import {
 	listAdminNotes,
@@ -14,7 +13,7 @@ import {
 } from "@/features/content/fixed-content";
 import { PAGE_KEYS } from "@/features/content/schemas";
 import { adminAllowlist, requireAdminPage } from "@/server/auth/admin";
-import { readSessionToken, SESSION_COOKIE } from "@/server/auth/session";
+import { readNeonIdentity } from "@/server/auth/neon";
 import { getDb } from "@/server/db/prisma";
 
 const adminContextInput = z.object({ next: z.string().min(1).max(300) });
@@ -30,10 +29,9 @@ export const loadAdminContextFn = createServerFn({ method: "GET" })
 /** 登录页使用：只返回状态，不泄露其他账号信息。 */
 export const getAdminIdentityFn = createServerFn({ method: "GET" }).handler(
 	async () => {
-		const token = getCookie(SESSION_COOKIE);
-		const session = await readSessionToken(token);
-		if (!session) return { status: "anonymous" as const };
-		const allowed = adminAllowlist().includes(session.sub);
+		const identity = await readNeonIdentity();
+		if (!identity) return { status: "anonymous" as const };
+		const allowed = adminAllowlist().includes(identity.sub);
 		return { status: allowed ? ("admin" as const) : ("denied" as const) };
 	},
 );
