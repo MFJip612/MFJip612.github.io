@@ -19,6 +19,15 @@ describe("Markdown 安全渲染", () => {
 		expect(output).toContain("<li>one</li>");
 	});
 
+	it("代码块保留语言信息与服务端静态 fallback", () => {
+		const output = html("```ts\nconst calm = true;\n```");
+
+		expect(output).toContain('data-code-language="typescript"');
+		expect(output).toContain(
+			'<code class="language-ts">const calm = true;</code>',
+		);
+	});
+
 	it("原始 HTML 不会被当成标签执行", () => {
 		const output = html(
 			'<script>alert("x")</script>\n\n<img src=x onerror="alert(1)">',

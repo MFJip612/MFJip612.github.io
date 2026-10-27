@@ -1,8 +1,10 @@
+import { Children, isValidElement, type ReactNode } from "react";
 import ReactMarkdown, {
 	type Components,
 	defaultUrlTransform,
 } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { MonacoCodeBlock } from "@/components/site/monaco_code_block";
 import { rehypeHeadingIds } from "./rehype-heading-ids";
 
 /**
@@ -20,6 +22,22 @@ function isExternalHref(href: string): boolean {
 }
 
 const components: Components = {
+	pre({ children }) {
+		const child = Children.only(children);
+		if (
+			!isValidElement<{ children?: ReactNode; className?: string }>(child)
+		) {
+			return <pre>{children}</pre>;
+		}
+		const code = String(child.props.children ?? "").replace(/\n$/, "");
+		const languageMatch = /language-(\S+)/.exec(
+			child.props.className ?? "",
+		);
+		return <MonacoCodeBlock code={code} language={languageMatch?.[1]} />;
+	},
+	code({ children, className }) {
+		return <code className={className}>{children}</code>;
+	},
 	a({ href, children, ...rest }) {
 		const external = typeof href === "string" && isExternalHref(href);
 		return (

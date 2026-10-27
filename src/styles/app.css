@@ -204,6 +204,41 @@
 		padding: 20px;
 	}
 
+	.prose-calm .monaco-code-block {
+		margin: 28px 0;
+		overflow: hidden;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: #1e1e1e;
+	}
+
+	.prose-calm .monaco-code-block__toolbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1px solid #3c3c3c;
+		padding: 8px 12px;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #9da3ae;
+	}
+
+	.prose-calm .monaco-code-block__toolbar button {
+		border: 1px solid #555;
+		border-radius: 4px;
+		padding: 4px 8px;
+		font: inherit;
+		color: #d7dae0;
+	}
+
+	.prose-calm .monaco-code-block__toolbar button:hover,
+	.prose-calm .monaco-code-block__toolbar button:focus-visible {
+		border-color: var(--accent);
+		color: #fff;
+	}
+
 	.prose-calm code {
 		font-family: var(--font-mono);
 		font-size: 13px;
