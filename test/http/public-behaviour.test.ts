@@ -49,6 +49,19 @@ async function get(path: string) {
 }
 
 describe("公开站 HTTP 行为", () => {
+	it("页面在 head 和 body 开头加载 Google Tag Manager", async () => {
+		for (const path of ["/", "/blog/published-note/", "/admin/login/"]) {
+			const html = await (await get(path)).text();
+			expect(html).toMatch(
+				/<head>(?:(?!<script).)*<script>.*?googletagmanager\.com\/gtm\.js\?id=.*?GTM-PM4NPNMH.*?<\/script>/s,
+			);
+			expect(html).toMatch(
+				/<body[^>]*><noscript><iframe src="https:\/\/www\.googletagmanager\.com\/ns\.html\?id=GTM-PM4NPNMH".*?<\/iframe><\/noscript>/s,
+			);
+			expect(html).not.toContain("G-KYSQ89XD2P");
+		}
+	});
+
 	it("首页渲染设计稿主文案", async () => {
 		const response = await get("/");
 		expect(response.status).toBe(200);
@@ -72,7 +85,7 @@ describe("公开站 HTTP 行为", () => {
 		expect(published.status).toBe(200);
 		const html = await published.text();
 		expect(html).toContain("Published note description");
-		expect(html).toContain("<h2 id=\"section\">Section</h2>");
+		expect(html).toContain('<h2 id="section">Section</h2>');
 		expect(html).toContain("Body copy for the note.");
 
 		const draft = await get("/blog/draft-note/");
