@@ -56,6 +56,17 @@ function RootComponent() {
 	return (
 		<html lang={lang} suppressHydrationWarning>
 			<head>
+				<script
+					async
+					src="https://www.googletagmanager.com/gtag/js?id=G-KYSQ89XD2P"
+				/>
+				<script>
+					{`window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+
+					gtag('config', 'G-KYSQ89XD2P');`}
+				</script>
 				<HeadContent />
 				<script>
 					{`(function(c,l,a,r,i,t,y){
