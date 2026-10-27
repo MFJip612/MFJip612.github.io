@@ -10,7 +10,17 @@ import { Prose } from "@/components/site/prose";
 import { TagPill } from "@/components/site/tag-pill";
 import { absoluteUrl, DEFAULT_SOCIAL_IMAGE } from "@/config/site";
 import { formatDisplayDate, formatIsoDate } from "@/lib/format";
-import { blogPostingJsonLd, pageHead, socialImageFromMatches } from "@/lib/seo";
+import {
+	authorSameAsFromMatches,
+	blogPostingJsonLd,
+	pageHead,
+	socialImageFromMatches,
+} from "@/lib/seo";
+import {
+	excerptFromMarkdown,
+	sectionFromMarkdown,
+	wordCountOf,
+} from "@/lib/content-text";
 import { getNoteFn } from "@/server-fns/public.functions";
 
 const siteRoute = getRouteApi("/_site");
@@ -33,10 +43,31 @@ export const Route = createFileRoute("/_site/blog/$slug")({
 		const { note, profile } = loaderData;
 		const path = `/blog/${note.slug}/`;
 		const authorUrl = absoluteUrl("/about/");
+		if (typeof process !== "undefined") {
+			// eslint-disable-next-line no-console
+			console.log(
+				"DEBUG HEAD AUTHOR SAME AS",
+				JSON.stringify(authorSameAsFromMatches(matches)),
+			);
+		}
 		const image = note.coverUrl ?? socialImageFromMatches(matches);
+		const description =
+			note.description || excerptFromMarkdown(note.markdown);
+		if (typeof process !== "undefined") {
+			// eslint-disable-next-line no-console
+			console.log(
+				"DEBUG HEAD MATCHES",
+				JSON.stringify(
+					(matches ?? []).map((m) => ({
+						id: m.routeId,
+						hasLoader: Boolean(m.loaderData),
+					})),
+				),
+			);
+		}
 		return pageHead({
 			title: note.title,
-			description: note.description,
+			description,
 			path,
 			type: "article",
 			image,
@@ -44,9 +75,10 @@ export const Route = createFileRoute("/_site/blog/$slug")({
 			publishedTime: note.publishedAt,
 			modifiedTime: note.updatedAt,
 			authorUrl,
+			tags: note.tags,
 			jsonLd: blogPostingJsonLd({
 				title: note.title,
-				description: note.description,
+				description,
 				url: absoluteUrl(path),
 				image: image ?? DEFAULT_SOCIAL_IMAGE,
 				publishedAt: note.publishedAt,
@@ -54,6 +86,10 @@ export const Route = createFileRoute("/_site/blog/$slug")({
 				tags: note.tags,
 				authorName: profile.displayName,
 				authorUrl,
+				authorSameAs: authorSameAsFromMatches(matches),
+				publisherLogo: DEFAULT_SOCIAL_IMAGE,
+				wordCount: wordCountOf(note.markdown),
+				section: sectionFromMarkdown(note.markdown),
 			}),
 		});
 	},

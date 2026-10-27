@@ -64,7 +64,6 @@ line height. Focus states are clearly visible, and motion honors
 
 Normal links are the primary and fully functional navigation mechanism. The
 command input is a progressive enhancement supporting:
-
 - `help` to list available commands
 - `home`, `blog`, `about`, and `links` to navigate to their real routes
 - `clear` to clear command feedback

@@ -7,6 +7,9 @@ import {
 
 type JsonLd = Record<string, unknown>;
 
+/** 站点默认语言区；公开站为英文内容。 */
+const DEFAULT_OG_LOCALE = "en_US";
+
 function toIso(value: Date | string): string {
 	return value instanceof Date
 		? value.toISOString()
@@ -17,6 +20,7 @@ function toIso(value: Date | string): string {
  * 统一的页面 head：title、description、canonical、OG、Twitter、文章元数据与 JSON-LD。
  * image 传入 null/undefined 时回退到站点默认分享图，避免声明了
  * summary_large_image 却没有图可展示。
+ * type 为 article 时额外输出 article:tag；twitter 账号可选。
  */
 export function pageHead(input: {
 	title: string;
@@ -28,6 +32,8 @@ export function pageHead(input: {
 	publishedTime?: Date | string;
 	modifiedTime?: Date | string;
 	authorUrl?: string;
+	tags?: string[];
+	twitter?: { site?: string; creator?: string };
 	jsonLd?: JsonLd;
 }) {
 	const url = absoluteUrl(input.path);
@@ -42,11 +48,24 @@ export function pageHead(input: {
 		{ property: "og:type", content: input.type ?? "website" },
 		{ property: "og:image", content: image },
 		{ property: "og:image:alt", content: input.imageAlt || input.title },
+		{ property: "og:locale", content: DEFAULT_OG_LOCALE },
+		{ property: "og:site_name", content: SITE_NAME },
 		{ name: "twitter:card", content: "summary_large_image" },
 		{ name: "twitter:title", content: title },
 		{ name: "twitter:description", content: input.description },
 		{ name: "twitter:image", content: image },
 	];
+	if (input.type === "article") {
+		for (const tag of input.tags ?? []) {
+			meta.push({ property: "article:tag", content: tag });
+		}
+	}
+	if (input.twitter?.site) {
+		meta.push({ name: "twitter:site", content: input.twitter.site });
+	}
+	if (input.twitter?.creator) {
+		meta.push({ name: "twitter:creator", content: input.twitter.creator });
+	}
 	if (input.type === "article" && input.publishedTime) {
 		meta.push({
 			property: "article:published_time",
@@ -99,6 +118,7 @@ export function personJsonLd(
 		location?: string | null;
 	},
 	path = "/about/",
+	sameAs?: string[],
 ): JsonLd {
 	return {
 		"@context": "https://schema.org",
@@ -110,6 +130,7 @@ export function personJsonLd(
 		...(profile.location
 			? { homeLocation: { "@type": "Place", name: profile.location } }
 			: {}),
+		...(sameAs?.length ? { sameAs } : {}),
 	};
 }
 
@@ -120,10 +141,15 @@ export function blogPostingJsonLd(input: {
 	image: string;
 	publishedAt: Date;
 	updatedAt?: Date;
-	tags: string[];
+	tags?: string[];
 	authorName: string;
 	authorUrl: string;
+	authorSameAs?: string[];
+	publisherLogo?: string;
+	wordCount?: number;
+	section?: string;
 }): JsonLd {
+	const publisherLogo = input.publisherLogo ?? DEFAULT_SOCIAL_IMAGE;
 	return {
 		"@context": "https://schema.org",
 		"@type": "BlogPosting",
@@ -140,10 +166,20 @@ export function blogPostingJsonLd(input: {
 			"@type": "Person",
 			name: input.authorName,
 			url: input.authorUrl,
+			...(input.authorSameAs?.length
+				? { sameAs: input.authorSameAs }
+				: {}),
 		},
-		publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-		keywords: input.tags.join(", "),
+		publisher: {
+			"@type": "Organization",
+			name: SITE_NAME,
+			url: SITE_URL,
+			logo: { "@type": "ImageObject", url: publisherLogo },
+		},
+		keywords: input.tags?.length ? input.tags : [input.title],
 		inLanguage: "en",
+		...(input.wordCount ? { wordCount: input.wordCount } : {}),
+		...(input.section ? { articleSection: input.section } : {}),
 	};
 }
 
@@ -166,4 +202,21 @@ export function socialImageFromMatches(
 	const shell = matches?.find((match) => match.routeId === "/_site")
 		?.loaderData as { socialImageUrl?: string | null } | undefined;
 	return shell?.socialImageUrl ?? undefined;
+}
+
+/**
+ * 从父级 /_site 匹配读取作者的外部身份（如 GitHub），
+ * 用于 Person sameAs 与文章 author 补充。head 回调拿不到父 loaderData，只能通过 matches 取。
+ */
+export function authorSameAsFromMatches(
+	matches?: ReadonlyArray<{ routeId: string; loaderData?: unknown }>,
+): string[] | undefined {
+	const shell = matches?.find((match) => match.routeId === "/_site")
+		?.loaderData as
+		| { socialLinks?: Array<{ label: string; href: string }> }
+		| undefined;
+	const github = shell?.socialLinks?.find(
+		(link) => link.label.toLowerCase() === "github",
+	)?.href;
+	return github ? [github] : undefined;
 }

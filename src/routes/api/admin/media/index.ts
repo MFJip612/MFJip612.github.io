@@ -26,7 +26,10 @@ export const Route = createFileRoute("/api/admin/media/")({
 					}
 					const form = await request.formData();
 					const file = form.get("file");
-					if (!(file instanceof File) || file.size > MAX_IMAGE_BYTES) {
+					if (
+						!(file instanceof File) ||
+						file.size > MAX_IMAGE_BYTES
+					) {
 						return new Response("请选择不超过 6MB 的图片", {
 							status: 400,
 						});

@@ -15,6 +15,7 @@ import {
 	personJsonLd,
 	socialImageFromMatches,
 	websiteJsonLd,
+	authorSameAsFromMatches,
 } from "@/lib/seo";
 import { getHomeFn } from "@/server-fns/public.functions";
 
@@ -37,7 +38,13 @@ export const Route = createFileRoute("/_site/")({
 			image: socialImageFromMatches(matches),
 			jsonLd: graphJsonLd(
 				websiteJsonLd(description),
-				loaderData?.profile ? personJsonLd(loaderData.profile) : null,
+				loaderData?.profile
+					? personJsonLd(
+							loaderData.profile,
+							"/about/",
+							authorSameAsFromMatches(matches),
+						)
+					: null,
 			),
 		});
 	},

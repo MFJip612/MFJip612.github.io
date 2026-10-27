@@ -23,7 +23,7 @@ beforeAll(async () => {
 			AUTH_COOKIE_SECRET: "test-secret-".padEnd(40, "x"),
 			VITE_SITE_URL: BASE,
 		},
-		stdio: "ignore",
+		stdio: ["ignore", "inherit", "inherit"],
 	});
 
 	const deadline = Date.now() + 30_000;
@@ -125,6 +125,7 @@ describe("公开站 HTTP 行为", () => {
 		expect(rssText).toContain("<rss");
 		expect(rssText).toContain("<lastBuildDate>");
 		expect(rssText).toContain('rel="self"');
+		expect(rssText).toContain("<content:encoded>");
 
 		const sitemap = await get("/sitemap.xml/");
 		expect(sitemap.status).toBe(200);
@@ -149,6 +150,11 @@ describe("公开站 HTTP 行为", () => {
 		expect(noteHtml).toContain('property="article:modified_time"');
 		expect(noteHtml).toContain('type="application/ld+json"');
 		expect(noteHtml).toContain('"@type":"BlogPosting"');
+		expect(noteHtml).toContain('property="og:locale"');
+		expect(noteHtml).toContain('property="og:site_name"');
+		expect(noteHtml).toContain('property="article:tag"');
+		expect(noteHtml).toContain('"@type":"Person"');
+		expect(noteHtml).toContain('"sameAs":["https://github.com/MFJip612"]');
 
 		const home = await get("/");
 		const homeHtml = await home.text();
@@ -157,5 +163,15 @@ describe("公开站 HTTP 行为", () => {
 		expect(homeHtml).toContain('"@type":"Person"');
 		expect(homeHtml).toContain('rel="alternate"');
 		expect(homeHtml).toContain('rel="manifest"');
+	});
+
+	it("SEO：摘要缺省时自动生成", async () => {
+		const response = await get("/blog/generated-excerpt-note/");
+		expect(response.status).toBe(200);
+		const html = await response.text();
+		expect(html).toContain("Body copy for the generated excerpt.");
+		expect(html).toContain(
+			'<meta name="description" content="Body copy for the generated excerpt."/>',
+		);
 	});
 });

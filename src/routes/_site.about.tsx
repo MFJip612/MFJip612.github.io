@@ -3,7 +3,12 @@ import { CopyEmail } from "@/components/site/copy-email";
 import { PageIntro } from "@/components/site/page-intro";
 import { Prose } from "@/components/site/prose";
 import { SiteCta } from "@/components/site/site-cta";
-import { pageHead, personJsonLd, socialImageFromMatches } from "@/lib/seo";
+import {
+	pageHead,
+	personJsonLd,
+	socialImageFromMatches,
+	authorSameAsFromMatches,
+} from "@/lib/seo";
 import { getAboutFn } from "@/server-fns/public.functions";
 
 const siteRoute = getRouteApi("/_site");
@@ -23,7 +28,11 @@ export const Route = createFileRoute("/_site/about")({
 			path: "/about/",
 			image: socialImageFromMatches(matches),
 			jsonLd: loaderData?.profile
-				? personJsonLd(loaderData.profile)
+				? personJsonLd(
+						loaderData.profile,
+						"/about/",
+						authorSameAsFromMatches(matches),
+					)
 				: undefined,
 		}),
 	component: AboutPage,

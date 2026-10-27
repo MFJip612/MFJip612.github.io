@@ -39,6 +39,8 @@ async function putNote(
 		title: string;
 		published: boolean;
 		publishedAt: Date;
+		description?: string;
+		markdown?: string;
 	},
 ) {
 	const content = await prisma.content.create({
@@ -55,8 +57,9 @@ async function putNote(
 			payload: {
 				title: input.title,
 				slug: input.slug,
-				description: `${input.title} description`,
-				markdown: "## Section\n\nBody copy for the note.",
+				description: input.description ?? `${input.title} description`,
+				markdown:
+					input.markdown ?? "## Section\n\nBody copy for the note.",
 				tags: ["design"],
 				coverMediaId: null,
 				coverAlt: "",
@@ -81,9 +84,7 @@ export async function resetContent(prisma: PrismaClient): Promise<void> {
 }
 
 /** 写入公开站测试所需的固定内容与一条已发布、一条草稿笔记。 */
-export async function seedPublicContent(
-	prisma: PrismaClient,
-): Promise<void> {
+export async function seedPublicContent(prisma: PrismaClient): Promise<void> {
 	await putFixed(prisma, "profile", "profile", {
 		displayName: "MFJip612",
 		role: "Developer, systems thinker, and careful interface builder.",
@@ -134,6 +135,14 @@ export async function seedPublicContent(
 		title: "Published note",
 		published: true,
 		publishedAt: new Date("2026-09-02T09:00:00Z"),
+	});
+	await putNote(prisma, {
+		slug: "generated-excerpt-note",
+		title: "Generated excerpt note",
+		published: true,
+		publishedAt: new Date("2026-08-20T09:00:00Z"),
+		description: "",
+		markdown: "## Section\n\nBody copy for the generated excerpt.",
 	});
 	await putNote(prisma, {
 		slug: "draft-note",

@@ -24,7 +24,6 @@ export function sameOrigin(request: Request): boolean {
 	const origin = request.headers.get("origin");
 	if (!origin) return false;
 	return (
-		origin === requestOrigin(request) ||
-		origin === new URL(SITE_URL).origin
+		origin === requestOrigin(request) || origin === new URL(SITE_URL).origin
 	);
 }
