@@ -86,9 +86,19 @@ export function SiteFooter({
 
 			<div className="border-t border-border-token">
 				<div className="mx-auto flex w-full max-w-[1120px] flex-wrap items-center justify-between gap-3 px-5 py-5 sm:px-8">
-					<p className="font-mono text-[11px] uppercase tracking-[1.5px] text-muted">
-						© {year} {siteName} · Built with TanStack Start
-					</p>
+					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+						<p className="font-mono text-[11px] uppercase tracking-[1.5px] text-muted">
+							© {year} {siteName} · Built with TanStack Start
+						</p>
+						<a
+							href="https://beian.miit.gov.cn/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="font-mono text-[11px] tracking-[1px] text-muted underline underline-offset-2 transition-colors duration-150 hover:text-accent"
+						>
+							粤ICP备2026106743号-1
+						</a>
+					</div>
 					<p className="font-mono text-[11px] uppercase tracking-[1.5px] text-muted">
 						<span className="mr-2 text-accent">●</span>System online
 					</p>
