@@ -26,6 +26,9 @@ import { getNoteFn } from "@/server-fns/public.functions";
 const siteRoute = getRouteApi("/_site");
 
 export const Route = createFileRoute("/_site/blog/$slug")({
+	// Articles must be rendered on the server so crawlers receive the full body
+	// without depending on client-side hydration.
+	ssr: true,
 	loader: async ({ params }) => {
 		const result = await getNoteFn({ data: { slug: params.slug } });
 		if (result.kind === "redirect") {
@@ -43,28 +46,9 @@ export const Route = createFileRoute("/_site/blog/$slug")({
 		const { note, profile } = loaderData;
 		const path = `/blog/${note.slug}/`;
 		const authorUrl = absoluteUrl("/about/");
-		if (typeof process !== "undefined") {
-			// eslint-disable-next-line no-console
-			console.log(
-				"DEBUG HEAD AUTHOR SAME AS",
-				JSON.stringify(authorSameAsFromMatches(matches)),
-			);
-		}
 		const image = note.coverUrl ?? socialImageFromMatches(matches);
 		const description =
 			note.description || excerptFromMarkdown(note.markdown);
-		if (typeof process !== "undefined") {
-			// eslint-disable-next-line no-console
-			console.log(
-				"DEBUG HEAD MATCHES",
-				JSON.stringify(
-					(matches ?? []).map((m) => ({
-						id: m.routeId,
-						hasLoader: Boolean(m.loaderData),
-					})),
-				),
-			);
-		}
 		return pageHead({
 			title: note.title,
 			description,

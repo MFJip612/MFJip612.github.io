@@ -72,6 +72,8 @@ describe("公开站 HTTP 行为", () => {
 		expect(published.status).toBe(200);
 		const html = await published.text();
 		expect(html).toContain("Published note description");
+		expect(html).toContain("<h2 id=\"section\">Section</h2>");
+		expect(html).toContain("Body copy for the note.");
 
 		const draft = await get("/blog/draft-note/");
 		expect(draft.status).toBe(404);
