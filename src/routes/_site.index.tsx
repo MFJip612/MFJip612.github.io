@@ -55,6 +55,14 @@ export const Route = createFileRoute("/_site/")({
 					name: "bytedance-verification-code",
 					content: "u7OVBXJevPVcy6fj0Rja",
 				},
+				{
+					name: "shenma-site-verification",
+					content: "106a9efa2e82b3b18320726777216667_1793245079",
+				},
+				{
+					name: "baidu-site-verification",
+					content: "codeva-x40n29mXTu",
+				},
 			],
 		};
 	},
