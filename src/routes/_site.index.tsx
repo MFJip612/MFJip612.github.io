@@ -63,6 +63,10 @@ export const Route = createFileRoute("/_site/")({
 					name: "baidu-site-verification",
 					content: "codeva-x40n29mXTu",
 				},
+				{
+					name: "360-site-verification",
+					content: "60b7a51bbe8674155239aa23a3927190",
+				},
 			],
 		};
 	},
