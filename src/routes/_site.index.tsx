@@ -10,12 +10,12 @@ import { SiteCta } from "@/components/site/site-cta";
 import { TerminalCard } from "@/components/site/terminal-card";
 import { TerminalPrompt } from "@/components/site/terminal-prompt";
 import {
+	authorSameAsFromMatches,
 	graphJsonLd,
 	pageHead,
 	personJsonLd,
 	socialImageFromMatches,
 	websiteJsonLd,
-	authorSameAsFromMatches,
 } from "@/lib/seo";
 import { getHomeFn } from "@/server-fns/public.functions";
 
