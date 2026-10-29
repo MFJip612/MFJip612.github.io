@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_site/")({
 		const description =
 			loaderData?.profile?.intro ??
 			"Software for a calmer, more open web.";
-		return pageHead({
+		const head = pageHead({
 			title: `${loaderData?.profile?.displayName ?? "MFJip612"} — Developer`,
 			description,
 			path: "/",
@@ -47,6 +47,16 @@ export const Route = createFileRoute("/_site/")({
 					: null,
 			),
 		});
+		return {
+			...head,
+			meta: [
+				...head.meta,
+				{
+					name: "bytedance-verification-code",
+					content: "u7OVBXJevPVcy6fj0Rja",
+				},
+			],
+		};
 	},
 	component: HomePage,
 });
